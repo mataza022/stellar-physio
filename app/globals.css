@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-purple: #5c2c7e;
+  --color-purple-dark: #3f1c59;
+  --color-purple-light: #f3ebf9;
+  --color-green: #4caf50;
+  --color-green-dark: #388e3c;
+}
+
+html,
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333333;
+  line-height: 1.6;
+}
+
+.container-custom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
