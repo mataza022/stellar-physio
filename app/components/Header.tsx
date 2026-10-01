@@ -182,7 +182,7 @@ export default function Header() {
           </nav>
 
           <Link
-            href="/contact"
+            href="/book-appointment"
             className="inline-block bg-purple text-white px-5 py-2 rounded font-semibold hover:bg-purple-dark transition text-sm"
           >
             Appointment
@@ -190,7 +190,7 @@ export default function Header() {
         </div>
       </header>
 
-      {/* MOBILE SLIDE-OUT MENU (kept for later) */}
+      {/* MOBILE SLIDE-OUT MENU */}
       <div
         className={`fixed inset-0 z-[100] transition-opacity ${
           menuOpen ? "opacity-100 visible" : "opacity-0 invisible"

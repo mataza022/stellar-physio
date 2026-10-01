@@ -56,7 +56,7 @@ export default function SportsInjuriesPage() {
             Early intervention accelerates healing and ensures optimal recovery.
           </p>
           <Link
-            href="/contact"
+            href="/book-appointment"
             className="inline-block border-2 border-white text-white px-6 py-3 rounded font-semibold hover:bg-white hover:text-purple transition"
           >
             Book Appointment
@@ -183,7 +183,7 @@ export default function SportsInjuriesPage() {
           </h2>
           <div className="w-40 border-b-2 border-purple mx-auto mb-8"></div>
           <Link
-            href="/contact"
+            href="/book-appointment"
             className="inline-block bg-purple text-white px-8 py-3 rounded font-semibold hover:bg-purple-dark transition"
           >
             Book Appointment

@@ -122,7 +122,7 @@ export default function LowerBackPainPage() {
           </ul>
 
           <Link
-            href="/contact"
+            href="/book-appointment"
             className="inline-block border-2 border-white text-white px-6 py-3 rounded font-semibold hover:bg-white hover:text-purple transition"
           >
             Book an Appointment
@@ -259,7 +259,7 @@ export default function LowerBackPainPage() {
             </ul>
 
             <Link
-              href="/contact"
+              href="/book-appointment"
               className="inline-block border-2 border-white text-white px-6 py-3 rounded font-semibold hover:bg-white hover:text-green transition mt-8 self-start"
             >
               Book Appointment
@@ -286,7 +286,7 @@ export default function LowerBackPainPage() {
             you move better, feel stronger, and live healthier.
           </p>
           <Link
-            href="/contact"
+            href="/book-appointment"
             className="inline-block bg-purple text-white px-8 py-3 rounded font-semibold hover:bg-purple-dark transition"
           >
             Book Appointment

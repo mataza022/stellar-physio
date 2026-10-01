@@ -67,7 +67,7 @@ export default function AboutPage() {
               every step of your journey to optimal health.
             </p>
             <Link
-              href="/contact"
+              href="/book-appointment"
               className="inline-block border-2 border-white text-white px-6 py-3 rounded font-semibold hover:bg-white hover:text-purple transition"
             >
               Book Appointment

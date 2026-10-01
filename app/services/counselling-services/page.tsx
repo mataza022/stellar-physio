@@ -58,7 +58,7 @@ export default function CounsellingServicesPage() {
             forward.
           </p>
           <Link
-            href="/contact"
+            href="/book-appointment"
             className="inline-block bg-white text-purple px-6 py-3 rounded font-semibold hover:bg-gray-100 transition"
           >
             Book Appointment
@@ -170,7 +170,7 @@ export default function CounsellingServicesPage() {
                 </li>
               </ul>
               <Link
-                href="/contact"
+                href="/book-appointment"
                 className="inline-block bg-purple text-white px-6 py-2 rounded font-semibold hover:bg-purple-dark transition"
               >
                 Book Appointment
@@ -205,7 +205,7 @@ export default function CounsellingServicesPage() {
                 </li>
               </ul>
               <Link
-                href="/contact"
+                href="/book-appointment"
                 className="inline-block bg-purple text-white px-6 py-2 rounded font-semibold hover:bg-purple-dark transition"
               >
                 Book Appointment
@@ -255,7 +255,7 @@ export default function CounsellingServicesPage() {
             </ul>
 
             <Link
-              href="/contact"
+              href="/book-appointment"
               className="inline-block bg-purple text-white px-6 py-3 rounded font-semibold hover:bg-purple-dark transition mt-8 self-start"
             >
               Book Appointment
@@ -317,7 +317,7 @@ export default function CounsellingServicesPage() {
           </div>
 
           <Link
-            href="/contact"
+            href="/book-appointment"
             className="inline-block bg-purple text-white px-8 py-3 rounded font-semibold hover:bg-purple-dark transition"
           >
             Book Appointment

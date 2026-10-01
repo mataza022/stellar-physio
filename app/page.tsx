@@ -34,7 +34,7 @@ export default function HomePage() {
               Explore Services
             </Link>
             <Link
-              href="/contact"
+              href="/book-appointment"
               className="bg-white text-purple px-6 py-3 rounded font-semibold hover:bg-gray-100 transition"
             >
               Book Appointment
@@ -65,7 +65,7 @@ export default function HomePage() {
                 convenience.
               </p>
               <Link
-                href="/contact"
+                href="/book-appointment"
                 className="inline-block bg-green text-white px-5 py-2 rounded text-sm font-semibold hover:bg-green-dark transition"
               >
                 Book Now

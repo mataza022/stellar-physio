@@ -207,7 +207,7 @@ export default function PharmacyPage() {
             health is our priority.
           </p>
           <Link
-            href="/contact"
+            href="/book-appointment"
             className="inline-block bg-purple text-white px-8 py-3 rounded font-semibold hover:bg-purple-dark transition"
           >
             Visit Our Online Shop

@@ -74,7 +74,7 @@ export default function DevelopmentalMilestonesPage() {
             independence.
           </p>
           <Link
-            href="/contact"
+            href="/book-appointment"
             className="inline-block bg-white text-purple px-6 py-3 rounded font-semibold hover:bg-gray-100 transition"
           >
             Book Appointment
@@ -188,7 +188,7 @@ export default function DevelopmentalMilestonesPage() {
           </ul>
 
           <Link
-            href="/contact"
+            href="/book-appointment"
             className="inline-block bg-white text-green px-6 py-3 rounded font-semibold hover:bg-gray-100 transition"
           >
             Book Appointment
@@ -210,7 +210,7 @@ export default function DevelopmentalMilestonesPage() {
             Call us at <strong>0706 101 999</strong>
           </p>
           <Link
-            href="/contact"
+            href="/book-appointment"
             className="inline-block bg-purple text-white px-8 py-3 rounded font-semibold hover:bg-purple-dark transition"
           >
             Book Appointment

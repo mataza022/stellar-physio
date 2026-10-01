@@ -67,7 +67,7 @@ export default function ArthritisJointPainsPage() {
             condition from worsening.
           </p>
           <Link
-            href="/contact"
+            href="/book-appointment"
             className="inline-block border-2 border-white text-white px-6 py-3 rounded font-semibold hover:bg-white hover:text-purple transition"
           >
             Book Appointment
@@ -149,7 +149,7 @@ export default function ArthritisJointPainsPage() {
               </li>
             </ul>
             <Link
-              href="/contact"
+              href="/book-appointment"
               className="inline-block bg-green text-white px-6 py-3 rounded font-semibold hover:bg-green-dark transition self-start"
             >
               Book Appointment
@@ -228,7 +228,7 @@ export default function ArthritisJointPainsPage() {
             Call us at <strong>0706 101 999</strong>
           </p>
           <Link
-            href="/contact"
+            href="/book-appointment"
             className="inline-block bg-purple text-white px-8 py-3 rounded font-semibold hover:bg-purple-dark transition"
           >
             Book Appointment

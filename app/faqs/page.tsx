@@ -290,7 +290,7 @@ export default function FAQsPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link
-                href="/contact"
+                href="/book-appointment"
                 className="bg-purple text-white px-6 py-3 rounded font-semibold hover:bg-purple-dark transition"
               >
                 Contact Us
