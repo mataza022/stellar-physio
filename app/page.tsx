@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { posts } from "@/lib/posts";
 
 export default function HomePage() {
   return (
@@ -15,7 +16,7 @@ export default function HomePage() {
         </div>
         <div className="container-custom relative z-10 text-white max-w-2xl">
           <p className="text-sm uppercase tracking-widest mb-4 opacity-90">
-            Health & Wellness
+            Health &amp; Wellness
           </p>
           <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
             Your Lifestyle Clinic.
@@ -118,7 +119,6 @@ export default function HomePage() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            {/* Service Card 1 */}
             <div className="bg-white rounded-lg overflow-hidden text-gray-800">
               <img
                 src="/images/generalconsultation.jpg"
@@ -134,7 +134,7 @@ export default function HomePage() {
                   disability.
                 </p>
                 <Link
-                  href="/services"
+                  href="/services/physiotherapy"
                   className="text-green font-semibold text-sm inline-flex items-center"
                 >
                   Read More &#8594;
@@ -142,7 +142,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Service Card 2 */}
             <div className="bg-white rounded-lg overflow-hidden text-gray-800">
               <img
                 src="/images/generalconsultation.jpg"
@@ -158,7 +157,7 @@ export default function HomePage() {
                   musculoskeletal system.
                 </p>
                 <Link
-                  href="/services"
+                  href="/services/chiropractor-services"
                   className="text-green font-semibold text-sm inline-flex items-center"
                 >
                   Read More &#8594;
@@ -166,7 +165,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Service Card 3 */}
             <div className="bg-white rounded-lg overflow-hidden text-gray-800">
               <img
                 src="/images/generalconsultation.jpg"
@@ -182,7 +180,7 @@ export default function HomePage() {
                   mobility challenges.
                 </p>
                 <Link
-                  href="/services"
+                  href="/services/home-based-care"
                   className="text-green font-semibold text-sm inline-flex items-center"
                 >
                   Read More &#8594;
@@ -191,7 +189,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Bottom bar */}
           <div className="bg-black/20 rounded-lg p-6 flex flex-col md:flex-row items-center justify-between gap-4">
             <div>
               <h3 className="font-bold text-lg">Explore All Services</h3>
@@ -232,9 +229,21 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {[
-                { name: "Kenital Plaza", img: "/images/ngongrdbranch.jpg" },
-                { name: "Karen Country Club", img: "/images/karencountryclub.jpg" },
-                { name: "Parklands Sports Club", img: "/images/generalconsultation.jpg" },
+                {
+                  name: "Kenital Plaza",
+                  img: "/images/ngongrdbranch.jpg",
+                  href: "/branches/kenital-plaza",
+                },
+                {
+                  name: "Karen Country Club",
+                  img: "/images/karencountryclub.jpg",
+                  href: "/branches/karen-country-club",
+                },
+                {
+                  name: "Parklands Sports Club",
+                  img: "/images/generalconsultation.jpg",
+                  href: "/branches/parklands-sports-club",
+                },
               ].map((b) => (
                 <div
                   key={b.name}
@@ -250,7 +259,7 @@ export default function HomePage() {
                       {b.name}
                     </h4>
                     <Link
-                      href="/branches"
+                      href={b.href}
                       className="text-green text-xs font-semibold"
                     >
                       Get Directions &#8594;
@@ -276,9 +285,9 @@ export default function HomePage() {
           </p>
           <div className="text-6xl text-green leading-none mb-4">&#8220;</div>
           <p className="text-lg italic text-gray-700 mb-6">
-            "As an active person, I had knee problems but improved significantly
-            after sessions at Stellar Physio. My knee is great now. I highly
-            recommend regular physiotherapy."
+            &quot;As an active person, I had knee problems but improved
+            significantly after sessions at Stellar Physio. My knee is great
+            now. I highly recommend regular physiotherapy.&quot;
           </p>
           <p className="font-bold text-purple">Daniel Kigo</p>
           <p className="text-sm text-gray-500">Patient</p>
@@ -304,14 +313,14 @@ export default function HomePage() {
       </section>
 
       {/* ============================================
-          NEWS
+          NEWS — PULLED FROM SHARED POSTS DATA
           ============================================ */}
       <section className="py-20 bg-white">
         <div className="container-custom">
           <div className="flex justify-between items-end mb-8 flex-wrap gap-4">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-purple mb-2">
-                Latest News & Updates
+                Latest News &amp; Updates
               </h2>
               <p className="text-gray-600">
                 Stay informed about our latest developments.
@@ -326,75 +335,58 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Featured */}
+            {/* Featured — First post */}
             <div>
               <img
-                src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=60"
-                alt="Featured"
+                src={posts[0].image}
+                alt={posts[0].title}
                 className="w-full h-72 object-cover rounded-lg mb-4"
               />
-              <span className="inline-block bg-green text-white text-xs font-bold px-3 py-1 rounded mb-3">
-                HEALTH & WELLNESS
+              <span className="inline-block bg-green text-white text-xs font-bold px-3 py-1 rounded mb-3 uppercase">
+                {posts[0].category}
               </span>
               <h3 className="text-xl font-bold text-purple mb-3">
-                Kinesiology Taping in Nairobi: What That Colourful Tape Really Does
+                {posts[0].title}
               </h3>
               <p className="text-gray-600 text-sm mb-4">
-                Blue kinesiology tape applied to a patient's hip and gluteal
-                muscles during a physiotherapy session.
+                {posts[0].excerpt}
               </p>
               <Link
-                href="/blog"
+                href={`/blog/${posts[0].slug}`}
                 className="text-green font-semibold text-sm"
               >
                 Read More &#8594;
               </Link>
             </div>
 
-            {/* Sidebar */}
+            {/* Sidebar — Next two posts */}
             <div className="flex flex-col gap-6">
-              <div className="grid grid-cols-[120px_1fr] gap-4 items-center">
-                <img
-                  src="https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=200&q=60"
-                  alt="News"
-                  className="w-full h-24 object-cover rounded-lg"
-                />
-                <div>
-                  <span className="inline-block bg-purple text-white text-xs font-bold px-2 py-1 rounded mb-2">
-                    HEALTH
-                  </span>
-                  <h4 className="font-bold text-purple text-sm mb-1">
-                    Sports Massage in Parklands: How to Recover
-                  </h4>
-                  <Link
-                    href="/blog"
-                    className="text-green font-semibold text-xs"
-                  >
-                    Read More &#8594;
-                  </Link>
+              {posts.slice(1, 3).map((post) => (
+                <div
+                  key={post.slug}
+                  className="grid grid-cols-[120px_1fr] gap-4 items-center"
+                >
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className="w-full h-24 object-cover rounded-lg"
+                  />
+                  <div>
+                    <span className="inline-block bg-purple text-white text-xs font-bold px-2 py-1 rounded mb-2 uppercase">
+                      {post.category}
+                    </span>
+                    <h4 className="font-bold text-purple text-sm mb-1">
+                      {post.title}
+                    </h4>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="text-green font-semibold text-xs"
+                    >
+                      Read More &#8594;
+                    </Link>
+                  </div>
                 </div>
-              </div>
-              <div className="grid grid-cols-[120px_1fr] gap-4 items-center">
-                <img
-                  src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=200&q=60"
-                  alt="News"
-                  className="w-full h-24 object-cover rounded-lg"
-                />
-                <div>
-                  <span className="inline-block bg-purple text-white text-xs font-bold px-2 py-1 rounded mb-2">
-                    WELLNESS
-                  </span>
-                  <h4 className="font-bold text-purple text-sm mb-1">
-                    Stretch & Exercise Therapy in Nairobi
-                  </h4>
-                  <Link
-                    href="/blog"
-                    className="text-green font-semibold text-xs"
-                  >
-                    Read More &#8594;
-                  </Link>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
