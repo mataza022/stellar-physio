@@ -23,19 +23,24 @@ export default function KenitalPlazaPage() {
           <div>
             <div className="bg-purple-light rounded-lg overflow-hidden h-[480px] relative">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.8192!2d36.7995796!3d-1.2988786!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMcKwMTcnNTYuMCJTIDM2wrA0OCcwMC4wIkU!5e0!3m2!1sen!2ske!4v1234567890"
+                src="https://www.google.com/maps?q=-1.298749885724835,36.79962250991531&z=17&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Kenital Plaza Location"
+                title="Kenital Plaza, Ngong Road"
               ></iframe>
             </div>
-            <p className="text-center text-purple font-semibold mt-4">
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=-1.298749885724835,36.79962250991531"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-center text-purple font-semibold mt-4 hover:underline"
+            >
               Get Directions to Ngong Road Branch
-            </p>
+            </a>
           </div>
 
           {/* Contact Form */}
