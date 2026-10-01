@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
 export default function BookAppointmentPage() {
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
@@ -11,28 +10,17 @@ export default function BookAppointmentPage() {
   const startOffset = 3; // Oct 1, 2026 starts on Thursday
   const daysInMonth = 31;
 
-  // Example states — in production these come from Firestore
-  const bookedDays = [1, 4, 10, 11, 25];
-  const pendingDays = [3, 8];
-
-  // Closed days — Sundays (Oct 4, 11, 18, 25 in 2026)
-  // Since Oct 1 is Thursday: 4, 11, 18, 25 are Sundays
+  // Sundays in October 2026 (Oct 4, 11, 18, 25)
   const closedDays = [4, 11, 18, 25];
 
   const getDayState = (day: number) => {
     if (closedDays.includes(day)) return "closed";
-    if (bookedDays.includes(day)) return "booked";
-    if (pendingDays.includes(day)) return "pending";
     return "available";
   };
 
   const stateColors: Record<string, string> = {
     available:
       "border-2 border-green text-green hover:bg-green hover:text-white cursor-pointer",
-    booked:
-      "border-2 border-red-400 text-red-400 cursor-not-allowed opacity-70",
-    pending:
-      "border-2 border-yellow-500 text-yellow-500 cursor-not-allowed opacity-70",
     closed:
       "border-2 border-gray-200 text-gray-300 cursor-not-allowed line-through",
   };
@@ -92,10 +80,7 @@ export default function BookAppointmentPage() {
                 const day = i + 1;
                 const state = getDayState(day);
                 const isSelected = selectedDay === day;
-                const isDisabled =
-                  state === "booked" ||
-                  state === "pending" ||
-                  state === "closed";
+                const isDisabled = state === "closed";
                 return (
                   <button
                     key={day}
@@ -125,18 +110,6 @@ export default function BookAppointmentPage() {
                 <span className="text-gray-600">Available</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-7 h-7 rounded-full border-2 border-red-400 text-red-400 flex items-center justify-center text-xs font-bold">
-                  01
-                </span>
-                <span className="text-gray-600">Booked</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-7 h-7 rounded-full border-2 border-yellow-500 text-yellow-500 flex items-center justify-center text-xs font-bold">
-                  01
-                </span>
-                <span className="text-gray-600">Pending</span>
-              </div>
-              <div className="flex items-center gap-2">
                 <span className="w-7 h-7 rounded-full border-2 border-gray-200 text-gray-300 line-through flex items-center justify-center text-xs font-bold">
                   01
                 </span>
@@ -153,7 +126,7 @@ export default function BookAppointmentPage() {
                   return;
                 }
                 alert(
-                  `Booking request received for day ${selectedDay}! Our team will confirm shortly via email or phone.`
+                  `Booking request received for October ${selectedDay}, 2026! Our team will confirm shortly via email or phone.`
                 );
               }}
               className="space-y-6"
@@ -227,7 +200,7 @@ export default function BookAppointmentPage() {
       {/* CONTACT INFO CARDS — ALL CLICKABLE */}
       <section className="py-16 bg-gray-50">
         <div className="container-custom grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Email — clickable */}
+          {/* Email */}
           <a
             href="mailto:info@stellarphysio.com"
             className="group bg-white rounded-lg p-6 flex items-center gap-4 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
@@ -256,7 +229,7 @@ export default function BookAppointmentPage() {
             </div>
           </a>
 
-          {/* Call — clickable */}
+          {/* Call */}
           <a
             href="tel:+254719881291"
             className="group bg-white rounded-lg p-6 flex items-center gap-4 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
@@ -284,7 +257,7 @@ export default function BookAppointmentPage() {
             </div>
           </a>
 
-          {/* Location — clickable, opens Google Maps */}
+          {/* Location */}
           <a
             href="https://www.google.com/maps/dir/?api=1&destination=-1.298749885724835,36.79962250991531"
             target="_blank"
