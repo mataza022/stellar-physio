@@ -549,7 +549,7 @@ export default function Header() {
             <img
               src="/images/stellarphysiowhitelogo.png"
               alt="Stellar Physio"
-              className="h-12 md:h-14 w-auto"
+              className="h-16 md:h-20 w-auto"
             />
             <div className="flex items-center gap-1">
               <button

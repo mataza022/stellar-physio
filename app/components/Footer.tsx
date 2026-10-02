@@ -222,7 +222,7 @@ export default function Footer() {
               <img
                 src="/images/dialaphysio.png"
                 alt="Dial A Physio — Call 0719 881 291"
-                className="h-40 w-auto"
+                className="h-50 w-auto"
               />
             </a>
           </div>
