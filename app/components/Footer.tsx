@@ -200,14 +200,14 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Dial A Physio — logo replaces the heading and button */}
+          {/* Dial A Physio — logo with transparent background */}
           <div>
             <p className="text-sm text-white/70 mb-4">
               Call us directly to book a session or for urgent enquiries.
             </p>
             <a
               href="tel:+254719881291"
-              className="inline-block bg-white rounded-lg p-3 hover:bg-gray-100 transition"
+              className="inline-block hover:opacity-90 transition"
               aria-label="Dial A Physio — Call 0719 881 291"
             >
               <img
