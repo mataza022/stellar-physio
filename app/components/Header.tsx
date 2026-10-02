@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const servicesDropdown = [
   { label: "General Consultations", href: "/services/general-consultations" },
@@ -38,12 +39,98 @@ const aboutDropdown = [
   { label: "Careers", href: "/about/careers" },
 ];
 
+// Search index — everything searchable across the site
+type SearchItem = { type: string; title: string; href: string };
+
+const searchIndex: SearchItem[] = [
+  // SERVICES
+  { type: "Service", title: "General Consultations", href: "/services/general-consultations" },
+  { type: "Service", title: "Chiropractor Services", href: "/services/chiropractor-services" },
+  { type: "Service", title: "Physiotherapy", href: "/services/physiotherapy" },
+  { type: "Service", title: "Home-Based Care", href: "/services/home-based-care" },
+  { type: "Service", title: "Laboratory Services", href: "/services/stellar-laboratory-services" },
+  { type: "Service", title: "Pharmacy", href: "/services/pharmacy" },
+  { type: "Service", title: "Counselling Services", href: "/services/counselling-services" },
+  { type: "Service", title: "Sports Massage", href: "/services/sports-massage" },
+  { type: "Service", title: "Reflexology", href: "/services/reflexology" },
+  { type: "Service", title: "Occupational Therapy", href: "/services/occupational-therapy" },
+  { type: "Service", title: "Nutritional Services", href: "/services/nutritional-services" },
+  { type: "Service", title: "Stretch & Exercise Therapy", href: "/services/stretch-exercise-therapy" },
+  // CONDITIONS
+  { type: "Condition", title: "Arthritis & Joint Pains", href: "/conditions/arthritis-joint-pains" },
+  { type: "Condition", title: "Lower Back Pain & Spine Health", href: "/conditions/lower-back-pain-spine-health" },
+  { type: "Condition", title: "Sports Injuries", href: "/conditions/sports-injuries" },
+  { type: "Condition", title: "Stroke Rehabilitation", href: "/conditions/stroke-rehabilitation" },
+  { type: "Condition", title: "Pre- & Post-Surgery Rehab", href: "/conditions/pre-post-surgery-rehab" },
+  { type: "Condition", title: "Pre & Post-Natal Massages", href: "/conditions/pre-post-natal-massages" },
+  { type: "Condition", title: "Developmental Milestones for Autism & Cerebral Palsy", href: "/conditions/developmental-milestones" },
+  // BRANCHES
+  { type: "Branch", title: "Kenital Plaza, Ngong Road", href: "/branches/kenital-plaza" },
+  { type: "Branch", title: "Karen Country Club", href: "/branches/karen-country-club" },
+  { type: "Branch", title: "Parklands Sports Club", href: "/branches/parklands-sports-club" },
+  // PAGES / SECTIONS
+  { type: "Page", title: "Book Appointment", href: "/book-appointment" },
+  { type: "Page", title: "Contact Us", href: "/contact" },
+  { type: "Page", title: "FAQs — Frequently Asked Questions", href: "/faqs" },
+  { type: "Page", title: "Articles & News (Blog)", href: "/blog" },
+  { type: "Page", title: "About Us", href: "/about" },
+  { type: "Page", title: "Careers", href: "/about/careers" },
+  { type: "Page", title: "All Services", href: "/services" },
+  { type: "Page", title: "All Conditions", href: "/conditions" },
+  { type: "Page", title: "All Branches", href: "/branches" },
+];
+
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const toggleMobileSub = (key: string) =>
     setMobileExpanded(mobileExpanded === key ? null : key);
+
+  const closeSearch = () => {
+    setSearchOpen(false);
+    setSearchQuery("");
+  };
+
+  // Escape key closes search
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && searchOpen) closeSearch();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [searchOpen]);
+
+  // Focus input when search opens
+  useEffect(() => {
+    if (searchOpen) {
+      setTimeout(() => searchInputRef.current?.focus(), 200);
+    }
+  }, [searchOpen]);
+
+  // Filter search
+  const query = searchQuery.trim().toLowerCase();
+  const searchResults =
+    query === ""
+      ? []
+      : searchIndex
+          .filter(
+            (item) =>
+              item.title.toLowerCase().includes(query) ||
+              item.type.toLowerCase().includes(query)
+          )
+          .slice(0, 10);
+
+  const handleSelectResult = (href: string) => {
+    closeSearch();
+    setMenuOpen(false);
+    router.push(href);
+  };
 
   return (
     <>
@@ -55,8 +142,8 @@ export default function Header() {
             901942 || Karen Country Club: +254 739 110110
           </div>
           <a
-            href="tel:+254706101999"
-            className="md:hidden flex items-center gap-2"
+            href="tel:+254719881291"
+            className="md:hidden flex items-center gap-2 hover:text-green transition"
           >
             <svg
               viewBox="0 0 24 24"
@@ -69,20 +156,22 @@ export default function Header() {
             >
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
             </svg>
-            <span>+254 706 101999</span>
+            <span>0719 881 291</span>
           </a>
           <div className="flex gap-4 flex-shrink-0">
-            <Link href="/contact">Contact Us</Link>
+            <Link href="/contact" className="hover:text-green transition">
+              Contact Us
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* QUICK ACTION BAR (Mobile only — Nairobi Hospital format) */}
+      {/* QUICK ACTION BAR (Mobile) */}
       <div className="lg:hidden bg-white border-b border-gray-200">
         <div className="grid grid-cols-2 divide-x divide-gray-200">
           <Link
             href="/book-appointment"
-            className="flex items-center justify-center gap-2 py-3 text-purple font-medium text-sm"
+            className="flex items-center justify-center gap-2 py-3 text-purple font-medium text-sm active:bg-purple-light transition"
           >
             <svg
               viewBox="0 0 24 24"
@@ -100,7 +189,7 @@ export default function Header() {
           </Link>
           <a
             href="tel:+254719881291"
-            className="flex items-center justify-center gap-2 py-3 text-purple font-medium text-sm"
+            className="flex items-center justify-center gap-2 py-3 text-purple font-medium text-sm active:bg-purple-light transition"
           >
             <svg
               viewBox="0 0 24 24"
@@ -122,10 +211,10 @@ export default function Header() {
       {/* MAIN HEADER */}
       <header className="bg-white shadow-md sticky top-0 z-50">
         <div className="container-custom flex justify-between items-center py-3 md:py-4">
-          {/* Mobile hamburger button (LEFT) */}
+          {/* Mobile hamburger button */}
           <button
             onClick={toggleMenu}
-            className="lg:hidden text-purple hover:text-purple-dark transition"
+            className="lg:hidden text-purple hover:text-purple-dark hover:scale-110 active:scale-95 transition-all duration-200"
             aria-label="Open menu"
           >
             <svg
@@ -135,7 +224,7 @@ export default function Header() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="w-7 h-7"
+              className="w-8 h-8"
             >
               <line x1="3" y1="6" x2="21" y2="6" />
               <line x1="3" y1="12" x2="21" y2="12" />
@@ -143,15 +232,15 @@ export default function Header() {
             </svg>
           </button>
 
-          {/* Logo (center on mobile, left on desktop) */}
+          {/* Logo — bigger, hover effect */}
           <Link
             href="/"
-            className="mx-auto lg:mx-0 flex items-center"
+            className="mx-auto lg:mx-0 flex items-center transition-transform duration-300 hover:scale-105"
           >
             <img
               src="/images/Stellarphysio_NEW_logo.png"
               alt="Stellar Physio"
-              className="h-16 md:h-24 w-auto"
+              className="h-20 md:h-28 w-auto"
             />
           </Link>
 
@@ -161,7 +250,6 @@ export default function Header() {
               Home
             </Link>
 
-            {/* About Us */}
             <div className="relative group">
               <Link
                 href="/about"
@@ -185,7 +273,6 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Services */}
             <div className="relative group">
               <span className="hover:text-purple font-medium inline-flex items-center gap-1 cursor-default">
                 Services <span className="text-xs">&#9662;</span>
@@ -206,7 +293,6 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Conditions */}
             <div className="relative group">
               <span className="hover:text-purple font-medium inline-flex items-center gap-1 cursor-default">
                 Conditions <span className="text-xs">&#9662;</span>
@@ -227,7 +313,6 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Branches */}
             <div className="relative group">
               <span className="hover:text-purple font-medium inline-flex items-center gap-1 cursor-default">
                 Branches <span className="text-xs">&#9662;</span>
@@ -259,9 +344,10 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* Mobile search icon (RIGHT) */}
+          {/* Search icon */}
           <button
-            className="lg:hidden text-purple hover:text-purple-dark transition"
+            onClick={() => setSearchOpen(true)}
+            className="text-purple hover:text-purple-dark hover:scale-110 active:scale-95 transition-all duration-200"
             aria-label="Search"
           >
             <svg
@@ -281,36 +367,193 @@ export default function Header() {
           {/* Desktop appointment button */}
           <Link
             href="/book-appointment"
-            className="hidden lg:inline-block bg-purple text-white px-5 py-2 rounded font-semibold hover:bg-purple-dark transition text-sm"
+            className="hidden lg:inline-block bg-purple text-white px-5 py-2 rounded font-semibold hover:bg-purple-dark hover:scale-105 transition-all duration-200 text-sm"
           >
             Appointment
           </Link>
         </div>
       </header>
 
-      {/* MOBILE SLIDE-OUT MENU — Nairobi Hospital format */}
+      {/* SEARCH OVERLAY */}
       <div
-        className={`fixed inset-0 z-[100] transition-opacity ${
+        className={`fixed inset-0 z-[300] ${
+          searchOpen ? "visible" : "invisible pointer-events-none"
+        }`}
+      >
+        {/* Backdrop */}
+        <div
+          onClick={closeSearch}
+          className={`absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300 ${
+            searchOpen ? "opacity-100" : "opacity-0"
+          }`}
+        />
+
+        {/* Search Panel — slides down from top */}
+        <div
+          className={`relative bg-white shadow-2xl transition-transform duration-300 ease-out ${
+            searchOpen ? "translate-y-0" : "-translate-y-full"
+          }`}
+        >
+          <div className="container-custom py-6">
+            {/* Input */}
+            <div className="flex items-center gap-4 border-b-2 border-purple pb-4">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-6 h-6 text-purple flex-shrink-0"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search for services, conditions, branches..."
+                className="flex-1 text-base md:text-lg outline-none text-gray-800 placeholder-gray-400 bg-transparent"
+              />
+              <button
+                onClick={closeSearch}
+                className="hidden md:flex items-center gap-1 px-3 py-1 rounded border border-gray-300 text-xs text-gray-500 hover:border-purple hover:text-purple transition"
+                aria-label="Close search"
+              >
+                ESC
+              </button>
+              <button
+                onClick={closeSearch}
+                className="md:hidden w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-purple hover:text-white transition"
+                aria-label="Close search"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-4 h-4"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Results */}
+            <div className="mt-4 max-h-[60vh] overflow-y-auto">
+              {query === "" && (
+                <p className="text-sm text-gray-500 py-4">
+                  Start typing to search. Try{" "}
+                  <button
+                    onClick={() => setSearchQuery("physiotherapy")}
+                    className="text-purple font-semibold hover:underline"
+                  >
+                    physiotherapy
+                  </button>
+                  ,{" "}
+                  <button
+                    onClick={() => setSearchQuery("back pain")}
+                    className="text-purple font-semibold hover:underline"
+                  >
+                    back pain
+                  </button>
+                  , or{" "}
+                  <button
+                    onClick={() => setSearchQuery("book")}
+                    className="text-purple font-semibold hover:underline"
+                  >
+                    book
+                  </button>
+                  .
+                </p>
+              )}
+
+              {query !== "" && searchResults.length === 0 && (
+                <p className="text-sm text-gray-500 py-4">
+                  No results found for &quot;{searchQuery}&quot;. Try another
+                  keyword.
+                </p>
+              )}
+
+              {searchResults.length > 0 && (
+                <ul className="divide-y divide-gray-100">
+                  {searchResults.map((item, i) => (
+                    <li
+                      key={item.href}
+                      className="animate-fadeSlideIn"
+                      style={{ animationDelay: `${i * 40}ms` }}
+                    >
+                      <button
+                        onClick={() => handleSelectResult(item.href)}
+                        className="w-full flex items-center justify-between gap-4 px-2 py-3 hover:bg-purple-light rounded transition text-left"
+                      >
+                        <div className="flex items-center gap-4 min-w-0">
+                          <span
+                            className={`text-xs font-bold uppercase px-2 py-1 rounded flex-shrink-0 ${
+                              item.type === "Service"
+                                ? "bg-purple text-white"
+                                : item.type === "Condition"
+                                ? "bg-green text-white"
+                                : item.type === "Branch"
+                                ? "bg-purple-dark text-white"
+                                : "bg-gray-200 text-gray-700"
+                            }`}
+                          >
+                            {item.type}
+                          </span>
+                          <span className="text-gray-800 font-medium truncate">
+                            {item.title}
+                          </span>
+                        </div>
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="w-4 h-4 text-gray-400 flex-shrink-0"
+                        >
+                          <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* MOBILE SLIDE-OUT MENU */}
+      <div
+        className={`fixed inset-0 z-[100] transition-opacity duration-300 ${
           menuOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
       >
         <div onClick={toggleMenu} className="absolute inset-0 bg-black/60"></div>
 
         <div
-          className={`absolute top-0 left-0 h-full w-full max-w-[400px] bg-white shadow-2xl transform transition-transform overflow-y-auto flex flex-col ${
+          className={`absolute top-0 left-0 h-full w-full max-w-[400px] bg-white shadow-2xl transform transition-transform duration-300 ease-out overflow-y-auto flex flex-col ${
             menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          {/* Header with logo + close X */}
-          <div className="flex items-center justify-between px-5 py-4 bg-purple-light border-b border-purple/20 sticky top-0 z-10">
+          {/* Header with bigger centered logo + close X */}
+          <div className="relative py-6 px-5 bg-purple-light border-b border-purple/20 sticky top-0 z-10 flex items-center justify-center">
             <img
               src="/images/Stellarphysio_NEW_logo.png"
               alt="Stellar Physio"
-              className="h-14 w-auto"
+              className="h-24 w-auto animate-softPulse"
             />
             <button
               onClick={toggleMenu}
-              className="w-10 h-10 bg-purple text-white rounded-full flex items-center justify-center hover:bg-purple-dark transition"
+              className="absolute top-4 right-4 w-10 h-10 bg-purple text-white rounded-full flex items-center justify-center hover:bg-purple-dark hover:rotate-90 transition-all duration-300"
               aria-label="Close menu"
             >
               <svg
@@ -331,7 +574,12 @@ export default function Header() {
           {/* Menu items */}
           <ul className="flex-1">
             {/* Home */}
-            <li className="border-b border-gray-100">
+            <li
+              className={`border-b border-gray-100 ${
+                menuOpen ? "animate-fadeSlideIn" : ""
+              }`}
+              style={{ animationDelay: menuOpen ? "0ms" : "0ms" }}
+            >
               <Link
                 href="/"
                 onClick={toggleMenu}
@@ -358,7 +606,12 @@ export default function Header() {
             </li>
 
             {/* About Us */}
-            <li className="border-b border-gray-100">
+            <li
+              className={`border-b border-gray-100 ${
+                menuOpen ? "animate-fadeSlideIn" : ""
+              }`}
+              style={{ animationDelay: menuOpen ? "40ms" : "0ms" }}
+            >
               <button
                 onClick={() => toggleMobileSub("about")}
                 className="w-full flex items-center justify-between px-5 py-4 hover:bg-purple-light transition"
@@ -387,7 +640,7 @@ export default function Header() {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className={`w-5 h-5 text-gray-400 transition-transform ${
+                  className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${
                     mobileExpanded === "about" ? "rotate-180" : ""
                   }`}
                 >
@@ -421,7 +674,12 @@ export default function Header() {
             </li>
 
             {/* Services */}
-            <li className="border-b border-gray-100">
+            <li
+              className={`border-b border-gray-100 ${
+                menuOpen ? "animate-fadeSlideIn" : ""
+              }`}
+              style={{ animationDelay: menuOpen ? "80ms" : "0ms" }}
+            >
               <button
                 onClick={() => toggleMobileSub("services")}
                 className="w-full flex items-center justify-between px-5 py-4 hover:bg-purple-light transition"
@@ -449,7 +707,7 @@ export default function Header() {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className={`w-5 h-5 text-gray-400 transition-transform ${
+                  className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${
                     mobileExpanded === "services" ? "rotate-180" : ""
                   }`}
                 >
@@ -474,7 +732,12 @@ export default function Header() {
             </li>
 
             {/* Conditions */}
-            <li className="border-b border-gray-100">
+            <li
+              className={`border-b border-gray-100 ${
+                menuOpen ? "animate-fadeSlideIn" : ""
+              }`}
+              style={{ animationDelay: menuOpen ? "120ms" : "0ms" }}
+            >
               <button
                 onClick={() => toggleMobileSub("conditions")}
                 className="w-full flex items-center justify-between px-5 py-4 hover:bg-purple-light transition"
@@ -502,7 +765,7 @@ export default function Header() {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className={`w-5 h-5 text-gray-400 transition-transform ${
+                  className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${
                     mobileExpanded === "conditions" ? "rotate-180" : ""
                   }`}
                 >
@@ -527,7 +790,12 @@ export default function Header() {
             </li>
 
             {/* Branches */}
-            <li className="border-b border-gray-100">
+            <li
+              className={`border-b border-gray-100 ${
+                menuOpen ? "animate-fadeSlideIn" : ""
+              }`}
+              style={{ animationDelay: menuOpen ? "160ms" : "0ms" }}
+            >
               <button
                 onClick={() => toggleMobileSub("branches")}
                 className="w-full flex items-center justify-between px-5 py-4 hover:bg-purple-light transition"
@@ -556,7 +824,7 @@ export default function Header() {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className={`w-5 h-5 text-gray-400 transition-transform ${
+                  className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${
                     mobileExpanded === "branches" ? "rotate-180" : ""
                   }`}
                 >
@@ -581,7 +849,12 @@ export default function Header() {
             </li>
 
             {/* FAQs */}
-            <li className="border-b border-gray-100">
+            <li
+              className={`border-b border-gray-100 ${
+                menuOpen ? "animate-fadeSlideIn" : ""
+              }`}
+              style={{ animationDelay: menuOpen ? "200ms" : "0ms" }}
+            >
               <Link
                 href="/faqs"
                 onClick={toggleMenu}
@@ -608,7 +881,12 @@ export default function Header() {
             </li>
 
             {/* Contact Us */}
-            <li className="border-b border-gray-100">
+            <li
+              className={`border-b border-gray-100 ${
+                menuOpen ? "animate-fadeSlideIn" : ""
+              }`}
+              style={{ animationDelay: menuOpen ? "240ms" : "0ms" }}
+            >
               <Link
                 href="/contact"
                 onClick={toggleMenu}
@@ -635,7 +913,12 @@ export default function Header() {
             </li>
 
             {/* Blog */}
-            <li className="border-b border-gray-100">
+            <li
+              className={`border-b border-gray-100 ${
+                menuOpen ? "animate-fadeSlideIn" : ""
+              }`}
+              style={{ animationDelay: menuOpen ? "280ms" : "0ms" }}
+            >
               <Link
                 href="/blog"
                 onClick={toggleMenu}
@@ -669,7 +952,7 @@ export default function Header() {
             <Link
               href="/book-appointment"
               onClick={toggleMenu}
-              className="block w-full bg-purple text-white text-center px-6 py-3 rounded-lg font-semibold hover:bg-purple-dark transition"
+              className="block w-full bg-purple text-white text-center px-6 py-3 rounded-lg font-semibold hover:bg-purple-dark hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
             >
               Book Appointment
             </Link>
