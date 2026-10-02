@@ -544,12 +544,12 @@ export default function Header() {
             menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          {/* Header Bar (Logo Left, Icons Right) - Purple Background & White Logo */}
-          <div className="relative py-1 px-4 bg-purple shadow-sm border-b border-purple-dark sticky top-0 z-10 flex items-center justify-between">
+          {/* Header Bar (Logo Left, Icons Right) - Compact Purple Background & Cropped White Logo */}
+          <div className="relative h-16 px-4 bg-purple shadow-sm border-b border-purple-dark sticky top-0 z-10 flex items-center justify-between overflow-hidden">
             <img
               src="/images/stellarphysiowhitelogo.png"
               alt="Stellar Physio"
-              className="h-40 md:h-40 w-auto"
+              className="h-28 w-auto object-contain -ml-2"
             />
             <div className="flex items-center gap-1">
               <button
