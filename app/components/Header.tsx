@@ -545,7 +545,7 @@ export default function Header() {
           }`}
         >
           {/* Header Bar (Logo Left, Icons Right) - Purple Background & White Logo */}
-          <div className="relative py-3 px-4 bg-purple shadow-sm border-b border-purple-dark sticky top-0 z-10 flex items-center justify-between">
+          <div className="relative py-2 px-4 bg-purple shadow-sm border-b border-purple-dark sticky top-0 z-10 flex items-center justify-between">
             <img
               src="/images/stellarphysiowhitelogo.png"
               alt="Stellar Physio"
