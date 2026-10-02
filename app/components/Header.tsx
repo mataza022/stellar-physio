@@ -75,7 +75,7 @@ export default function Header() {
             <img
               src="/images/Stellarphysio_NEW_logo.png"
               alt="Stellar Physio"
-              className="h-16 md:h-24 w-auto"
+              className="h-20 md:h-32 w-auto"
             />
           </Link>
 

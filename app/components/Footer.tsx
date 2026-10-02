@@ -211,9 +211,9 @@ export default function Footer() {
               aria-label="Dial A Physio — Call 0719 881 291"
             >
               <img
-                src="/images/dialaphysiologo.jpg"
+                src="/images/dialaphysio.png"
                 alt="Dial A Physio — Call 0719 881 291"
-                className="h-20 w-auto"
+                className="h-24 w-auto"
               />
             </a>
           </div>

@@ -8,9 +8,6 @@ export const metadata: Metadata = {
   title: "Stellar Physio | Best Physiotherapy Clinic in Nairobi",
   description:
     "Leading physiotherapy clinic in Nairobi with over 10 years of experience.",
-  icons: {
-    icon: "/images/favicon.png",
-  },
 };
 
 export default function RootLayout({
