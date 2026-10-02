@@ -57,6 +57,39 @@ const socials = [
   },
 ];
 
+const quickLinkServices = [
+  { title: "General Consultations", href: "/services/general-consultations" },
+  { title: "Chiropractor Services", href: "/services/chiropractor-services" },
+  { title: "Physiotherapy", href: "/services/physiotherapy" },
+  { title: "Home-Based Care", href: "/services/home-based-care" },
+  { title: "Laboratory Services", href: "/services/stellar-laboratory-services" },
+  { title: "Pharmacy", href: "/services/pharmacy" },
+  { title: "Counselling Services", href: "/services/counselling-services" },
+  { title: "Sports Massage", href: "/services/sports-massage" },
+  { title: "Reflexology", href: "/services/reflexology" },
+  { title: "Occupational Therapy", href: "/services/occupational-therapy" },
+  { title: "Nutritional Services", href: "/services/nutritional-services" },
+  { title: "Stretch & Exercise Therapy", href: "/services/stretch-exercise-therapy" },
+];
+
+const branchContacts = [
+  {
+    name: "Kenital Plaza, Ngong Road",
+    phone: "+254 706 101 999",
+    tel: "+254706101999",
+  },
+  {
+    name: "Karen Country Club",
+    phone: "+254 739 110 110",
+    tel: "+254739110110",
+  },
+  {
+    name: "Parklands Sports Club",
+    phone: "+254 755 901 942",
+    tel: "+254755901942",
+  },
+];
+
 export default function Footer() {
   return (
     <footer className="bg-purple-dark text-white pt-16 pb-6 mt-20">
@@ -106,101 +139,77 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Contact */}
+          {/* Contact Us — now with all branch numbers */}
           <div>
             <h4 className="text-lg font-bold text-white mb-5">Contact Us</h4>
-            <ul className="space-y-2 text-sm text-white/70">
-              <li>
-                <a
-                  href="mailto:info@stellarphysio.com"
-                  className="hover:text-green transition"
+
+            {/* Email — shared */}
+            <div className="mb-4">
+              <a
+                href="mailto:info@stellarphysio.com"
+                className="text-sm text-white/70 hover:text-green transition inline-flex items-center gap-2"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-4 h-4 flex-shrink-0"
                 >
-                  info@stellarphysio.com
-                </a>
-              </li>
-              <li>
-                <a
-                  href="tel:+254719881291"
-                  className="hover:text-green transition"
-                >
-                  +254 719 881 291
-                </a>
-              </li>
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                info@stellarphysio.com
+              </a>
+            </div>
+
+            {/* Branch phones */}
+            <ul className="space-y-3 text-sm">
+              {branchContacts.map((branch) => (
+                <li key={branch.tel}>
+                  <p className="text-white/50 text-xs mb-1">{branch.name}</p>
+                  <a
+                    href={`tel:${branch.tel}`}
+                    className="text-white/80 hover:text-green transition inline-flex items-center gap-2 font-semibold"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="w-4 h-4 flex-shrink-0"
+                    >
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    {branch.phone}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick Links — all 12 services */}
           <div>
-            <h4 className="text-lg font-bold text-white mb-5">Quick Links</h4>
+            <h4 className="text-lg font-bold text-white mb-5">Our Services</h4>
             <ul className="space-y-2 text-sm text-white/70">
-              <li>
-                <Link
-                  href="/services/general-consultations"
-                  className="hover:text-green transition"
-                >
-                  General Consultation
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/physiotherapy"
-                  className="hover:text-green transition"
-                >
-                  Physiotherapy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/home-based-care"
-                  className="hover:text-green transition"
-                >
-                  Home-Based Care
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/occupational-therapy"
-                  className="hover:text-green transition"
-                >
-                  Occupational Therapy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/stellar-laboratory-services"
-                  className="hover:text-green transition"
-                >
-                  Laboratory Services
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/chiropractor-services"
-                  className="hover:text-green transition"
-                >
-                  Chiropractor Services
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/pharmacy"
-                  className="hover:text-green transition"
-                >
-                  Pharmacy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/sports-massage"
-                  className="hover:text-green transition"
-                >
-                  Sports Massage
-                </Link>
-              </li>
+              {quickLinkServices.map((service) => (
+                <li key={service.href}>
+                  <Link
+                    href={service.href}
+                    className="hover:text-green transition"
+                  >
+                    {service.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Dial A Physio — logo with transparent background */}
+          {/* Dial A Physio */}
           <div>
             <p className="text-sm text-white/70 mb-4">
               Call us directly to book a session or for urgent enquiries.
