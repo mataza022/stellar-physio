@@ -87,9 +87,7 @@ export default function Footer() {
 
             {/* Social Media Icons */}
             <div>
-              <h5 className="text-sm font-bold text-white mb-3">
-                Follow Us
-              </h5>
+              <h5 className="text-sm font-bold text-white mb-3">Follow Us</h5>
               <div className="flex flex-wrap gap-3">
                 {socials.map((s) => (
                   <a
@@ -202,28 +200,21 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Dial A Physio — call button */}
+          {/* Dial A Physio — logo replaces the heading and button */}
           <div>
-            <h4 className="text-lg font-bold text-white mb-5">Dial A Physio</h4>
             <p className="text-sm text-white/70 mb-4">
               Call us directly to book a session or for urgent enquiries.
             </p>
             <a
               href="tel:+254719881291"
-              className="inline-flex items-center gap-3 bg-green text-white px-5 py-3 rounded-lg font-semibold hover:bg-green-dark transition"
+              className="inline-block bg-white rounded-lg p-3 hover:bg-gray-100 transition"
+              aria-label="Dial A Physio — Call 0719 881 291"
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-5 h-5"
-              >
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-              </svg>
-              Call 0719 881 291
+              <img
+                src="/images/dialaphysiologo.jpg"
+                alt="Dial A Physio — Call 0719 881 291"
+                className="h-20 w-auto"
+              />
             </a>
           </div>
         </div>

@@ -71,10 +71,12 @@ export default function Header() {
             &#9776;
           </button>
 
-          <Link href="/" className="mx-auto lg:mx-0">
-            <div className="h-16 md:h-20 w-40 bg-purple-light rounded flex items-center justify-center text-purple font-bold text-xs text-center">
-              Stellar Physio Logo
-            </div>
+          <Link href="/" className="mx-auto lg:mx-0 flex items-center">
+            <img
+              src="/images/Stellarphysio_NEW_logo.png"
+              alt="Stellar Physio"
+              className="h-16 md:h-24 w-auto"
+            />
           </Link>
 
           {/* Desktop nav */}
