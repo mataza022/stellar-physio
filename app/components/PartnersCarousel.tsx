@@ -1,7 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
 const partners = [
   { name: "AAR Insurance", src: "/images/aarlogo.png" },
   { name: "APA Insurance", src: "/images/apalogo.png" },
@@ -25,78 +23,29 @@ const partners = [
 ];
 
 export default function PartnersCarousel() {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(6);
-  const [isPaused, setIsPaused] = useState(false);
-
-  // Update items per page based on screen size
-  useEffect(() => {
-    const updateSize = () => {
-      if (window.innerWidth < 640) setItemsPerPage(3);
-      else if (window.innerWidth < 1024) setItemsPerPage(4);
-      else setItemsPerPage(6);
-    };
-    updateSize();
-    window.addEventListener("resize", updateSize);
-    return () => window.removeEventListener("resize", updateSize);
-  }, []);
-
-  const totalPages = Math.ceil(partners.length / itemsPerPage);
-
-  // Auto-advance every 3 seconds
-  useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(() => {
-      setCurrentPage((prev) => (prev + 1) % totalPages);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, [totalPages, isPaused]);
-
-  const startIndex = currentPage * itemsPerPage;
-  const visible = partners.slice(startIndex, startIndex + itemsPerPage);
+  // Duplicate the list so the marquee loop is seamless
+  const loopedPartners = [...partners, ...partners];
 
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-    >
-      {/* Logos grid */}
-      <div
-        key={currentPage}
-        className="grid gap-4 md:gap-6 animate-fadeIn"
-        style={{
-          gridTemplateColumns: `repeat(${itemsPerPage}, minmax(0, 1fr))`,
-        }}
-      >
-        {visible.map((partner) => (
+    <div className="relative overflow-hidden">
+      {/* Fade masks on left & right edges */}
+      <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-r from-white to-transparent z-10" />
+      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-l from-white to-transparent z-10" />
+
+      {/* Scrolling track */}
+      <div className="flex w-max animate-marquee">
+        {loopedPartners.map((partner, i) => (
           <div
-            key={partner.name}
-            className="group flex items-center justify-center aspect-[5/3] p-3 md:p-4 bg-white border border-gray-100 rounded-lg hover:shadow-md hover:border-purple/20 transition-all duration-300"
+            key={`${partner.name}-${i}`}
+            className="flex-shrink-0 flex items-center justify-center w-40 h-24 md:w-56 md:h-32 px-4 md:px-6"
             title={partner.name}
           >
             <img
               src={partner.src}
               alt={partner.name}
-              className="max-w-full max-h-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+              className="max-w-full max-h-full object-contain"
             />
           </div>
-        ))}
-      </div>
-
-      {/* Dot indicators */}
-      <div className="flex justify-center items-center gap-2 mt-8">
-        {Array.from({ length: totalPages }).map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrentPage(i)}
-            aria-label={`Show partner group ${i + 1}`}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              currentPage === i
-                ? "w-8 bg-purple"
-                : "w-2 bg-gray-300 hover:bg-purple/50"
-            }`}
-          />
         ))}
       </div>
     </div>
