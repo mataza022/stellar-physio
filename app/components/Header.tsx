@@ -544,16 +544,16 @@ export default function Header() {
             menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          {/* Centered & Enlarged Header Bar */}
-          <div className="relative py-5 px-5 bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10 flex items-center justify-center">
+          {/* Full-Bleed Centered Header Bar */}
+          <div className="relative py-2 px-1 bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10 flex items-center justify-center overflow-hidden">
             <img
               src="/images/Stellarphysio_NEW_logo.png"
               alt="Stellar Physio"
-              className="h-16 md:h-20 w-auto"
+              className="w-full max-w-[340px] h-auto object-contain scale-105"
             />
             <button
               onClick={toggleMenu}
-              className="absolute right-4 w-8 h-8 text-purple flex items-center justify-center hover:bg-purple-light rounded-full transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-purple text-white flex items-center justify-center rounded-full shadow-md hover:bg-purple-dark transition-colors"
               aria-label="Close menu"
             >
               <svg
@@ -563,7 +563,7 @@ export default function Header() {
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="w-6 h-6"
+                className="w-5 h-5"
               >
                 <line x1="18" y1="6" x2="6" y2="18" />
                 <line x1="6" y1="6" x2="18" y2="18" />
