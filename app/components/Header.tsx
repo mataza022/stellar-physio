@@ -544,16 +544,11 @@ export default function Header() {
             menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          {/* Full-Bleed Centered Header Bar */}
-          <div className="relative py-2 px-1 bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10 flex items-center justify-center overflow-hidden">
-            <img
-              src="/images/Stellarphysio_NEW_logo.png"
-              alt="Stellar Physio"
-              className="w-full max-w-[340px] h-auto object-contain scale-105"
-            />
+          {/* Top Section with Logo, Close Button, and Search */}
+          <div className="relative bg-purple-light pb-5 pt-6 px-5 flex flex-col items-center border-b border-purple/10">
             <button
               onClick={toggleMenu}
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-purple text-white flex items-center justify-center rounded-full shadow-md hover:bg-purple-dark transition-colors"
+              className="absolute top-4 right-4 w-8 h-8 bg-purple text-white flex items-center justify-center rounded-full hover:bg-purple-dark transition-colors"
               aria-label="Close menu"
             >
               <svg
@@ -569,6 +564,32 @@ export default function Header() {
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </button>
+
+            <img
+              src="/images/Stellarphysio_NEW_logo.png"
+              alt="Stellar Physio"
+              className="w-full max-w-[260px] h-auto object-contain"
+            />
+
+            {/* Search Bar inside the menu */}
+            <div
+              onClick={() => setSearchOpen(true)}
+              className="w-full bg-white rounded-md p-3 flex items-center justify-between text-gray-400 shadow-sm mt-5 cursor-pointer hover:shadow-md transition-shadow"
+            >
+              <span className="text-sm">Search....</span>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-5 h-5 text-purple"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+            </div>
           </div>
 
           {/* Menu items */}
@@ -585,23 +606,18 @@ export default function Header() {
                 onClick={toggleMenu}
                 className="flex items-center justify-between px-5 py-4 hover:bg-purple-light transition"
               >
-                <span className="flex items-center gap-4">
-                  <span className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-purple flex-shrink-0">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-5 h-5"
-                    >
-                      <path d="M3 10l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                      <polyline points="9 22 9 12 15 12 15 22" />
-                    </svg>
-                  </span>
-                  <span className="text-gray-800 font-semibold">Home</span>
-                </span>
+                <span className="text-gray-800 font-semibold">Home</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-4 h-4 text-gray-400"
+                >
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
               </Link>
             </li>
 
@@ -616,36 +632,25 @@ export default function Header() {
                 onClick={() => toggleMobileSub("about")}
                 className="w-full flex items-center justify-between px-5 py-4 hover:bg-purple-light transition"
               >
-                <span className="flex items-center gap-4">
-                  <span className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-purple flex-shrink-0">
+                <span className="text-gray-800 font-semibold">About Us</span>
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-purple">
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="2"
+                      strokeWidth="2.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="w-5 h-5"
+                      className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                        mobileExpanded === "about" ? "rotate-45" : ""
+                      }`}
                     >
-                      <circle cx="12" cy="8" r="4" />
-                      <path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2" />
+                      <line x1="12" y1="5" x2="12" y2="19" />
+                      <line x1="5" y1="12" x2="19" y2="12" />
                     </svg>
                   </span>
-                  <span className="text-gray-800 font-semibold">About Us</span>
-                </span>
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${
-                    mobileExpanded === "about" ? "rotate-180" : ""
-                  }`}
-                >
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
+                </div>
               </button>
               {mobileExpanded === "about" && (
                 <ul className="bg-gray-50">
@@ -653,7 +658,7 @@ export default function Header() {
                     <Link
                       href="/about"
                       onClick={toggleMenu}
-                      className="block px-5 py-3 pl-[72px] text-sm text-gray-700 hover:bg-purple-light"
+                      className="block px-5 py-3 pl-[24px] text-sm text-gray-700 hover:bg-purple-light"
                     >
                       Overview
                     </Link>
@@ -663,7 +668,7 @@ export default function Header() {
                       <Link
                         href={item.href}
                         onClick={toggleMenu}
-                        className="block px-5 py-3 pl-[72px] text-sm text-gray-700 hover:bg-purple-light"
+                        className="block px-5 py-3 pl-[24px] text-sm text-gray-700 hover:bg-purple-light"
                       >
                         {item.label}
                       </Link>
@@ -684,35 +689,25 @@ export default function Header() {
                 onClick={() => toggleMobileSub("services")}
                 className="w-full flex items-center justify-between px-5 py-4 hover:bg-purple-light transition"
               >
-                <span className="flex items-center gap-4">
-                  <span className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-purple flex-shrink-0">
+                <span className="text-gray-800 font-semibold">Services</span>
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-purple">
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="2"
+                      strokeWidth="2.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="w-5 h-5"
+                      className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                        mobileExpanded === "services" ? "rotate-45" : ""
+                      }`}
                     >
-                      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                      <line x1="12" y1="5" x2="12" y2="19" />
+                      <line x1="5" y1="12" x2="19" y2="12" />
                     </svg>
                   </span>
-                  <span className="text-gray-800 font-semibold">Services</span>
-                </span>
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${
-                    mobileExpanded === "services" ? "rotate-180" : ""
-                  }`}
-                >
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
+                </div>
               </button>
               {mobileExpanded === "services" && (
                 <ul className="bg-gray-50">
@@ -721,7 +716,7 @@ export default function Header() {
                       <Link
                         href={item.href}
                         onClick={toggleMenu}
-                        className="block px-5 py-3 pl-[72px] text-sm text-gray-700 hover:bg-purple-light"
+                        className="block px-5 py-3 pl-[24px] text-sm text-gray-700 hover:bg-purple-light"
                       >
                         {item.label}
                       </Link>
@@ -742,35 +737,25 @@ export default function Header() {
                 onClick={() => toggleMobileSub("conditions")}
                 className="w-full flex items-center justify-between px-5 py-4 hover:bg-purple-light transition"
               >
-                <span className="flex items-center gap-4">
-                  <span className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-purple flex-shrink-0">
+                <span className="text-gray-800 font-semibold">Conditions</span>
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-purple">
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="2"
+                      strokeWidth="2.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="w-5 h-5"
+                      className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                        mobileExpanded === "conditions" ? "rotate-45" : ""
+                      }`}
                     >
-                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                      <line x1="12" y1="5" x2="12" y2="19" />
+                      <line x1="5" y1="12" x2="19" y2="12" />
                     </svg>
                   </span>
-                  <span className="text-gray-800 font-semibold">Conditions</span>
-                </span>
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${
-                    mobileExpanded === "conditions" ? "rotate-180" : ""
-                  }`}
-                >
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
+                </div>
               </button>
               {mobileExpanded === "conditions" && (
                 <ul className="bg-gray-50">
@@ -779,7 +764,7 @@ export default function Header() {
                       <Link
                         href={item.href}
                         onClick={toggleMenu}
-                        className="block px-5 py-3 pl-[72px] text-sm text-gray-700 hover:bg-purple-light"
+                        className="block px-5 py-3 pl-[24px] text-sm text-gray-700 hover:bg-purple-light"
                       >
                         {item.label}
                       </Link>
@@ -800,36 +785,25 @@ export default function Header() {
                 onClick={() => toggleMobileSub("branches")}
                 className="w-full flex items-center justify-between px-5 py-4 hover:bg-purple-light transition"
               >
-                <span className="flex items-center gap-4">
-                  <span className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-purple flex-shrink-0">
+                <span className="text-gray-800 font-semibold">Branches</span>
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-purple">
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="2"
+                      strokeWidth="2.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="w-5 h-5"
+                      className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                        mobileExpanded === "branches" ? "rotate-45" : ""
+                      }`}
                     >
-                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                      <circle cx="12" cy="10" r="3" />
+                      <line x1="12" y1="5" x2="12" y2="19" />
+                      <line x1="5" y1="12" x2="19" y2="12" />
                     </svg>
                   </span>
-                  <span className="text-gray-800 font-semibold">Branches</span>
-                </span>
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${
-                    mobileExpanded === "branches" ? "rotate-180" : ""
-                  }`}
-                >
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
+                </div>
               </button>
               {mobileExpanded === "branches" && (
                 <ul className="bg-gray-50">
@@ -838,7 +812,7 @@ export default function Header() {
                       <Link
                         href={item.href}
                         onClick={toggleMenu}
-                        className="block px-5 py-3 pl-[72px] text-sm text-gray-700 hover:bg-purple-light"
+                        className="block px-5 py-3 pl-[24px] text-sm text-gray-700 hover:bg-purple-light"
                       >
                         {item.label}
                       </Link>
@@ -860,23 +834,18 @@ export default function Header() {
                 onClick={toggleMenu}
                 className="flex items-center justify-between px-5 py-4 hover:bg-purple-light transition"
               >
-                <span className="flex items-center gap-4">
-                  <span className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-purple flex-shrink-0">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-5 h-5"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01" />
-                    </svg>
-                  </span>
-                  <span className="text-gray-800 font-semibold">FAQs</span>
-                </span>
+                <span className="text-gray-800 font-semibold">FAQs</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-4 h-4 text-gray-400"
+                >
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
               </Link>
             </li>
 
@@ -892,23 +861,18 @@ export default function Header() {
                 onClick={toggleMenu}
                 className="flex items-center justify-between px-5 py-4 hover:bg-purple-light transition"
               >
-                <span className="flex items-center gap-4">
-                  <span className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-purple flex-shrink-0">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-5 h-5"
-                    >
-                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                      <polyline points="22,6 12,13 2,6" />
-                    </svg>
-                  </span>
-                  <span className="text-gray-800 font-semibold">Contact Us</span>
-                </span>
+                <span className="text-gray-800 font-semibold">Contact Us</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-4 h-4 text-gray-400"
+                >
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
               </Link>
             </li>
 
@@ -924,25 +888,18 @@ export default function Header() {
                 onClick={toggleMenu}
                 className="flex items-center justify-between px-5 py-4 hover:bg-purple-light transition"
               >
-                <span className="flex items-center gap-4">
-                  <span className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-purple flex-shrink-0">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-5 h-5"
-                    >
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                      <polyline points="14 2 14 8 20 8" />
-                      <line x1="16" y1="13" x2="8" y2="13" />
-                      <line x1="16" y1="17" x2="8" y2="17" />
-                    </svg>
-                  </span>
-                  <span className="text-gray-800 font-semibold">Blog</span>
-                </span>
+                <span className="text-gray-800 font-semibold">Blog</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-4 h-4 text-gray-400"
+                >
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
               </Link>
             </li>
           </ul>
