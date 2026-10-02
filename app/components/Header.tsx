@@ -544,16 +544,16 @@ export default function Header() {
             menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          {/* Compact Header Bar (like Nairobi Hospital) */}
-          <div className="relative py-3 px-5 bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10 flex items-center justify-between">
+          {/* Centered & Enlarged Header Bar */}
+          <div className="relative py-5 px-5 bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10 flex items-center justify-center">
             <img
               src="/images/Stellarphysio_NEW_logo.png"
               alt="Stellar Physio"
-              className="h-10 md:h-12 w-auto"
+              className="h-16 md:h-20 w-auto"
             />
             <button
               onClick={toggleMenu}
-              className="w-8 h-8 text-purple flex items-center justify-center hover:bg-purple-light rounded-full transition-colors"
+              className="absolute right-4 w-8 h-8 text-purple flex items-center justify-center hover:bg-purple-light rounded-full transition-colors"
               aria-label="Close menu"
             >
               <svg
