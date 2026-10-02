@@ -178,7 +178,7 @@ const faqs: FAQ[] = [
     category: "Homecare",
     question: "How do I book a home visit?",
     answer:
-      "Call Dial-A-Physio on 0719 881 291 or WhatsApp us at 0719 881 291. We'll match you with a therapist and schedule a convenient time.",
+      "Call Dial-A-Physio on 0719 881 291 or WhatsApp us at 0719 881 2913. We'll match you with a therapist and schedule a convenient time.",
   },
   {
     category: "Homecare",

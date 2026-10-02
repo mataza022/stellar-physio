@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { posts } from "@/lib/posts";
+import PartnersCarousel from "./components/PartnersCarousel";
 
 export default function HomePage() {
   return (
@@ -295,20 +296,19 @@ export default function HomePage() {
       </section>
 
       {/* ============================================
-          PARTNERS
+          PARTNERS — Rotating Carousel
           ============================================ */}
       <section className="py-16 bg-white">
         <div className="container-custom text-center">
-          <h2 className="text-2xl font-bold text-purple mb-10">
+          <h2 className="text-2xl md:text-3xl font-bold text-purple mb-3">
             Trusted by Leading Organisations
           </h2>
-          <div className="flex flex-wrap justify-center items-center gap-12 opacity-60 grayscale">
-            <span className="text-lg font-bold">AAR Insurance</span>
-            <span className="text-lg font-bold">Jubilee Health</span>
-            <span className="text-lg font-bold">Britam</span>
-            <span className="text-lg font-bold">Old Mutual</span>
-            <span className="text-lg font-bold">Minet</span>
-          </div>
+          <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
+            We work with Kenya&apos;s leading insurance providers and
+            organisations to make quality physiotherapy accessible to everyone.
+          </p>
+
+          <PartnersCarousel />
         </div>
       </section>
 
