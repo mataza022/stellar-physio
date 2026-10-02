@@ -90,11 +90,15 @@ export default function ParklandsSportsClubPage() {
         </div>
       </section>
 
-      {/* CONTACT INFO CARDS — PURPLE SECTION */}
+      {/* CONTACT INFO CARDS — CLICKABLE */}
       <section className="py-16 bg-purple">
         <div className="container-custom grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-lg p-6 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0">
+          {/* Email — clickable */}
+          <a
+            href="mailto:info@stellarphysio.com"
+            className="group bg-white rounded-lg p-6 flex items-center gap-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+          >
+            <div className="w-12 h-12 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0 group-hover:bg-purple-dark transition">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -108,13 +112,17 @@ export default function ParklandsSportsClubPage() {
                 <path d="M2 7l10 6 10-6" />
               </svg>
             </div>
-            <span className="text-gray-800 font-semibold">
+            <span className="text-gray-800 font-semibold group-hover:text-purple transition">
               info@stellarphysio.com
             </span>
-          </div>
+          </a>
 
-          <div className="bg-white rounded-lg p-6 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0">
+          {/* Phone — clickable */}
+          <a
+            href="tel:+254755901942"
+            className="group bg-white rounded-lg p-6 flex items-center gap-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+          >
+            <div className="w-12 h-12 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0 group-hover:bg-purple-dark transition">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -127,13 +135,19 @@ export default function ParklandsSportsClubPage() {
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
               </svg>
             </div>
-            <span className="text-gray-800 font-semibold">
+            <span className="text-gray-800 font-semibold group-hover:text-purple transition">
               +254 755 901942
             </span>
-          </div>
+          </a>
 
-          <div className="bg-white rounded-lg p-6 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0">
+          {/* Location — clickable, opens Google Maps */}
+          <a
+            href="https://www.google.com/maps/dir/?api=1&destination=Parklands+Sports+Club+3+49+Parklands+Rd+Nairobi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group bg-white rounded-lg p-6 flex items-center gap-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+          >
+            <div className="w-12 h-12 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0 group-hover:bg-purple-dark transition">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -147,10 +161,10 @@ export default function ParklandsSportsClubPage() {
                 <circle cx="12" cy="10" r="3" />
               </svg>
             </div>
-            <span className="text-gray-800 font-semibold">
+            <span className="text-gray-800 font-semibold group-hover:text-purple transition">
               Parklands Sports Club
             </span>
-          </div>
+          </a>
         </div>
       </section>
     </>
