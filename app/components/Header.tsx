@@ -49,12 +49,12 @@ export default function Header() {
     <>
       {/* TOP BAR */}
       <div className="bg-purple text-white py-2 text-xs">
-        <div className="container-custom flex justify-between">
-          <div>
-            Kenital Plaza, Ngong Road: +254 706 101999 || Parklands: +254 755 901942
+        <div className="container-custom flex justify-between items-center gap-4">
+          <div className="leading-relaxed">
+            Kenital Plaza, Ngong Road: +254 706 101999 || Parklands: +254 755
+            901942 || Karen Country Club: +254 739 110110
           </div>
-          <div className="flex gap-4">
-            <Link href="#">Patient Portal</Link>
+          <div className="flex gap-4 flex-shrink-0">
             <Link href="/contact">Contact Us</Link>
           </div>
         </div>
@@ -83,7 +83,7 @@ export default function Header() {
               Home
             </Link>
 
-            {/* About Us (clickable - goes to /about, dropdown shows Careers) */}
+            {/* About Us */}
             <div className="relative group">
               <Link
                 href="/about"
@@ -107,7 +107,7 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Services (NOT clickable — only dropdown) */}
+            {/* Services */}
             <div className="relative group">
               <span className="hover:text-purple font-medium inline-flex items-center gap-1 cursor-default">
                 Services <span className="text-xs">&#9662;</span>
@@ -128,7 +128,7 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Conditions (NOT clickable — only dropdown) */}
+            {/* Conditions */}
             <div className="relative group">
               <span className="hover:text-purple font-medium inline-flex items-center gap-1 cursor-default">
                 Conditions <span className="text-xs">&#9662;</span>
@@ -149,7 +149,7 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Branches (NOT clickable — only dropdown) */}
+            {/* Branches */}
             <div className="relative group">
               <span className="hover:text-purple font-medium inline-flex items-center gap-1 cursor-default">
                 Branches <span className="text-xs">&#9662;</span>
