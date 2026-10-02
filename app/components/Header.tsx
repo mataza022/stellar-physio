@@ -544,17 +544,17 @@ export default function Header() {
             menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          {/* Header Bar (Logo Left, Icons Right) */}
-          <div className="relative py-3 px-4 bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10 flex items-center justify-between">
+          {/* Header Bar (Logo Left, Icons Right) - Purple Background & White Logo */}
+          <div className="relative py-3 px-4 bg-purple shadow-sm border-b border-purple-dark sticky top-0 z-10 flex items-center justify-between">
             <img
-              src="/images/Stellarphysio_NEW_logo.png"
+              src="/images/stellarphysiowhitelogo.png"
               alt="Stellar Physio"
               className="h-12 md:h-14 w-auto"
             />
             <div className="flex items-center gap-1">
               <button
                 onClick={() => setSearchOpen(true)}
-                className="w-10 h-10 text-purple flex items-center justify-center hover:bg-purple-light rounded-full transition-colors"
+                className="w-10 h-10 text-white flex items-center justify-center hover:bg-purple-dark rounded-full transition-colors"
                 aria-label="Search"
               >
                 <svg
@@ -572,7 +572,7 @@ export default function Header() {
               </button>
               <button
                 onClick={toggleMenu}
-                className="w-10 h-10 text-purple flex items-center justify-center hover:bg-purple-light rounded-full transition-colors"
+                className="w-10 h-10 text-white flex items-center justify-center hover:bg-purple-dark rounded-full transition-colors"
                 aria-label="Close menu"
               >
                 <svg
