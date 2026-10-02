@@ -94,7 +94,7 @@ const faqs: FAQ[] = [
     category: "Insurance & Billing",
     question: "Which insurance providers do you accept?",
     answer:
-      "We work with most major insurance providers in Kenya, including AAR, Jubilee Health, Britam, Old Mutual, Minet, CIC, and others. Please confirm with your branch or your insurer before your visit.",
+      "We work with most major insurance providers in Kenya, including AAR, Britam, Old Mutual, Minet, CIC, and others. Please confirm with your branch or your insurer before your visit.",
   },
   {
     category: "Insurance & Billing",
@@ -178,7 +178,7 @@ const faqs: FAQ[] = [
     category: "Homecare",
     question: "How do I book a home visit?",
     answer:
-      "Call Dial-A-Physio on 0719 881 291 or WhatsApp us at 0711 662 954. We'll match you with a therapist and schedule a convenient time.",
+      "Call Dial-A-Physio on 0719 881 291 or WhatsApp us at 0719 881 291. We'll match you with a therapist and schedule a convenient time.",
   },
   {
     category: "Homecare",
