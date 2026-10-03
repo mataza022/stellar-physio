@@ -27,7 +27,7 @@ const slides: Slide[] = [
     secondaryHref: "/book-appointment",
   },
   {
-    image: "/images/hero2.jpeg",
+    image: "/images/hero2.png",
     tag: "Expert Care",
     title: "Move Better. Feel Stronger.",
     description:
