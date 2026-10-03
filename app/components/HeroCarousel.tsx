@@ -64,7 +64,7 @@ export default function HeroCarousel() {
 
   return (
     <section
-      className="relative min-h-[700px] flex items-center overflow-hidden"
+      className="relative min-h-[85vh] flex items-center overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -77,12 +77,12 @@ export default function HeroCarousel() {
           }`}
           style={{ backgroundImage: `url('${slide.image}')` }}
         >
-          <div className="absolute inset-0 bg-black/55"></div>
+          <div className="absolute inset-0 bg-black/60"></div>
         </div>
       ))}
 
       {/* Content */}
-      <div className="container-custom relative z-10 text-white py-20">
+      <div className="container-custom relative z-10 text-white py-20 w-full">
         <div className="max-w-2xl">
           {slides.map((slide, i) => (
             <div
@@ -94,25 +94,35 @@ export default function HeroCarousel() {
               }`}
               aria-hidden={i !== current}
             >
-              <p className="text-sm uppercase tracking-widest mb-4 font-semibold">
-                {slide.tag}
-              </p>
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
+              {/* Tag with horizontal line */}
+              <div className="flex items-center gap-3 mb-5">
+                <span className="w-8 h-px bg-white/60"></span>
+                <p className="text-xs uppercase tracking-[0.2em] font-medium text-white/90">
+                  {slide.tag}
+                </p>
+              </div>
+              
+              {/* Massive Title */}
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-6">
                 {slide.title}
               </h1>
-              <p className="text-base md:text-lg mb-8 opacity-90 leading-relaxed">
+              
+              {/* Clean Description */}
+              <p className="text-base sm:text-lg md:text-xl text-white/80 leading-relaxed max-w-lg">
                 {slide.description}
               </p>
-              <div className="flex flex-wrap gap-4">
+              
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-4 mt-10">
                 <Link
                   href={slide.primaryHref}
-                  className="bg-green text-white px-6 py-3 rounded font-semibold hover:bg-green-dark transition"
+                  className="bg-white text-purple px-8 py-3.5 rounded font-semibold hover:bg-gray-100 transition shadow-lg text-sm"
                 >
                   {slide.primaryLabel}
                 </Link>
                 <Link
                   href={slide.secondaryHref}
-                  className="bg-white text-purple px-6 py-3 rounded font-semibold hover:bg-gray-100 transition"
+                  className="border border-white/30 text-white px-8 py-3.5 rounded font-semibold hover:bg-white/10 transition text-sm"
                 >
                   {slide.secondaryLabel}
                 </Link>
@@ -120,46 +130,20 @@ export default function HeroCarousel() {
             </div>
           ))}
         </div>
+      </div>
 
-        {/* Stats strip */}
-        <div className="grid grid-cols-3 gap-4 md:gap-8 mt-16 pt-8 border-t border-white/20 max-w-2xl">
-          <div>
-            <p className="text-3xl md:text-4xl font-bold text-white">10+</p>
-            <p className="text-xs md:text-sm text-white/70 mt-1">
-              Years of Experience
-            </p>
-          </div>
-          <div>
-            <p className="text-3xl md:text-4xl font-bold text-white">
-              96,000+
-            </p>
-            <p className="text-xs md:text-sm text-white/70 mt-1">
-              Sessions Done
-            </p>
-          </div>
-          <div>
-            <p className="text-3xl md:text-4xl font-bold text-white">9,760+</p>
-            <p className="text-xs md:text-sm text-white/70 mt-1">
-              Happy Clients
-            </p>
-          </div>
-        </div>
-
-        {/* Slide indicator dots */}
-        <div className="flex gap-2 mt-8">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              aria-label={`Go to slide ${i + 1}`}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                i === current
-                  ? "w-8 bg-white"
-                  : "w-2 bg-white/40 hover:bg-white/70"
-              }`}
-            />
-          ))}
-        </div>
+      {/* Slide indicator dots - moved to bottom right */}
+      <div className="absolute bottom-8 right-8 z-20 flex gap-2">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              i === current ? "w-8 bg-white" : "w-2 bg-white/40 hover:bg-white/70"
+            }`}
+          />
+        ))}
       </div>
     </section>
   );
