@@ -16,7 +16,7 @@ type Slide = {
 
 const slides: Slide[] = [
   {
-    image: "/images/hero.jpeg",
+    image: "/images/hero1.jpeg",
     tag: "Health & Wellness",
     title: "Your Lifestyle Clinic.",
     description:
@@ -27,7 +27,7 @@ const slides: Slide[] = [
     secondaryHref: "/book-appointment",
   },
   {
-    image: "/images/hero.jpeg",
+    image: "/images/hero2.jpeg",
     tag: "Expert Care",
     title: "Move Better. Feel Stronger.",
     description:
@@ -38,7 +38,7 @@ const slides: Slide[] = [
     secondaryHref: "/book-appointment",
   },
   {
-    image: "/images/hero.jpeg",
+    image: "/images/hero3.jpg",
     tag: "Trusted Recovery",
     title: "Live Pain-Free.",
     description:
