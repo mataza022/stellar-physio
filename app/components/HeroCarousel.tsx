@@ -70,25 +70,26 @@ export default function HeroCarousel() {
 
   return (
     <section
-      className="relative min-h-[350px] md:min-h-[600px] flex items-center overflow-hidden"
+      className="relative min-h-[450px] md:min-h-[600px] flex items-center overflow-hidden bg-purple"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Background images — cross-fade */}
+      {/* Background images — Full image on mobile, cover on desktop */}
       {slides.map((slide, i) => (
         <div
           key={i}
-          className={`absolute inset-0 bg-cover bg-top md:bg-center transition-opacity duration-1000 ${
+          className={`absolute inset-0 bg-contain bg-no-repeat bg-center md:bg-cover transition-opacity duration-1000 ${
             i === current ? "opacity-100" : "opacity-0"
           }`}
           style={{ backgroundImage: `url('${slide.image}')` }}
-        >
-          <div className="absolute inset-0 bg-black/60"></div>
-        </div>
+        />
       ))}
 
+      {/* Dark overlay to ensure text readability across all images */}
+      <div className="absolute inset-0 bg-black/60 z-10"></div>
+
       {/* Content */}
-      <div className="container-custom relative z-10 text-white py-8 md:py-16 w-full">
+      <div className="container-custom relative z-20 text-white py-8 md:py-16 w-full">
         <div className="max-w-2xl">
           {slides.map((slide, i) => (
             <div
