@@ -70,26 +70,25 @@ export default function HeroCarousel() {
 
   return (
     <section
-      className="relative min-h-[450px] md:min-h-[600px] flex items-center overflow-hidden bg-purple"
+      className="relative min-h-[600px] flex items-center overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Background images — Full image on mobile, cover on desktop */}
+      {/* Background images — cross-fade */}
       {slides.map((slide, i) => (
         <div
           key={i}
-          className={`absolute inset-0 bg-contain bg-no-repeat bg-center md:bg-cover transition-opacity duration-1000 ${
+          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
             i === current ? "opacity-100" : "opacity-0"
           }`}
           style={{ backgroundImage: `url('${slide.image}')` }}
-        />
+        >
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
       ))}
 
-      {/* Dark overlay to ensure text readability across all images */}
-      <div className="absolute inset-0 bg-black/60 z-10"></div>
-
       {/* Content */}
-      <div className="container-custom relative z-20 text-white py-8 md:py-16 w-full">
+      <div className="container-custom relative z-10 text-white py-16 w-full">
         <div className="max-w-2xl">
           {slides.map((slide, i) => (
             <div
@@ -102,34 +101,34 @@ export default function HeroCarousel() {
               aria-hidden={i !== current}
             >
               {/* Tag with horizontal line */}
-              <div className="flex items-center gap-3 mb-2 md:mb-3">
-                <span className="w-6 md:w-8 h-px bg-white/60"></span>
-                <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-white/90">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="w-8 h-px bg-white/60"></span>
+                <p className="text-xs uppercase tracking-[0.2em] font-medium text-white/90">
                   {slide.tag}
                 </p>
               </div>
               
               {/* Title */}
-              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.15] mb-3 md:mb-4">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.1] mb-5">
                 {slide.title}
               </h1>
               
               {/* Description */}
-              <p className="text-xs sm:text-base md:text-lg text-white/80 leading-relaxed max-w-xl">
+              <p className="text-base sm:text-lg text-white/80 leading-relaxed max-w-xl mb-8">
                 {slide.description}
               </p>
               
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 mt-6 md:mt-8">
+              <div className="flex flex-wrap gap-4">
                 <Link
                   href={slide.primaryHref}
-                  className="bg-green text-white px-6 py-3 rounded font-semibold hover:bg-green-dark transition shadow-lg text-sm text-center w-full sm:w-auto"
+                  className="bg-green text-white px-8 py-3.5 rounded font-semibold hover:bg-green-dark transition shadow-lg text-sm"
                 >
                   {slide.primaryLabel}
                 </Link>
                 <Link
                   href={slide.secondaryHref}
-                  className="bg-white text-purple px-6 py-3 rounded font-semibold hover:bg-gray-100 transition text-sm text-center w-full sm:w-auto"
+                  className="bg-white text-purple px-8 py-3.5 rounded font-semibold hover:bg-gray-100 transition text-sm"
                 >
                   {slide.secondaryLabel}
                 </Link>
@@ -137,16 +136,16 @@ export default function HeroCarousel() {
             </div>
           ))}
 
-          {/* Stats Strip - Nairobi Hospital Style (Compact) */}
-          <div className="flex justify-between md:justify-start md:items-center gap-2 md:gap-10 mt-8 pt-5 md:mt-12 md:pt-8 border-t border-white/20 max-w-2xl">
+          {/* Stats Strip - Nairobi Hospital Style */}
+          <div className="flex items-center gap-6 md:gap-10 mt-16 pt-8 border-t border-white/20 max-w-2xl">
             {stats.map((stat, idx) => (
-              <div key={idx} className="flex items-center gap-4 md:gap-10">
-                {idx > 0 && <div className="hidden md:block w-px h-10 bg-white/30"></div>}
+              <div key={idx} className="flex items-center gap-6 md:gap-10">
+                {idx > 0 && <div className="w-px h-10 bg-white/30"></div>}
                 <div>
-                  <p className="text-xl md:text-3xl font-bold text-white mb-0.5">
+                  <p className="text-2xl md:text-3xl font-bold text-white mb-1">
                     {stat.value}
                   </p>
-                  <p className="text-[10px] md:text-xs text-white/70 tracking-wide">
+                  <p className="text-xs md:text-sm text-white/70 tracking-wide">
                     {stat.label}
                   </p>
                 </div>
@@ -156,8 +155,8 @@ export default function HeroCarousel() {
         </div>
       </div>
 
-      {/* Slide indicator dots - moved to bottom right */}
-      <div className="absolute bottom-4 right-6 md:bottom-6 md:right-8 z-20 flex gap-2">
+      {/* Slide indicator dots */}
+      <div className="absolute bottom-6 right-8 z-20 flex gap-2">
         {slides.map((_, i) => (
           <button
             key={i}
