@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { posts } from "@/lib/posts";
 import PartnersCarousel from "./components/PartnersCarousel";
+import HeroHighlights from "./components/HeroHighlights";
 
 export default function HomePage() {
   return (
@@ -8,38 +9,70 @@ export default function HomePage() {
       {/* ============================================
           HERO SECTION
           ============================================ */}
-      <section className="relative h-[600px] flex items-center">
+      <section className="relative min-h-[700px] flex items-center">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url('/images/hero.jpeg')" }}
         >
-          <div className="absolute inset-0 bg-black/50"></div>
+          <div className="absolute inset-0 bg-black/60"></div>
         </div>
-        <div className="container-custom relative z-10 text-white max-w-2xl">
-          <p className="text-sm uppercase tracking-widest mb-4 opacity-90">
-            Health &amp; Wellness
-          </p>
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-            Your Lifestyle Clinic.
-          </h1>
-          <p className="text-lg mb-8 opacity-90">
-            From chronic pain relief to post-surgical rehabilitation, Stellar
-            Physio provides world-class care tailored to your unique recovery
-            journey.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <Link
-              href="/services"
-              className="bg-green text-white px-6 py-3 rounded font-semibold hover:bg-green-dark transition"
-            >
-              Explore Services
-            </Link>
-            <Link
-              href="/book-appointment"
-              className="bg-white text-purple px-6 py-3 rounded font-semibold hover:bg-gray-100 transition"
-            >
-              Book Appointment
-            </Link>
+
+        <div className="container-custom relative z-10 text-white py-20">
+          <div className="max-w-3xl">
+            <p className="text-sm uppercase tracking-widest mb-4 font-semibold">
+              Health &amp; Wellness
+            </p>
+
+            <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
+              Your Lifestyle Clinic.
+            </h1>
+
+            {/* Rotating highlights from the original site content */}
+            <HeroHighlights />
+
+            {/* Buttons */}
+            <div className="flex flex-wrap gap-4 mt-12">
+              <Link
+                href="/services"
+                className="bg-green text-white px-6 py-3 rounded font-semibold hover:bg-green-dark transition"
+              >
+                Explore Services
+              </Link>
+              <Link
+                href="/book-appointment"
+                className="bg-white text-purple px-6 py-3 rounded font-semibold hover:bg-gray-100 transition"
+              >
+                Book Appointment
+              </Link>
+            </div>
+
+            {/* Stats strip — from the original site */}
+            <div className="grid grid-cols-3 gap-4 md:gap-8 mt-16 pt-8 border-t border-white/20 max-w-2xl">
+              <div>
+                <p className="text-3xl md:text-4xl font-bold text-white">
+                  10+
+                </p>
+                <p className="text-xs md:text-sm text-white/70 mt-1">
+                  Years of Experience
+                </p>
+              </div>
+              <div>
+                <p className="text-3xl md:text-4xl font-bold text-white">
+                  96,000+
+                </p>
+                <p className="text-xs md:text-sm text-white/70 mt-1">
+                  Sessions Done
+                </p>
+              </div>
+              <div>
+                <p className="text-3xl md:text-4xl font-bold text-white">
+                  9,760+
+                </p>
+                <p className="text-xs md:text-sm text-white/70 mt-1">
+                  Happy Clients
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
