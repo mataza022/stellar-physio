@@ -50,6 +50,12 @@ const slides: Slide[] = [
   },
 ];
 
+const stats = [
+  { value: "10+", label: "Years of Experience" },
+  { value: "96,000+", label: "Sessions Done" },
+  { value: "9,760+", label: "Happy Clients" },
+];
+
 export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -129,6 +135,23 @@ export default function HeroCarousel() {
               </div>
             </div>
           ))}
+
+          {/* Stats Strip - Nairobi Hospital Style */}
+          <div className="flex items-center gap-6 md:gap-10 mt-16 pt-8 border-t border-white/20 max-w-2xl">
+            {stats.map((stat, idx) => (
+              <div key={idx} className="flex items-center gap-6 md:gap-10">
+                {idx > 0 && <div className="w-px h-12 bg-white/30"></div>}
+                <div>
+                  <p className="text-3xl md:text-4xl font-bold text-white mb-1">
+                    {stat.value}
+                  </p>
+                  <p className="text-xs md:text-sm text-white/70 tracking-wide">
+                    {stat.label}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
