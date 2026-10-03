@@ -70,7 +70,7 @@ export default function HeroCarousel() {
 
   return (
     <section
-      className="relative min-h-[85vh] flex items-center overflow-hidden"
+      className="relative min-h-[600px] flex items-center overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -88,7 +88,7 @@ export default function HeroCarousel() {
       ))}
 
       {/* Content */}
-      <div className="container-custom relative z-10 text-white py-20 w-full">
+      <div className="container-custom relative z-10 text-white py-12 md:py-16 w-full">
         <div className="max-w-2xl">
           {slides.map((slide, i) => (
             <div
@@ -101,34 +101,34 @@ export default function HeroCarousel() {
               aria-hidden={i !== current}
             >
               {/* Tag with horizontal line */}
-              <div className="flex items-center gap-3 mb-5">
+              <div className="flex items-center gap-3 mb-3">
                 <span className="w-8 h-px bg-white/60"></span>
                 <p className="text-xs uppercase tracking-[0.2em] font-medium text-white/90">
                   {slide.tag}
                 </p>
               </div>
               
-              {/* Massive Title */}
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-6">
+              {/* Title */}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.15] mb-4">
                 {slide.title}
               </h1>
               
-              {/* Clean Description */}
-              <p className="text-base sm:text-lg md:text-xl text-white/80 leading-relaxed max-w-lg">
+              {/* Description */}
+              <p className="text-sm sm:text-base md:text-lg text-white/80 leading-relaxed max-w-xl">
                 {slide.description}
               </p>
               
               {/* Action Buttons */}
-              <div className="flex flex-wrap gap-4 mt-10">
+              <div className="flex flex-wrap gap-4 mt-8">
                 <Link
                   href={slide.primaryHref}
-                  className="bg-white text-purple px-8 py-3.5 rounded font-semibold hover:bg-gray-100 transition shadow-lg text-sm"
+                  className="bg-white text-purple px-6 py-3 rounded font-semibold hover:bg-gray-100 transition shadow-lg text-sm"
                 >
                   {slide.primaryLabel}
                 </Link>
                 <Link
                   href={slide.secondaryHref}
-                  className="border border-white/30 text-white px-8 py-3.5 rounded font-semibold hover:bg-white/10 transition text-sm"
+                  className="border border-white/30 text-white px-6 py-3 rounded font-semibold hover:bg-white/10 transition text-sm"
                 >
                   {slide.secondaryLabel}
                 </Link>
@@ -136,16 +136,16 @@ export default function HeroCarousel() {
             </div>
           ))}
 
-          {/* Stats Strip - Nairobi Hospital Style */}
-          <div className="flex items-center gap-6 md:gap-10 mt-16 pt-8 border-t border-white/20 max-w-2xl">
+          {/* Stats Strip - Nairobi Hospital Style (Compact) */}
+          <div className="flex flex-wrap items-center gap-6 md:gap-10 mt-10 pt-6 border-t border-white/20 max-w-2xl">
             {stats.map((stat, idx) => (
               <div key={idx} className="flex items-center gap-6 md:gap-10">
-                {idx > 0 && <div className="w-px h-12 bg-white/30"></div>}
+                {idx > 0 && <div className="w-px h-10 bg-white/30"></div>}
                 <div>
-                  <p className="text-3xl md:text-4xl font-bold text-white mb-1">
+                  <p className="text-2xl md:text-3xl font-bold text-white mb-0.5">
                     {stat.value}
                   </p>
-                  <p className="text-xs md:text-sm text-white/70 tracking-wide">
+                  <p className="text-[10px] md:text-xs text-white/70 tracking-wide">
                     {stat.label}
                   </p>
                 </div>
@@ -156,14 +156,14 @@ export default function HeroCarousel() {
       </div>
 
       {/* Slide indicator dots - moved to bottom right */}
-      <div className="absolute bottom-8 right-8 z-20 flex gap-2">
+      <div className="absolute bottom-6 right-8 z-20 flex gap-2">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrent(i)}
             aria-label={`Go to slide ${i + 1}`}
             className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === current ? "w-8 bg-white" : "w-2 bg-white/40 hover:bg-white/70"
+              i === current ? "w-6 bg-white" : "w-1.5 bg-white/40 hover:bg-white/70"
             }`}
           />
         ))}
