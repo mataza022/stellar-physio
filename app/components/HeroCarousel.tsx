@@ -70,7 +70,7 @@ export default function HeroCarousel() {
 
   return (
     <section
-      className="relative min-h-[450px] md:min-h-[600px] flex items-center overflow-hidden"
+      className="relative min-h-[350px] md:min-h-[600px] flex items-center overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -78,7 +78,7 @@ export default function HeroCarousel() {
       {slides.map((slide, i) => (
         <div
           key={i}
-          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+          className={`absolute inset-0 bg-cover bg-top md:bg-center transition-opacity duration-1000 ${
             i === current ? "opacity-100" : "opacity-0"
           }`}
           style={{ backgroundImage: `url('${slide.image}')` }}
