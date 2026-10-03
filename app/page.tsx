@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { posts } from "@/lib/posts";
 import PartnersCarousel from "./components/PartnersCarousel";
-import HeroHighlights from "./components/HeroHighlights";
+import HeroHighlights from "./components/HeroCarousel";
 
 export default function HomePage() {
   return (
