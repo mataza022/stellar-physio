@@ -2,8 +2,39 @@ import Link from "next/link";
 import { posts } from "@/lib/posts";
 import PartnersCarousel from "./components/PartnersCarousel";
 import HeroCarousel from "./components/HeroCarousel";
+import { useState } from "react";
 
 export default function HomePage() {
+  // Sort posts for Blog Section
+  const sortedByDate = [...posts].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+  const latestPost = sortedByDate[0];
+
+  const sortedByViews = [...posts].sort(
+    (a, b) => (b.views || 0) - (a.views || 0)
+  );
+  const popularPosts = sortedByViews.slice(0, 2); // Get top 2 most viewed
+
+  // Dummy reviews data (to be replaced with backend later)
+  const dummyReviews = [
+    {
+      name: "Daniel Kigo",
+      text: "As an active person, I had knee problems but improved significantly after sessions at Stellar Physio. My knee is great now. I highly recommend regular physiotherapy.",
+      rating: 5,
+    },
+    {
+      name: "Sarah W.",
+      text: "The team at Stellar Physio is incredibly professional. The home-based care service was a lifesaver for my father after his surgery.",
+      rating: 5,
+    },
+    {
+      name: "Michael O.",
+      text: "Great chiropractic care. I walked out feeling brand new. Highly recommend the Kenital Plaza branch.",
+      rating: 4,
+    },
+  ];
+
   return (
     <>
       {/* ============================================
@@ -23,8 +54,15 @@ export default function HomePage() {
             Access our essential physiotherapy services quickly and efficiently.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Book a Session */}
             <div className="border border-gray-200 rounded-lg p-8 hover:shadow-lg transition">
-              <div className="text-3xl mb-4 text-purple">&#9679;</div>
+              <div className="w-12 h-12 rounded-full overflow-hidden mb-4">
+                <img
+                  src="/images/hero3.jpg"
+                  alt="Book a Session"
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <h3 className="text-xl font-bold text-purple mb-3">
                 Book a Session
               </h3>
@@ -39,8 +77,16 @@ export default function HomePage() {
                 Book Now
               </Link>
             </div>
+
+            {/* Conditions We Treat */}
             <div className="border border-gray-200 rounded-lg p-8 hover:shadow-lg transition">
-              <div className="text-3xl mb-4 text-purple">&#9679;</div>
+              <div className="w-12 h-12 rounded-full overflow-hidden mb-4">
+                <img
+                  src="/images/chiropractor.webp"
+                  alt="Conditions We Treat"
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <h3 className="text-xl font-bold text-purple mb-3">
                 Conditions We Treat
               </h3>
@@ -55,8 +101,16 @@ export default function HomePage() {
                 Learn More
               </Link>
             </div>
+
+            {/* Find a Clinic */}
             <div className="border border-gray-200 rounded-lg p-8 hover:shadow-lg transition">
-              <div className="text-3xl mb-4 text-purple">&#9679;</div>
+              <div className="w-12 h-12 rounded-full overflow-hidden mb-4">
+                <img
+                  src="/images/hero1.jpg"
+                  alt="Find a Clinic"
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <h3 className="text-xl font-bold text-purple mb-3">
                 Find a Clinic
               </h3>
@@ -87,9 +141,10 @@ export default function HomePage() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            {/* Physiotherapy */}
             <div className="bg-white rounded-lg overflow-hidden text-gray-800">
               <img
-                src="/images/generalconsultation.jpg"
+                src="/images/physio2.jpg"
                 alt="Physiotherapy"
                 className="w-full h-48 object-cover"
               />
@@ -110,9 +165,10 @@ export default function HomePage() {
               </div>
             </div>
 
+            {/* Chiropractor Services */}
             <div className="bg-white rounded-lg overflow-hidden text-gray-800">
               <img
-                src="/images/generalconsultation.jpg"
+                src="/images/chiropractor.webp"
                 alt="Chiropractor"
                 className="w-full h-48 object-cover"
               />
@@ -133,9 +189,10 @@ export default function HomePage() {
               </div>
             </div>
 
+            {/* Home-Based Care */}
             <div className="bg-white rounded-lg overflow-hidden text-gray-800">
               <img
-                src="/images/generalconsultation.jpg"
+                src="/images/homecare.jpeg"
                 alt="Home-Based Care"
                 className="w-full h-48 object-cover"
               />
@@ -199,17 +256,17 @@ export default function HomePage() {
               {[
                 {
                   name: "Kenital Plaza",
-                  img: "/images/ngongrdbranch.jpg",
+                  img: "/images/hero1.jpeg",
                   href: "/branches/kenital-plaza",
                 },
                 {
                   name: "Karen Country Club",
-                  img: "/images/karencountryclub.jpg",
+                  img: "/images/karenbranch.webp",
                   href: "/branches/karen-country-club",
                 },
                 {
                   name: "Parklands Sports Club",
-                  img: "/images/generalconsultation.jpg",
+                  img: "/images/parklandsbranch.jpg",
                   href: "/branches/parklands-sports-club",
                 },
               ].map((b) => (
@@ -241,24 +298,55 @@ export default function HomePage() {
       </section>
 
       {/* ============================================
-          TESTIMONIALS
+          TESTIMONIALS (Compact & Interactive)
           ============================================ */}
       <section className="py-20 bg-purple-light">
-        <div className="container-custom max-w-3xl text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-purple mb-3">
+        <div className="container-custom max-w-4xl">
+          <h2 className="text-3xl md:text-4xl font-bold text-purple mb-3 text-center">
             What Our Patients Say
           </h2>
-          <p className="text-gray-600 mb-10">
+          <p className="text-center text-gray-600 mb-10">
             Real stories from our patients.
           </p>
-          <div className="text-6xl text-green leading-none mb-4">&#8220;</div>
-          <p className="text-lg italic text-gray-700 mb-6">
-            &quot;As an active person, I had knee problems but improved
-            significantly after sessions at Stellar Physio. My knee is great
-            now. I highly recommend regular physiotherapy.&quot;
-          </p>
-          <p className="font-bold text-purple">Daniel Kigo</p>
-          <p className="text-sm text-gray-500">Patient</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {dummyReviews.map((review, idx) => (
+              <div key={idx} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex flex-col justify-between">
+                <div>
+                  <div className="flex text-green mb-2">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i}>{i < review.rating ? "★" : "☆"}</span>
+                    ))}
+                  </div>
+                  <p className="text-gray-700 text-sm italic mb-4">"{review.text}"</p>
+                </div>
+                <p className="font-bold text-purple text-sm">{review.name}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Add Review Form (Placeholder for Backend) */}
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+            <h3 className="font-bold text-purple mb-4 text-center">Add Your Review</h3>
+            <form className="flex flex-col gap-3 max-w-md mx-auto">
+              <input
+                type="text"
+                placeholder="Your Name"
+                className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-purple"
+              />
+              <textarea
+                placeholder="Your Review"
+                rows={3}
+                className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-purple resize-none"
+              ></textarea>
+              <button
+                type="button"
+                className="bg-green text-white px-4 py-2 rounded font-semibold text-sm hover:bg-green-dark transition"
+              >
+                Submit Review
+              </button>
+            </form>
+          </div>
         </div>
       </section>
 
@@ -280,7 +368,7 @@ export default function HomePage() {
       </section>
 
       {/* ============================================
-          NEWS — PULLED FROM SHARED POSTS DATA
+          NEWS — LATEST & MOST VIEWED
           ============================================ */}
       <section className="py-20 bg-white">
         <div className="container-custom">
@@ -302,33 +390,35 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Featured — First post */}
-            <div>
-              <img
-                src={posts[0].image}
-                alt={posts[0].title}
-                className="w-full h-72 object-cover rounded-lg mb-4"
-              />
-              <span className="inline-block bg-green text-white text-xs font-bold px-3 py-1 rounded mb-3 uppercase">
-                {posts[0].category}
-              </span>
-              <h3 className="text-xl font-bold text-purple mb-3">
-                {posts[0].title}
-              </h3>
-              <p className="text-gray-600 text-sm mb-4">
-                {posts[0].excerpt}
-              </p>
-              <Link
-                href={`/blog/${posts[0].slug}`}
-                className="text-green font-semibold text-sm"
-              >
-                Read More &#8594;
-              </Link>
-            </div>
+            {/* Featured — Latest Post */}
+            {latestPost && (
+              <div>
+                <img
+                  src={latestPost.image}
+                  alt={latestPost.title}
+                  className="w-full h-72 object-cover rounded-lg mb-4"
+                />
+                <span className="inline-block bg-green text-white text-xs font-bold px-3 py-1 rounded mb-3 uppercase">
+                  {latestPost.category}
+                </span>
+                <h3 className="text-xl font-bold text-purple mb-3">
+                  {latestPost.title}
+                </h3>
+                <p className="text-gray-600 text-sm mb-4">
+                  {latestPost.excerpt}
+                </p>
+                <Link
+                  href={`/blog/${latestPost.slug}`}
+                  className="text-green font-semibold text-sm"
+                >
+                  Read More &#8594;
+                </Link>
+              </div>
+            )}
 
-            {/* Sidebar — Next two posts */}
+            {/* Sidebar — Most Viewed Posts */}
             <div className="flex flex-col gap-6">
-              {posts.slice(1, 3).map((post) => (
+              {popularPosts.map((post) => (
                 <div
                   key={post.slug}
                   className="grid grid-cols-[120px_1fr] gap-4 items-center"

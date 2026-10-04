@@ -5,6 +5,7 @@ import Link from "next/link";
 
 type Slide = {
   image: string;
+  mobileImage?: string;
   tag: string;
   title: string;
   description: string;
@@ -28,6 +29,7 @@ const slides: Slide[] = [
   },
   {
     image: "/images/hero2.JPG",
+    mobileImage: "/images/hero2mobile.png",
     tag: "Expert Care",
     title: "Move Better. Feel Stronger.",
     description:
@@ -74,15 +76,24 @@ export default function HeroCarousel() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Background images — standard cover behavior with cross-fade */}
+      {/* Background images — cross-fade with mobile/desktop support */}
       {slides.map((slide, i) => (
         <div
           key={i}
-          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+          className={`absolute inset-0 transition-opacity duration-1000 ${
             i === current ? "opacity-100" : "opacity-0"
           }`}
-          style={{ backgroundImage: `url('${slide.image}')` }}
         >
+          <img
+            src={slide.mobileImage || slide.image}
+            alt={slide.title}
+            className="w-full h-full object-cover md:hidden"
+          />
+          <img
+            src={slide.image}
+            alt={slide.title}
+            className="w-full h-full object-cover hidden md:block"
+          />
           <div className="absolute inset-0 bg-black/60"></div>
         </div>
       ))}
@@ -136,7 +147,7 @@ export default function HeroCarousel() {
             </div>
           ))}
 
-          {/* Stats Strip - Compact */}
+          {/* Stats Strip */}
           <div className="flex justify-between md:justify-start md:items-center gap-2 md:gap-10 mt-8 pt-5 md:mt-12 md:pt-8 border-t border-white/20 max-w-2xl">
             {stats.map((stat, idx) => (
               <div key={idx} className="flex items-center gap-4 md:gap-10">
