@@ -2,7 +2,6 @@ import Link from "next/link";
 import { posts } from "@/lib/posts";
 import PartnersCarousel from "./components/PartnersCarousel";
 import HeroCarousel from "./components/HeroCarousel";
-import { useState } from "react";
 
 export default function HomePage() {
   // Sort posts for Blog Section
@@ -318,7 +317,7 @@ export default function HomePage() {
                       <span key={i}>{i < review.rating ? "★" : "☆"}</span>
                     ))}
                   </div>
-                  <p className="text-gray-700 text-sm italic mb-4">"{review.text}"</p>
+                  <p className="text-gray-700 text-sm italic mb-4">&quot;{review.text}&quot;</p>
                 </div>
                 <p className="font-bold text-purple text-sm">{review.name}</p>
               </div>
