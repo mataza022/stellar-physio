@@ -106,7 +106,7 @@ export default function HomePage() {
             <div className="border border-gray-200 rounded-lg p-8 hover:shadow-lg transition">
               <div className="w-12 h-12 rounded-full overflow-hidden mb-4">
                 <img
-                  src="/images/hero1.jpg"
+                  src="/images/hero1.jpeg"
                   alt="Find a Clinic"
                   className="w-full h-full object-cover"
                 />
