@@ -10,10 +10,11 @@ export default function HomePage() {
   );
   const latestPost = sortedByDate[0];
 
+  // Sort by views (fallback to 0 if not yet provided by backend)
   const sortedByViews = [...posts].sort(
-    (a, b) => (b.views || 0) - (a.views || 0)
+    (a, b) => ((b as any).views || 0) - ((a as any).views || 0)
   );
-  const popularPosts = sortedByViews.slice(0, 2); // Get top 2 most viewed
+  const popularPosts = sortedByViews.slice(0, 2);
 
   // Dummy reviews data (to be replaced with backend later)
   const dummyReviews = [
@@ -307,17 +308,22 @@ export default function HomePage() {
           <p className="text-center text-gray-600 mb-10">
             Real stories from our patients.
           </p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             {dummyReviews.map((review, idx) => (
-              <div key={idx} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex flex-col justify-between">
+              <div
+                key={idx}
+                className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex flex-col justify-between"
+              >
                 <div>
                   <div className="flex text-green mb-2">
                     {[...Array(5)].map((_, i) => (
                       <span key={i}>{i < review.rating ? "★" : "☆"}</span>
                     ))}
                   </div>
-                  <p className="text-gray-700 text-sm italic mb-4">&quot;{review.text}&quot;</p>
+                  <p className="text-gray-700 text-sm italic mb-4">
+                    &quot;{review.text}&quot;
+                  </p>
                 </div>
                 <p className="font-bold text-purple text-sm">{review.name}</p>
               </div>
@@ -326,7 +332,9 @@ export default function HomePage() {
 
           {/* Add Review Form (Placeholder for Backend) */}
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h3 className="font-bold text-purple mb-4 text-center">Add Your Review</h3>
+            <h3 className="font-bold text-purple mb-4 text-center">
+              Add Your Review
+            </h3>
             <form className="flex flex-col gap-3 max-w-md mx-auto">
               <input
                 type="text"
