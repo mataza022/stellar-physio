@@ -7,7 +7,7 @@ export type Post = {
   image: string;
   category: string;
   tags: string[];
-  relatedServices: string[];
+  relatedServices?: string[]; // <-- Made optional here
   views?: number;
 };
 
@@ -17,7 +17,7 @@ export const posts: Post[] = [
     title: "Physiotherapy Week 2026: Free Stroke & Cardiovascular Consultations",
     excerpt: "Stellar Physio is offering free stroke and cardiovascular physiotherapy consultations from September 8–14, 2026. Book your one-on-one assessment today.",
     date: "2026-10-04",
-    image: "/images/physioweek2026.webp", // Updated here
+    image: "/images/physioweek2026.webp",
     category: "Health & Wellness",
     tags: ["Stroke Recovery", "Cardiovascular", "Physiotherapy Week", "Free Consultation"],
     relatedServices: ["/services/physiotherapy", "/services/general-consultations"],
@@ -57,7 +57,7 @@ Physiotherapy Week only comes around once a year, and this year’s focus on str
     title: "Kinesiology Taping in Nairobi: What the Colourful Tape Really Does",
     excerpt: "Discover how kinesiology taping supports muscles, joints, and recovery. Learn what it treats, how it works, and where to get it done in Nairobi.",
     date: "2026-10-03",
-    image: "/images/kineisology.webp", // Updated here
+    image: "/images/kineisology.webp",
     category: "Sports Injury",
     tags: ["Kinesiology Tape", "Sports Injuries", "Ngong Road Physiotherapy", "Pain Relief"],
     relatedServices: ["/services/physiotherapy", "/services/sports-massage", "/services/stretch-exercise-therapy"],
@@ -133,7 +133,7 @@ Whether you are training for your next race, getting back to the pitch after an 
     title: "Sports Massage in Parklands, Nairobi: Recover Faster & Keep Playing",
     excerpt: "Struggling with muscle soreness after training at Parklands Sports Club? Learn how sports massage aids recovery and where to book in Nairobi.",
     date: "2026-10-02",
-    image: "/images/physio1.jpg", // Updated here
+    image: "/images/physio1.jpg",
     category: "Sports Injury",
     tags: ["Sports Massage", "Parklands Physiotherapy", "Recovery", "DOMS"],
     relatedServices: ["/services/sports-massage", "/services/physiotherapy"],
@@ -208,3 +208,23 @@ When you come in for a session, here’s how it usually goes:
 Recovery is part of training, not a break from it. Whether you’re getting ready for a big match, bouncing back from a tough week, or simply want your legs to feel lighter, our team at Stellar Physio Parklands is here to help. Visit us at Parklands Sports Club, 49 Parklands Road, or book your appointment online.`
   }
 ];
+
+// Helper functions (assuming these already exist in your file)
+export function getPostBySlug(slug: string): Post | undefined {
+  return posts.find((post) => post.slug === slug);
+}
+
+export function getRecentPosts(count: number): Post[] {
+  return [...posts]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, count);
+}
+
+export function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
