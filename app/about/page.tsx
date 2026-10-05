@@ -3,22 +3,28 @@ import Link from "next/link";
 export default function AboutPage() {
   return (
     <>
-      {/* HERO BANNER WITH BACKGROUND IMAGE */}
-      <section
-        className="relative h-[400px] flex items-center bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/about-hero.jpeg')" }}
-      >
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="container-custom relative z-10 text-white">
-          <h1 className="text-5xl md:text-6xl font-bold">About Us</h1>
+      {/* CLEAN PAGE HEADER (No Hero Image) */}
+      <section className="pt-20 pb-10 bg-white">
+        <div className="container-custom text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-purple mb-4">
+            About Us
+          </h1>
+          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+            Learn more about our journey, our team, and our commitment to your
+            health and wellness.
+          </p>
         </div>
       </section>
 
       {/* CEO MESSAGE */}
       <section className="py-20 bg-white">
         <div className="container-custom grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="bg-purple-light rounded-lg h-80 flex items-center justify-center text-purple font-semibold">
-            CEO Photo
+          <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
+            <img
+              src="/images/ceo.webp"
+              alt="CEO of Stellar Physio"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div>
             <h2 className="text-3xl font-bold text-purple mb-6">
@@ -73,8 +79,12 @@ export default function AboutPage() {
               Book Appointment
             </Link>
           </div>
-          <div className="bg-purple-light rounded-lg h-80 flex items-center justify-center text-purple font-semibold">
-            Clinic Interior Photo
+          <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
+            <img
+              src="/images/clinicinterior.webp"
+              alt="Clinic Interior"
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
       </section>
@@ -82,8 +92,12 @@ export default function AboutPage() {
       {/* OUR JOURNEY */}
       <section className="py-20 bg-white">
         <div className="container-custom grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="bg-purple-light rounded-lg h-80 flex items-center justify-center text-purple font-semibold">
-            Consultation Photo
+          <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
+            <img
+              src="/images/consultation.webp"
+              alt="Consultation at Stellar Physio"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div>
             <h2 className="text-3xl font-bold text-purple mb-6">Our Journey</h2>
