@@ -4,11 +4,22 @@ export default function PhysiotherapyPage() {
   return (
     <>
       {/* HERO */}
-      <section
-        className="relative h-[400px] flex items-center bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/services-hero.jpeg')" }}
-      >
+      <section className="relative h-[400px] flex items-center overflow-hidden">
+        {/* Mobile Hero Image */}
+        <img
+          src="/images/hero2mobile.png"
+          alt="Physiotherapy at Stellar Physio"
+          className="absolute inset-0 w-full h-full object-cover md:hidden"
+        />
+        {/* Desktop Hero Image */}
+        <img
+          src="/images/hero2.JPG"
+          alt="Physiotherapy at Stellar Physio"
+          className="absolute inset-0 w-full h-full object-cover hidden md:block"
+        />
+        {/* Dark Overlay for text readability */}
         <div className="absolute inset-0 bg-black/50"></div>
+        
         <div className="container-custom relative z-10 text-white">
           <h1 className="text-4xl md:text-6xl font-bold">Physiotherapy</h1>
         </div>
@@ -17,8 +28,12 @@ export default function PhysiotherapyPage() {
       {/* INTRO */}
       <section className="py-20 bg-white">
         <div className="container-custom grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="bg-purple-light rounded-lg h-80 flex items-center justify-center text-purple font-semibold">
-            Physiotherapy Photo
+          <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
+            <img
+              src="/images/physiotherapy.webp"
+              alt="Physiotherapy at Stellar Physio"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div>
             <h2 className="text-3xl font-bold text-purple mb-4">
@@ -77,8 +92,12 @@ export default function PhysiotherapyPage() {
       {/* OUR TECHNIQUES */}
       <section className="py-20 bg-white">
         <div className="container-custom grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="bg-purple-light rounded-lg h-96 flex items-center justify-center text-purple font-semibold">
-            Technique Photo
+          <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
+            <img
+              src="/images/technique.webp"
+              alt="Physiotherapy Techniques"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div>
             <h2 className="text-3xl font-bold text-purple mb-4">
@@ -156,8 +175,12 @@ export default function PhysiotherapyPage() {
               </li>
             </ul>
           </div>
-          <div className="bg-purple-light rounded-lg h-80 flex items-center justify-center text-purple font-semibold">
-            Why Choose Photo
+          <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
+            <img
+              src="/images/choose.webp"
+              alt="Why Choose Stellar Physio"
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
       </section>
