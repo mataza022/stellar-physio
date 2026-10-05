@@ -26,19 +26,20 @@ const branches = [
 export default function ContactPage() {
   return (
     <>
-      {/* HERO */}
-      <section
-        className="relative h-[400px] flex items-center bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/hero.jpeg')" }}
-      >
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="container-custom relative z-10 text-white">
-          <h1 className="text-4xl md:text-6xl font-bold">Contact Us</h1>
+      {/* CLEAN PAGE HEADER (No Hero Image) */}
+      <section className="pt-20 pb-8 bg-white">
+        <div className="container-custom text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-purple mb-4">
+            Contact Us
+          </h1>
+          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+            Get in touch with us or drop by any of our branches across Nairobi.
+          </p>
         </div>
       </section>
 
       {/* MAP + CONTACT FORM */}
-      <section className="py-20 bg-white">
+      <section className="pb-16 bg-white">
         <div className="container-custom grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
           {/* Map — Kenital Plaza */}
           <div>
@@ -58,29 +59,33 @@ export default function ContactPage() {
 
           {/* Contact Form */}
           <div>
-            <h2 className="text-3xl font-bold text-purple mb-2">Contact Us</h2>
-            <p className="text-gray-600 mb-8">Drop us a line...</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-purple mb-2">
+              Drop us a line
+            </h2>
+            <p className="text-gray-600 mb-6 text-sm">
+              Fill in the form below and we&apos;ll get back to you shortly.
+            </p>
 
             <form className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input
                   type="text"
                   placeholder="Full Name"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple text-sm"
                 />
                 <input
                   type="email"
                   placeholder="Email Address"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple text-sm"
                 />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input
                   type="tel"
                   placeholder="Phone Number"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple text-sm"
                 />
-                <select className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple bg-white text-gray-700">
+                <select className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple bg-white text-gray-700 text-sm">
                   <option>Consultation &amp; Clinic</option>
                   <option>Physiotherapy Session</option>
                   <option>Laboratory Services</option>
@@ -90,12 +95,12 @@ export default function ContactPage() {
               </div>
               <textarea
                 placeholder="Message"
-                rows={6}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple resize-none"
+                rows={5}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple resize-none text-sm"
               ></textarea>
               <button
                 type="submit"
-                className="bg-purple text-white px-8 py-3 rounded-full font-semibold hover:bg-purple-dark transition"
+                className="bg-purple text-white px-6 py-3 rounded font-semibold hover:bg-purple-dark transition text-sm"
               >
                 Send Message
               </button>
@@ -105,113 +110,126 @@ export default function ContactPage() {
       </section>
 
       {/* KAREN + PARKLANDS MAPS SIDE BY SIDE */}
-      <section className="py-16 bg-white">
-        <div className="container-custom grid grid-cols-1 md:grid-cols-2 gap-12">
-          {branches.slice(1).map((b) => (
-            <div key={b.name}>
-              <h2 className="text-2xl font-bold text-purple mb-4 text-center">
-                {b.name}
-              </h2>
-              <div className="bg-purple-light rounded-lg overflow-hidden h-[360px] relative mb-4">
-                <iframe
-                  src={b.mapEmbed}
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title={b.name}
-                ></iframe>
+      <section className="pb-16 bg-white">
+        <div className="container-custom">
+          <h2 className="text-2xl md:text-3xl font-bold text-purple text-center mb-2">
+            Other Branches
+          </h2>
+          <p className="text-gray-600 text-center mb-10 text-sm">
+            Visit us at any of our other convenient locations.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {branches.slice(1).map((b) => (
+              <div key={b.name}>
+                <h3 className="text-xl font-bold text-purple mb-3 text-center">
+                  {b.name}
+                </h3>
+                <div className="bg-purple-light rounded-lg overflow-hidden h-[320px] relative mb-3">
+                  <iframe
+                    src={b.mapEmbed}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title={b.name}
+                  ></iframe>
+                </div>
+                <a
+                  href={b.mapLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-center text-purple font-semibold hover:underline text-sm"
+                >
+                  Get Directions &#8594;
+                </a>
               </div>
-              <a
-                href={b.mapLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-center text-purple font-semibold hover:underline"
-              >
-                Get Directions
-              </a>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
       {/* CONTACT INFO CARDS — ALL CLICKABLE */}
       <section className="py-16 bg-purple">
-        <div className="container-custom grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Email — clickable */}
-          <a
-            href="mailto:info@stellarphysio.com"
-            className="group bg-white rounded-lg p-6 flex items-center gap-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 cursor-pointer"
-          >
-            <div className="w-12 h-12 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0 group-hover:bg-purple-dark transition">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-6 h-6"
-              >
-                <rect x="2" y="4" width="20" height="16" rx="2" />
-                <path d="M2 7l10 6 10-6" />
-              </svg>
-            </div>
-            <span className="text-gray-800 font-semibold group-hover:text-purple transition">
-              info@stellarphysio.com
-            </span>
-          </a>
+        <div className="container-custom">
+          <h2 className="text-2xl md:text-3xl font-bold text-white text-center mb-10">
+            Quick Contact
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Email — clickable */}
+            <a
+              href="mailto:info@stellarphysio.com"
+              className="group bg-white rounded-lg p-6 flex items-center gap-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+            >
+              <div className="w-12 h-12 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0 group-hover:bg-purple-dark transition">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-6 h-6"
+                >
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="M2 7l10 6 10-6" />
+                </svg>
+              </div>
+              <span className="text-gray-800 font-semibold group-hover:text-purple transition text-sm">
+                info@stellarphysio.com
+              </span>
+            </a>
 
-          {/* Phone — clickable */}
-          <a
-            href="tel:+254719881291"
-            className="group bg-white rounded-lg p-6 flex items-center gap-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 cursor-pointer"
-          >
-            <div className="w-12 h-12 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0 group-hover:bg-purple-dark transition">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-6 h-6"
-              >
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-              </svg>
-            </div>
-            <span className="text-gray-800 font-semibold group-hover:text-purple transition">
-              +254 719 881 291
-            </span>
-          </a>
+            {/* Phone — clickable */}
+            <a
+              href="tel:+254719881291"
+              className="group bg-white rounded-lg p-6 flex items-center gap-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+            >
+              <div className="w-12 h-12 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0 group-hover:bg-purple-dark transition">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-6 h-6"
+                >
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+              </div>
+              <span className="text-gray-800 font-semibold group-hover:text-purple transition text-sm">
+                +254 719 881 291
+              </span>
+            </a>
 
-          {/* Address — clickable, opens Google Maps */}
-          <a
-            href="https://www.google.com/maps/dir/?api=1&destination=-1.298749885724835,36.79962250991531"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group bg-white rounded-lg p-6 flex items-center gap-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 cursor-pointer"
-          >
-            <div className="w-12 h-12 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0 group-hover:bg-purple-dark transition">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-6 h-6"
-              >
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-            </div>
-            <span className="text-gray-800 font-semibold group-hover:text-purple transition">
-              Kenital Plaza, Ngong Road
-            </span>
-          </a>
+            {/* Address — clickable, opens Google Maps */}
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=-1.298749885724835,36.79962250991531"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group bg-white rounded-lg p-6 flex items-center gap-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+            >
+              <div className="w-12 h-12 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0 group-hover:bg-purple-dark transition">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-6 h-6"
+                >
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+              </div>
+              <span className="text-gray-800 font-semibold group-hover:text-purple transition text-sm">
+                Kenital Plaza, Ngong Road
+              </span>
+            </a>
+          </div>
         </div>
       </section>
     </>
