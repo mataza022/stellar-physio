@@ -60,19 +60,21 @@ const socials = [
 export default function CareersPage() {
   return (
     <>
-      {/* HERO BANNER */}
-      <section
-        className="relative h-[350px] flex items-center bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/careers-hero.jpeg')" }}
-      >
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="container-custom relative z-10 text-white">
-          <h1 className="text-5xl md:text-6xl font-bold">Careers</h1>
+      {/* CLEAN PAGE HEADER (No Hero Image) */}
+      <section className="pt-20 pb-10 bg-white">
+        <div className="container-custom text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-purple mb-4">
+            Careers
+          </h1>
+          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+            Build a rewarding career helping people move better, feel stronger,
+            and live pain-free.
+          </p>
         </div>
       </section>
 
       {/* INTRO */}
-      <section className="py-20 bg-white">
+      <section className="py-16 bg-white">
         <div className="container-custom max-w-3xl text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-purple mb-6">
             Join Our Team
