@@ -6,6 +6,67 @@ export function generateStaticParams() {
   return posts.map((p) => ({ slug: p.slug }));
 }
 
+// Simple parser for markdown-like content (headings, bullets, paragraphs)
+const renderBody = (body: string) => {
+  const blocks = body.split("\n\n");
+  return blocks.map((block, index) => {
+    const trimmed = block.trim();
+    if (!trimmed) return null;
+
+    // Headings (### or ##)
+    if (trimmed.startsWith("### ")) {
+      return (
+        <h3
+          key={index}
+          className="text-xl font-bold text-purple mt-8 mb-3"
+        >
+          {trimmed.replace("### ", "")}
+        </h3>
+      );
+    }
+    if (trimmed.startsWith("## ")) {
+      return (
+        <h2
+          key={index}
+          className="text-2xl font-bold text-purple mt-10 mb-4"
+        >
+          {trimmed.replace("## ", "")}
+        </h2>
+      );
+    }
+
+    // Bullet points
+    if (trimmed.startsWith("- ")) {
+      const items = trimmed
+        .split("\n")
+        .map((i) => i.replace("- ", "").trim())
+        .filter(Boolean);
+      return (
+        <ul key={index} className="list-disc pl-5 my-4 space-y-1">
+          {items.map((item, i) => (
+            <li
+              key={i}
+              className="text-gray-700 text-sm md:text-base leading-relaxed"
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+      );
+    }
+
+    // Regular paragraphs
+    return (
+      <p
+        key={index}
+        className="text-gray-700 text-sm md:text-base leading-relaxed mb-4"
+      >
+        {trimmed}
+      </p>
+    );
+  });
+};
+
 export default async function BlogPostPage({
   params,
 }: {
@@ -49,15 +110,17 @@ export default async function BlogPostPage({
               <span>0 Comments</span>
               <span>{formatDate(post.date)}</span>
             </div>
-            <h1 className="text-2xl md:text-3xl font-bold text-purple mb-4 leading-tight">
+            <h1 className="text-2xl md:text-3xl font-bold text-purple mb-6 leading-tight">
               {post.title}
             </h1>
-            <div className="prose prose-sm md:prose-base max-w-none text-gray-700 space-y-4 whitespace-pre-line">
-              {post.body}
+
+            {/* Rendered content */}
+            <div className="max-w-none text-gray-700">
+              {renderBody(post.body)}
             </div>
 
             {/* Comment form */}
-            <div className="mt-12 bg-gray-50 rounded-lg p-6">
+            <div className="mt-12 bg-gray-50 rounded-lg p-6 border border-gray-100">
               <h3 className="text-xl font-bold text-purple mb-4">
                 Leave a Comment
               </h3>
@@ -70,7 +133,7 @@ export default async function BlogPostPage({
               <textarea
                 placeholder="Write Your Comment *"
                 rows={5}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple resize-none mb-3 text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple resize-none mb-3 text-sm bg-white"
               ></textarea>
               <button className="bg-purple text-white px-6 py-2.5 rounded font-semibold hover:bg-purple-dark transition text-sm">
                 Post Comment &#8594;
@@ -78,10 +141,10 @@ export default async function BlogPostPage({
             </div>
           </article>
 
-          {/* RIGHT — SIDEBAR */}
-          <aside className="space-y-6">
+          {/* RIGHT — SIDEBAR (Added pb-24 to prevent WhatsApp overlap) */}
+          <aside className="space-y-6 pb-24">
             {/* Search */}
-            <div className="bg-gray-50 rounded-lg p-5">
+            <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
               <h3 className="text-base font-bold text-purple mb-3">Search</h3>
               <div className="flex">
                 <input
@@ -96,11 +159,11 @@ export default async function BlogPostPage({
             </div>
 
             {/* Recent Posts */}
-            <div className="bg-gray-50 rounded-lg p-5">
+            <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
               <h3 className="text-base font-bold text-purple mb-3">
                 Recent Posts
               </h3>
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 {recent.map((p) => (
                   <li key={p.slug}>
                     <Link
