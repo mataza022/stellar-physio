@@ -6,7 +6,7 @@ const branches = [
     slug: "kenital-plaza",
     address: "Kenital Plaza, Ngong Road, Nairobi",
     phone: "+254 706 101999",
-    image: "/images/hero1.jpeg",
+    image: "/images/ngongrdbranch.jpg",
   },
   {
     title: "Karen Country Club",
@@ -27,13 +27,15 @@ const branches = [
 export default function BranchesPage() {
   return (
     <>
-      {/* CLEAN PAGE HEADER (No Hero Image) */}
-      <section className="pt-20 pb-8 bg-white">
-        <div className="container-custom text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-purple mb-4">
-            Our Branches
-          </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+      {/* HERO — Ngong Road Branch */}
+      <section
+        className="relative h-[400px] flex items-center bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/ngongrdbranch.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="container-custom relative z-10 text-white">
+          <h1 className="text-4xl md:text-6xl font-bold">Our Branches</h1>
+          <p className="text-lg mt-4 max-w-2xl opacity-90">
             Convenient access to specialist care across Nairobi. Choose the
             branch closest to you.
           </p>
@@ -41,7 +43,7 @@ export default function BranchesPage() {
       </section>
 
       {/* BRANCHES GRID */}
-      <section className="pb-16 bg-white">
+      <section className="py-16 bg-white">
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {branches.map((b) => (
