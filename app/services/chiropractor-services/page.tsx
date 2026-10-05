@@ -226,14 +226,14 @@ export default function ChiropractorServicesPage() {
           <div className="space-y-6">
             <div className="w-full h-64 rounded-lg overflow-hidden shadow-lg">
               <img
-                src="/images/benfit1.webp"
+                src="/images/benefit1.webp"
                 alt="Chiropractic care benefit"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="w-full h-64 rounded-lg overflow-hidden shadow-lg">
               <img
-                src="/images/benfit2.webp"
+                src="/images/benefit2.webp"
                 alt="Chiropractic care benefit"
                 className="w-full h-full object-cover"
               />
