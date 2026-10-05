@@ -43,7 +43,6 @@ export default function BookAppointmentPage() {
     details: "",
   });
 
-  // Filter services by search
   const filteredServices = services.filter(
     (s) =>
       s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -52,20 +51,16 @@ export default function BookAppointmentPage() {
         .includes(searchQuery.toLowerCase())
   );
 
-  // Disable Sundays
   const isDateDisabled = ({ date }: { date: Date }) => {
     return date.getDay() === 0;
   };
 
-  // Opening hours based on selected day
   const getMinTime = () => "08:00";
   const getMaxTime = () => {
     if (!selectedDate) return "18:00";
-    // Saturday (6) closes at 4 PM; weekdays close at 6 PM
     return selectedDate.getDay() === 6 ? "16:00" : "18:00";
   };
 
-  // Format time for display (e.g., "14:30" → "2:30 PM")
   const formatTime12 = (time: string) => {
     if (!time) return "";
     const [hourStr, minute] = time.split(":");
@@ -88,6 +83,80 @@ export default function BookAppointmentPage() {
 
   return (
     <>
+      {/* Global styles override for react-calendar */}
+      <style jsx global>{`
+        .react-calendar {
+          width: 100%;
+          border: none;
+          font-family: inherit;
+          background: white;
+        }
+        .react-calendar__navigation button {
+          color: #5c2c7e;
+          font-weight: 700;
+          font-size: 1rem;
+          border-radius: 0.5rem;
+          transition: all 0.2s;
+        }
+        .react-calendar__navigation button:hover,
+        .react-calendar__navigation button:focus {
+          background-color: #f3e8ff;
+        }
+        .react-calendar__navigation button:enabled:hover,
+        .react-calendar__navigation button:enabled:focus {
+          background-color: #f3e8ff;
+        }
+        .react-calendar__month-view__weekdays {
+          text-transform: uppercase;
+          font-weight: 700;
+          font-size: 0.7rem;
+          color: #9ca3af;
+          padding-bottom: 0.5rem;
+        }
+        .react-calendar__month-view__weekdays__weekday {
+          padding: 0.5em;
+        }
+        .react-calendar__month-view__weekdays__weekday abbr {
+          text-decoration: none;
+        }
+        .react-calendar__tile {
+          padding: 1em 0.5em;
+          border-radius: 0.5rem;
+          font-weight: 600;
+          color: #374151;
+          transition: all 0.2s;
+        }
+        .react-calendar__tile:hover {
+          background-color: #f3e8ff;
+          color: #5c2c7e;
+        }
+        .react-calendar__tile--now {
+          background: #e9d5ff;
+          color: #5c2c7e;
+        }
+        .react-calendar__tile--now:enabled:hover,
+        .react-calendar__tile--now:enabled:focus {
+          background: #d8b4fe;
+        }
+        .react-calendar__tile--active {
+          background: #5c2c7e !important;
+          color: white !important;
+          box-shadow: 0 4px 6px -1px rgba(92, 44, 126, 0.4);
+        }
+        .react-calendar__tile--active:enabled:hover,
+        .react-calendar__tile--active:enabled:focus {
+          background: #4a2266 !important;
+        }
+        .react-calendar__tile:disabled {
+          background-color: transparent;
+          color: #d1d5db;
+          text-decoration: line-through;
+        }
+        .react-calendar__month-view__days__day--neighboringMonth {
+          color: #d1d5db;
+        }
+      `}</style>
+
       {/* BREADCRUMB BAR */}
       <div className="bg-white border-b border-gray-200">
         <div className="container-custom flex justify-between items-center py-4">
@@ -188,7 +257,7 @@ export default function BookAppointmentPage() {
               placeholder="Search services by name or category..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md outline-none focus:border-purple mb-8 text-sm bg-white"
+              className="w-full px-4 py-3 border border-gray-300 rounded-md outline-none focus:border-purple mb-8 text-sm bg-white shadow-sm"
             />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {filteredServices.map((service) => {
@@ -319,10 +388,10 @@ export default function BookAppointmentPage() {
         </section>
       )}
 
-      {/* STEP 3 — DATE & TIME */}
+      {/* STEP 3 — DATE & TIME (REVAMPED) */}
       {step === 3 && (
         <section className="py-12 bg-gray-50 min-h-[600px]">
-          <div className="container-custom max-w-4xl">
+          <div className="container-custom max-w-5xl">
             <button
               onClick={() => setStep(2)}
               className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-purple transition mb-6"
@@ -345,7 +414,7 @@ export default function BookAppointmentPage() {
             <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
               When would you like to come in?
             </h2>
-            <p className="text-sm text-gray-500 mb-6">
+            <p className="text-sm text-gray-500 mb-8">
               Service:{" "}
               <span className="font-semibold text-purple">
                 {selectedService}
@@ -356,76 +425,116 @@ export default function BookAppointmentPage() {
               </span>
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Calendar Column */}
-              <div>
-                <h3 className="text-sm font-bold text-gray-700 mb-3">
-                  1. Select a date
-                </h3>
-                <div className="bg-white rounded-lg p-4 border border-gray-200">
-                  <Calendar
-                    onChange={(value) => {
-                      setSelectedDate(value as Date);
-                      setSelectedTime("");
-                    }}
-                    value={selectedDate}
-                    tileDisabled={isDateDisabled}
-                    minDate={new Date()}
-                    className="w-full border-none"
-                  />
+              <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-8 h-8 rounded-full bg-purple text-white flex items-center justify-center text-sm font-bold">
+                    1
+                  </div>
+                  <h3 className="text-base font-bold text-gray-800">
+                    Select a date
+                  </h3>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">
+                <Calendar
+                  onChange={(value) => {
+                    setSelectedDate(value as Date);
+                    setSelectedTime("");
+                  }}
+                  value={selectedDate}
+                  tileDisabled={isDateDisabled}
+                  minDate={new Date()}
+                  className="w-full border-none"
+                />
+                <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-xs text-gray-500">
+                  <svg className="w-4 h-4 text-green" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
                   Open Mon–Fri 8am–6pm · Sat 8am–4pm · Closed Sundays
-                </p>
+                </div>
               </div>
 
               {/* Time Input Column */}
-              <div>
-                <h3 className="text-sm font-bold text-gray-700 mb-3">
-                  2. Select a time
-                </h3>
+              <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm flex flex-col">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-8 h-8 rounded-full bg-purple text-white flex items-center justify-center text-sm font-bold">
+                    2
+                  </div>
+                  <h3 className="text-base font-bold text-gray-800">
+                    Select a time
+                  </h3>
+                </div>
+                
                 {!selectedDate ? (
-                  <div className="bg-white rounded-lg p-6 border border-gray-200 text-center text-sm text-gray-500">
-                    Please select a date first.
+                  <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                    <svg className="w-12 h-12 text-gray-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <p className="text-sm text-gray-500 font-medium">Please select a date first</p>
+                    <p className="text-xs text-gray-400 mt-1">Your available time slots will appear here</p>
                   </div>
                 ) : (
-                  <div className="bg-white rounded-lg p-6 border border-gray-200">
-                    <label className="block text-xs font-semibold text-gray-700 mb-2">
-                      Preferred arrival time
-                    </label>
-                    <input
-                      type="time"
-                      value={selectedTime}
-                      onChange={(e) => setSelectedTime(e.target.value)}
-                      min={getMinTime()}
-                      max={getMaxTime()}
-                      className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white"
-                    />
-                    <p className="text-xs text-gray-500 mt-3 leading-relaxed">
-                      Pick any time between{" "}
-                      <span className="font-semibold text-purple">
-                        {formatTime12(getMinTime())}
-                      </span>{" "}
-                      and{" "}
-                      <span className="font-semibold text-purple">
-                        {formatTime12(getMaxTime())}
-                      </span>{" "}
-                      on{" "}
-                      {selectedDate.toLocaleDateString("en-US", {
-                        weekday: "long",
-                      })}
-                      .
-                    </p>
+                  <div className="flex-1 flex flex-col justify-between">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700 mb-3 uppercase tracking-wider">
+                        Preferred arrival time
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                          <svg className="w-5 h-5 text-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <input
+                          type="time"
+                          value={selectedTime}
+                          onChange={(e) => setSelectedTime(e.target.value)}
+                          min={getMinTime()}
+                          max={getMaxTime()}
+                          className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-lg outline-none focus:border-purple text-lg font-semibold text-gray-800 bg-white transition"
+                        />
+                      </div>
+                      
+                      <div className="mt-4 bg-purple-light/50 rounded-lg p-4">
+                        <p className="text-xs text-gray-600 leading-relaxed">
+                          Pick any time between{" "}
+                          <span className="font-semibold text-purple">
+                            {formatTime12(getMinTime())}
+                          </span>{" "}
+                          and{" "}
+                          <span className="font-semibold text-purple">
+                            {formatTime12(getMaxTime())}
+                          </span>{" "}
+                          on{" "}
+                          <span className="font-semibold text-purple">
+                            {selectedDate.toLocaleDateString("en-US", {
+                              weekday: "long",
+                            })}
+                          </span>
+                          .
+                        </p>
+                      </div>
+                    </div>
+
                     {selectedTime && (
-                      <p className="text-xs text-green font-semibold mt-3">
-                        Selected: {formatTime12(selectedTime)}
-                      </p>
+                      <div className="mt-6 bg-green/10 border border-green/20 rounded-lg p-4 flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white flex-shrink-0">
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">Selected time</p>
+                          <p className="text-base font-bold text-green">{formatTime12(selectedTime)}</p>
+                        </div>
+                      </div>
                     )}
                   </div>
                 )}
               </div>
             </div>
 
+            {/* Continue button */}
             <div className="mt-8 flex justify-end">
               <button
                 type="button"
@@ -433,7 +542,7 @@ export default function BookAppointmentPage() {
                 onClick={() => setStep(4)}
                 className={`px-8 py-3 rounded-md font-semibold text-sm transition ${
                   selectedDate && selectedTime
-                    ? "bg-purple text-white hover:bg-purple-dark"
+                    ? "bg-purple text-white hover:bg-purple-dark shadow-md"
                     : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
               >
@@ -472,23 +581,26 @@ export default function BookAppointmentPage() {
             </h2>
 
             {/* Booking Summary */}
-            <div className="bg-purple-light rounded-lg p-4 mb-6 text-sm">
-              <p className="text-gray-700">
-                <span className="font-semibold">Service:</span>{" "}
-                {selectedService}
-              </p>
-              <p className="text-gray-700">
-                <span className="font-semibold">Location:</span>{" "}
-                {selectedLocation}
-              </p>
-              <p className="text-gray-700">
-                <span className="font-semibold">Date:</span>{" "}
-                {selectedDate?.toDateString()}
-              </p>
-              <p className="text-gray-700">
-                <span className="font-semibold">Time:</span>{" "}
-                {formatTime12(selectedTime)}
-              </p>
+            <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-8">
+              <h3 className="text-sm font-bold text-gray-800 mb-4 uppercase tracking-wider">Booking Summary</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Service</p>
+                  <p className="font-semibold text-gray-800">{selectedService}</p>
+                </div>
+                <div>
+                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Location</p>
+                  <p className="font-semibold text-gray-800">{selectedLocation}</p>
+                </div>
+                <div>
+                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Date</p>
+                  <p className="font-semibold text-gray-800">{selectedDate?.toDateString()}</p>
+                </div>
+                <div>
+                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Time</p>
+                  <p className="font-semibold text-gray-800">{formatTime12(selectedTime)}</p>
+                </div>
+              </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -504,7 +616,7 @@ export default function BookAppointmentPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, firstName: e.target.value })
                     }
-                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm"
+                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white"
                   />
                 </div>
                 <div>
@@ -518,7 +630,7 @@ export default function BookAppointmentPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, lastName: e.target.value })
                     }
-                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm"
+                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white"
                   />
                 </div>
               </div>
@@ -534,7 +646,7 @@ export default function BookAppointmentPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm"
+                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white"
                   />
                 </div>
                 <div>
@@ -547,7 +659,7 @@ export default function BookAppointmentPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, phone: e.target.value })
                     }
-                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm"
+                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white"
                   />
                 </div>
               </div>
@@ -561,13 +673,13 @@ export default function BookAppointmentPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, details: e.target.value })
                   }
-                  className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple resize-none text-sm"
+                  className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple resize-none text-sm bg-white"
                 ></textarea>
               </div>
               <div className="flex justify-end pt-2">
                 <button
                   type="submit"
-                  className="bg-purple text-white px-8 py-3 rounded-md font-semibold text-sm hover:bg-purple-dark transition"
+                  className="bg-purple text-white px-8 py-3 rounded-md font-semibold text-sm hover:bg-purple-dark transition shadow-md"
                 >
                   Confirm Booking
                 </button>
