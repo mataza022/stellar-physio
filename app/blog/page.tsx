@@ -37,50 +37,54 @@ export default function BlogPage() {
 
   return (
     <>
-      {/* HERO */}
-      <section
-        className="relative h-[400px] flex items-center bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/hero.jpeg')" }}
-      >
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="container-custom relative z-10 text-white">
-          <h1 className="text-4xl md:text-6xl font-bold">Articles &amp; News</h1>
+      {/* CLEAN PAGE HEADER (No Hero Image) */}
+      <section className="pt-20 pb-8 bg-white">
+        <div className="container-custom text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-purple mb-4">
+            Articles &amp; News
+          </h1>
+          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+            Health tips, physiotherapy insights, and news from the Stellar
+            Physio team.
+          </p>
         </div>
       </section>
 
       {/* MAIN LAYOUT: ARTICLE + SIDEBAR */}
-      <section className="py-16 bg-white">
-        <div className="container-custom grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
+      <section className="pb-16 bg-white">
+        <div className="container-custom grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-10">
           {/* LEFT COLUMN — FEATURED ARTICLE */}
           <div>
             <article>
               <img
                 src={featured.image}
                 alt={featured.title}
-                className="w-full h-[420px] object-cover rounded-lg mb-6"
+                className="w-full h-[340px] object-cover rounded-lg mb-5"
               />
-              <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+              <div className="flex items-center gap-4 text-xs text-gray-500 mb-3">
                 <span>30 Views</span>
                 <span>0 Comments</span>
                 <span>{formatDate(featured.date)}</span>
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-purple mb-4">
+              <h2 className="text-2xl md:text-3xl font-bold text-purple mb-3 leading-tight">
                 {featured.title}
               </h2>
-              <p className="text-gray-700 mb-6">{featured.excerpt}</p>
+              <p className="text-gray-700 mb-5 text-sm leading-relaxed">
+                {featured.excerpt}
+              </p>
 
               {/* Quick links to other posts */}
-              <div className="border-t border-gray-200 pt-6 mt-6">
-                <h3 className="text-xl font-bold text-purple mb-4">
+              <div className="border-t border-gray-200 pt-5 mt-5">
+                <h3 className="text-lg font-bold text-purple mb-3">
                   More Articles
                 </h3>
-                <ul className="space-y-3">
+                <ul className="space-y-2">
                   {posts.slice(1).map((p) => (
-                    <li key={p.slug} className="flex gap-3 items-start">
-                      <span className="text-purple">&#8226;</span>
+                    <li key={p.slug} className="flex gap-2 items-start">
+                      <span className="text-purple mt-1">&#8226;</span>
                       <Link
                         href={`/blog/${p.slug}`}
-                        className="text-gray-700 hover:text-purple font-medium"
+                        className="text-gray-700 hover:text-purple font-medium text-sm leading-snug"
                       >
                         {p.title}
                       </Link>
@@ -92,33 +96,33 @@ export default function BlogPage() {
           </div>
 
           {/* RIGHT COLUMN — SIDEBAR */}
-          <aside className="space-y-10">
+          <aside className="space-y-6">
             {/* Search */}
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-lg font-bold text-purple mb-4">Search</h3>
+            <div className="bg-gray-50 rounded-lg p-5">
+              <h3 className="text-base font-bold text-purple mb-3">Search</h3>
               <div className="flex">
                 <input
                   type="text"
                   placeholder="Search..."
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-l outline-none text-sm"
                 />
-                <button className="bg-purple text-white px-4 py-2 rounded-r text-sm font-semibold">
-                  Search
+                <button className="bg-purple text-white px-3 py-2 rounded-r text-xs font-semibold">
+                  Go
                 </button>
               </div>
             </div>
 
             {/* Recent Posts */}
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-lg font-bold text-purple mb-4">
+            <div className="bg-gray-50 rounded-lg p-5">
+              <h3 className="text-base font-bold text-purple mb-3">
                 Recent Posts
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {recent.map((p) => (
                   <li key={p.slug}>
                     <Link
                       href={`/blog/${p.slug}`}
-                      className="text-gray-700 hover:text-purple text-sm"
+                      className="text-gray-700 hover:text-purple text-xs leading-snug block"
                     >
                       {p.title}
                     </Link>
@@ -128,18 +132,18 @@ export default function BlogPage() {
             </div>
 
             {/* Categories */}
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-lg font-bold text-purple mb-4">
+            <div className="bg-gray-50 rounded-lg p-5">
+              <h3 className="text-base font-bold text-purple mb-3">
                 Categories
               </h3>
-              <ul className="space-y-2">
+              <ul className="space-y-1.5">
                 {categories.map((cat, i) => (
                   <li
                     key={cat}
-                    className="flex justify-between items-center text-sm border-b border-gray-200 pb-2"
+                    className="flex justify-between items-center text-xs border-b border-gray-200 pb-1.5"
                   >
                     <span className="text-gray-700">{cat}</span>
-                    <span className="bg-purple text-white text-xs px-2 py-1 rounded">
+                    <span className="bg-purple text-white text-[10px] px-2 py-0.5 rounded">
                       {i === 0 ? 8 : i === 1 ? 1 : i === 2 ? 1 : i === 3 ? 1 : i === 4 ? 12 : 5}
                     </span>
                   </li>
@@ -148,26 +152,26 @@ export default function BlogPage() {
             </div>
 
             {/* Popular Posts */}
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-lg font-bold text-purple mb-4">
+            <div className="bg-gray-50 rounded-lg p-5">
+              <h3 className="text-base font-bold text-purple mb-3">
                 Popular Posts
               </h3>
-              <ul className="space-y-4">
+              <ul className="space-y-3">
                 {recent.slice(0, 4).map((p) => (
                   <li key={p.slug} className="flex gap-3">
                     <img
                       src={p.image}
                       alt={p.title}
-                      className="w-16 h-16 object-cover rounded flex-shrink-0"
+                      className="w-14 h-14 object-cover rounded flex-shrink-0"
                     />
                     <div>
                       <Link
                         href={`/blog/${p.slug}`}
-                        className="text-gray-700 hover:text-purple text-sm font-medium leading-tight block mb-1"
+                        className="text-gray-700 hover:text-purple text-xs font-medium leading-tight block mb-1"
                       >
                         {p.title}
                       </Link>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-[10px] text-gray-500">
                         {formatDate(p.date)}
                       </span>
                     </div>
@@ -177,15 +181,15 @@ export default function BlogPage() {
             </div>
 
             {/* Popular Tags */}
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-lg font-bold text-purple mb-4">
+            <div className="bg-gray-50 rounded-lg p-5">
+              <h3 className="text-base font-bold text-purple mb-3">
                 Popular Tags
               </h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {tags.slice(0, 20).map((tag) => (
                   <span
                     key={tag}
-                    className="bg-white border border-gray-200 text-gray-700 text-xs px-3 py-1 rounded-full hover:bg-purple hover:text-white cursor-pointer transition"
+                    className="bg-white border border-gray-200 text-gray-700 text-[10px] px-2 py-1 rounded-full hover:bg-purple hover:text-white cursor-pointer transition"
                   >
                     {tag}
                   </span>
