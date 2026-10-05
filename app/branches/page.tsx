@@ -6,36 +6,34 @@ const branches = [
     slug: "kenital-plaza",
     address: "Kenital Plaza, Ngong Road, Nairobi",
     phone: "+254 706 101999",
-    image: "/images/ngongrdbranch.jpg",
+    image: "/images/hero1.jpeg",
   },
   {
     title: "Karen Country Club",
     slug: "karen-country-club",
     address: "Karen Country Club, Nairobi",
     phone: "+254 739 110110",
-    image: "/images/karencountryclub.jpg",
+    image: "/images/karenbranch.webp",
   },
   {
     title: "Parklands Sports Club",
     slug: "parklands-sports-club",
     address: "Sports Club, 49 Parklands Road, Nairobi",
     phone: "+254 755 901942",
-    image: "/images/generalconsultation.jpg",
+    image: "/images/parklandsbranch.jpg",
   },
 ];
 
 export default function BranchesPage() {
   return (
     <>
-      {/* HERO */}
-      <section
-        className="relative h-[400px] flex items-center bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/hero.jpeg')" }}
-      >
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="container-custom relative z-10 text-white">
-          <h1 className="text-4xl md:text-6xl font-bold">Our Branches</h1>
-          <p className="text-lg mt-4 max-w-2xl opacity-90">
+      {/* CLEAN PAGE HEADER (No Hero Image) */}
+      <section className="pt-20 pb-8 bg-white">
+        <div className="container-custom text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-purple mb-4">
+            Our Branches
+          </h1>
+          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
             Convenient access to specialist care across Nairobi. Choose the
             branch closest to you.
           </p>
@@ -43,7 +41,7 @@ export default function BranchesPage() {
       </section>
 
       {/* BRANCHES GRID */}
-      <section className="py-20 bg-white">
+      <section className="pb-16 bg-white">
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {branches.map((b) => (
