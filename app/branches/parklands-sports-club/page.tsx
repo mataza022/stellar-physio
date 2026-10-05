@@ -3,12 +3,12 @@ import Link from "next/link";
 export default function ParklandsSportsClubPage() {
   return (
     <>
-      {/* HERO */}
+      {/* HERO — Parklands Sports Club */}
       <section
         className="relative h-[400px] flex items-center bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/branches-hero.jpeg')" }}
+        style={{ backgroundImage: "url('/images/parklandsbranch.jpg')" }}
       >
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-black/60"></div>
         <div className="container-custom relative z-10 text-white">
           <h1 className="text-4xl md:text-6xl font-bold">
             Parklands Sports Club
