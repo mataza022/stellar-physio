@@ -7,7 +7,7 @@ export type Service = {
   introTitle: string;
   introText: string;
   introImage: string;
-  offeringsTitle: string; // e.g., "What We Offer" or "Our Techniques"
+  offeringsTitle: string;
   offeringsList: string[];
   offeringsImage: string;
   whyChooseTitle: string;
@@ -115,10 +115,10 @@ export const services: Service[] = [
     slug: "home-based-care",
     title: "Home-Based Care",
     shortDescription: "Expert therapy brought to your doorstep.",
-    heroImage: "/images/hero1.jpeg",
+    heroImage: "/images/homecare.jpeg",
     introTitle: "Home-Based Care at Stellar Physio Health & Wellness",
     introText: "At Stellar Physio, we bring expert care to your doorstep, ensuring you receive professional therapy in the comfort and familiarity of your home. Our home-based care services are designed to cater to individuals who face mobility challenges or prefer personalized care within their private space.",
-    introImage: "/images/homecare.jpeg",
+    introImage: "/images/elderlycare.webp",
     offeringsTitle: "Our Home-Based Care Services Include:",
     offeringsList: [
       "Physiotherapy: Targeted treatments for pain relief, mobility restoration, and injury recovery.",
@@ -143,10 +143,10 @@ export const services: Service[] = [
     slug: "stellar-laboratory-services",
     title: "Stellar Laboratory Services",
     shortDescription: "Accurate and timely diagnostic tests.",
-    heroImage: "/images/hero1.jpeg",
+    heroImage: "/images/lab.webp",
     introTitle: "Testing For a Healthier Tomorrow!",
     introText: "At Stellar Physio Health & Wellness Centre, we understand that accurate and timely diagnostic tests are a cornerstone of effective healthcare. Our state-of-the-art laboratory services are designed to provide reliable results, supporting your journey toward optimal health and well-being.",
-    introImage: "/images/clinicinterior.webp",
+    introImage: "/images/lab1.webp",
     offeringsTitle: "Comprehensive Testing Services",
     offeringsList: [
       "Routine Checkups: General health screenings and blood work to monitor your overall well-being.",
@@ -179,10 +179,10 @@ export const services: Service[] = [
     slug: "pharmacy",
     title: "Pharmacy",
     shortDescription: "Trusted medications and personalized care.",
-    heroImage: "/images/hero1.jpeg",
+    heroImage: "/images/pharmacy1.webp",
     introTitle: "Providing Trusted Medications & Personalized Care.",
     introText: "At Stellar Physio Health & Wellness Centre, we understand the importance of accessible, reliable, and high-quality medication for your health journey. Our pharmacy is dedicated to ensuring that you receive the right medications and professional guidance to support your recovery and well-being.",
-    introImage: "/images/clinicinterior.webp",
+    introImage: "/images/pharmacyshelves.webp",
     offeringsTitle: "Our Pharmacy Services",
     offeringsList: [
       "Prescription Medications: Comprehensive selection of prescription drugs for various health conditions and seamless fulfillment of prescriptions from our consultation and specialist clinics.",
@@ -215,10 +215,10 @@ export const services: Service[] = [
     slug: "counselling-services",
     title: "Counselling Services",
     shortDescription: "Professional counselling and mental health support.",
-    heroImage: "/images/hero1.jpeg",
+    heroImage: "/images/hero3.jpg",
     introTitle: "Counselling services by Frankly Speaking",
     introText: "Your mental health is just as important as your physical health. At Stellar Physio, we offer professional counselling services to help individuals cope with a variety of things from stress, anxiety, depression, trauma, grief, relationship, and family issues and more. Our compassionate therapists provide a safe and supportive space for clients to explore their emotions, develop coping strategies, and enhance their overall well-being.",
-    introImage: "/images/consultation.webp",
+    introImage: "/images/counsellingroom.png",
     offeringsTitle: "Our Services",
     offeringsList: [
       "Individual Therapy - One-on-one sessions to help you unpack, heal, and grow at your own pace.",
@@ -248,10 +248,10 @@ export const services: Service[] = [
     slug: "sports-massage",
     title: "Sports Massage",
     shortDescription: "Reduce muscle tension, enhance flexibility, and prevent injuries.",
-    heroImage: "/images/hero1.jpeg",
+    heroImage: "/images/sportshero.png",
     introTitle: "Sports Massage at Stellar Physio Health & Wellness",
     introText: "Our sports massage therapy at Stellar Physio is designed for athletes, active individuals, and anyone looking to reduce muscle tension, enhance flexibility, and prevent injuries. Whether you are training for a competition or need relief from soreness, our specialized massage techniques will help you recover faster and perform at your peak.",
-    introImage: "/images/physio1.jpg",
+    introImage: "/images/sportsmassage2.webp",
     offeringsTitle: "Techniques Used",
     offeringsList: [
       "Deep Tissue Massage: Focused pressure to release knots and muscle tightness.",
@@ -276,10 +276,10 @@ export const services: Service[] = [
     slug: "reflexology",
     title: "Reflexology",
     shortDescription: "Holistic therapy that stimulates pressure points to promote natural healing.",
-    heroImage: "/images/hero1.jpeg",
+    heroImage: "/images/reflex1.webp",
     introTitle: "Reflexology at Stellar Physio Health & Wellness",
     introText: "Reflexology is a holistic therapy that focuses on stimulating specific pressure points on the feet, hands, and ears to promote natural healing, relaxation, and overall well-being. At Stellar Physio Health & Wellness, our trained reflexologists use this technique to help relieve pain, reduce stress, improve circulation, and restore the body's natural balance.",
-    introImage: "/images/consultation.webp",
+    introImage: "/images/reflex2.webp",
     offeringsTitle: "Key Benefits of Reflexology Therapy",
     offeringsList: [
       "Pain Relief & Muscle Relaxation: Helps reduce tension, stiffness, and discomfort in muscles and joints.",
@@ -307,10 +307,10 @@ export const services: Service[] = [
     slug: "occupational-therapy",
     title: "Occupational Therapy",
     shortDescription: "Helping children develop skills for daily living.",
-    heroImage: "/images/hero1.jpeg",
+    heroImage: "/images/occupationaltherapyroom.png",
     introTitle: "Occupational Therapy at Stellar Physio Health & Wellness",
     introText: "At Stellar Physio Health & Wellness, our Occupational Therapy (OT) services focus on helping children develop the skills they need to participate in daily activities with confidence and independence. We specialize in working with children diagnosed with Autism, Cerebral Palsy, and Erb's Palsy, using evidence-based interventions to enhance their functional abilities, motor coordination, and social engagement.",
-    introImage: "/images/consultation.webp",
+    introImage: "/images/therapy1.webp",
     offeringsTitle: "How Occupational Therapy Supports Your Child",
     offeringsList: [
       "Fine & Gross Motor Skills Development - Helping children improve their ability to grasp, hold, and manipulate objects for essential tasks like writing, dressing, and self-care.",
@@ -339,10 +339,10 @@ export const services: Service[] = [
     slug: "nutritional-services",
     title: "Nutritional Services",
     shortDescription: "Personalized nutrition plans to support your health goals.",
-    heroImage: "/images/hero1.jpeg",
+    heroImage: "/images/hero3.jpg",
     introTitle: "Nutritional Services at Stellar Physio Health & Wellness",
     introText: "At Stellar Physio Health & Wellness, we believe that proper nutrition plays a vital role in healing, recovery, and overall well-being. Whether you're an athlete looking to optimize performance, a patient recovering from surgery, or someone managing a chronic condition, our personalized nutritional services are designed to support your health goals and promote long-term wellness.",
-    introImage: "/images/consultation.webp",
+    introImage: "/images/diet.webp",
     offeringsTitle: "Our Nutritional Services Include",
     offeringsList: [
       "Personalized Diet Planning: Tailored meal plans based on your unique needs, dietary preferences, and medical conditions.",
@@ -370,10 +370,10 @@ export const services: Service[] = [
     slug: "stretch-exercise-therapy",
     title: "Stretch & Exercise Therapy",
     shortDescription: "Improve flexibility, relieve muscle tightness, and restore movement.",
-    heroImage: "/images/hero1.jpeg",
+    heroImage: "/images/sportshero.png",
     introTitle: "Stretch & Exercise Therapy at Stellar Physio Health & Wellness",
     introText: "Our Stretch & Exercise Therapy programs are designed to help individuals improve flexibility, relieve muscle tightness, and restore movement. Whether you have stiff joints, mobility restrictions, or simply want to enhance your range of motion, our expert therapists will guide you through personalized routines.",
-    introImage: "/images/consultation.webp",
+    introImage: "/images/stretch2.webp",
     offeringsTitle: "What We Offer",
     offeringsList: [
       "Assisted Stretching Routines to enhance flexibility.",
