@@ -6,7 +6,7 @@ export default function ChiropractorServicesPage() {
       {/* HERO */}
       <section
         className="relative h-[400px] flex items-center bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/services-hero.jpeg')" }}
+        style={{ backgroundImage: "url('/images/hero1.jpeg')" }}
       >
         <div className="absolute inset-0 bg-black/50"></div>
         <div className="container-custom relative z-10 text-white">
@@ -19,8 +19,12 @@ export default function ChiropractorServicesPage() {
       {/* INTRO */}
       <section className="py-20 bg-white">
         <div className="container-custom grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="bg-purple-light rounded-lg h-80 flex items-center justify-center text-purple font-semibold">
-            Chiropractor Photo
+          <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
+            <img
+              src="/images/chiropractor.webp"
+              alt="Chiropractor at Stellar Physio"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div>
             <h2 className="text-3xl font-bold text-purple mb-4">
@@ -126,8 +130,12 @@ export default function ChiropractorServicesPage() {
       {/* OUR TECHNIQUES */}
       <section className="py-20 bg-white">
         <div className="container-custom grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="bg-purple-light rounded-lg h-80 flex items-center justify-center text-purple font-semibold">
-            Technique Photo
+          <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
+            <img
+              src="/images/chirotech.webp"
+              alt="Chiropractic Techniques"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div>
             <h2 className="text-3xl font-bold text-purple mb-4">
@@ -216,11 +224,19 @@ export default function ChiropractorServicesPage() {
 
           {/* Photo placeholders stacked */}
           <div className="space-y-6">
-            <div className="bg-purple-light rounded-lg h-64 flex items-center justify-center text-purple font-semibold">
-              Benefit Photo 1
+            <div className="w-full h-64 rounded-lg overflow-hidden shadow-lg">
+              <img
+                src="/images/benfit1.webp"
+                alt="Chiropractic care benefit"
+                className="w-full h-full object-cover"
+              />
             </div>
-            <div className="bg-purple-light rounded-lg h-64 flex items-center justify-center text-purple font-semibold">
-              Benefit Photo 2
+            <div className="w-full h-64 rounded-lg overflow-hidden shadow-lg">
+              <img
+                src="/images/benfit2.webp"
+                alt="Chiropractic care benefit"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         </div>
