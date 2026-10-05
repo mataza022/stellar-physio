@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 import { services } from "@/lib/services";
 
 // Map each service slug to a short category label for the card badges
@@ -31,7 +33,8 @@ export default function BookAppointmentPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
-  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string>("");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -39,12 +42,6 @@ export default function BookAppointmentPage() {
     phone: "",
     details: "",
   });
-
-  // October 2026 calendar
-  const monthName = "October 2026";
-  const startOffset = 3;
-  const daysInMonth = 31;
-  const closedDays = [4, 11, 18, 25];
 
   // Filter services by search
   const filteredServices = services.filter(
@@ -55,29 +52,43 @@ export default function BookAppointmentPage() {
         .includes(searchQuery.toLowerCase())
   );
 
+  // Disable Sundays
+  const isDateDisabled = ({ date }: { date: Date }) => {
+    return date.getDay() === 0;
+  };
+
+  // Opening hours based on selected day
+  const getMinTime = () => "08:00";
+  const getMaxTime = () => {
+    if (!selectedDate) return "18:00";
+    // Saturday (6) closes at 4 PM; weekdays close at 6 PM
+    return selectedDate.getDay() === 6 ? "16:00" : "18:00";
+  };
+
+  // Format time for display (e.g., "14:30" → "2:30 PM")
+  const formatTime12 = (time: string) => {
+    if (!time) return "";
+    const [hourStr, minute] = time.split(":");
+    const hour = parseInt(hourStr, 10);
+    const period = hour >= 12 ? "PM" : "AM";
+    const hour12 = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+    return `${hour12}:${minute} ${period}`;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedService || !selectedLocation || !selectedDay) return;
+    if (!selectedService || !selectedLocation || !selectedDate || !selectedTime)
+      return;
     alert(
-      `Booking request received!\n\nService: ${selectedService}\nLocation: ${selectedLocation}\nDate: October ${selectedDay}, 2026\n\nOur team will confirm shortly.`
+      `Booking request received!\n\nService: ${selectedService}\nLocation: ${selectedLocation}\nDate: ${selectedDate.toDateString()}\nTime: ${formatTime12(
+        selectedTime
+      )}\n\nOur team will confirm shortly.`
     );
-  };
-
-  const getDayState = (day: number) => {
-    if (closedDays.includes(day)) return "closed";
-    return "available";
-  };
-
-  const stateColors: Record<string, string> = {
-    available:
-      "border-2 border-green text-green hover:bg-green hover:text-white cursor-pointer",
-    closed:
-      "border-2 border-gray-200 text-gray-300 cursor-not-allowed line-through",
   };
 
   return (
     <>
-      {/* BREADCRUMB BAR (Nairobi Hospital style) */}
+      {/* BREADCRUMB BAR */}
       <div className="bg-white border-b border-gray-200">
         <div className="container-custom flex justify-between items-center py-4">
           <Link
@@ -125,13 +136,11 @@ export default function BookAppointmentPage() {
       <div className="bg-white border-b border-gray-200">
         <div className="container-custom max-w-3xl py-6">
           <div className="flex justify-between items-start relative">
-            {/* Progress line */}
             <div className="absolute top-4 left-0 right-0 h-0.5 bg-gray-200 z-0" />
             <div
               className="absolute top-4 left-0 h-0.5 bg-purple z-0 transition-all duration-500"
               style={{ width: `${((step - 1) / 3) * 100}%` }}
             />
-
             {[
               { num: 1, label: "Service" },
               { num: 2, label: "Location" },
@@ -164,7 +173,7 @@ export default function BookAppointmentPage() {
         </div>
       </div>
 
-      {/* STEP 1 — SELECT SERVICE */}
+      {/* STEP 1 — SERVICE */}
       {step === 1 && (
         <section className="py-12 bg-gray-50 min-h-[600px]">
           <div className="container-custom max-w-4xl">
@@ -174,8 +183,6 @@ export default function BookAppointmentPage() {
             <p className="text-sm text-gray-500 mb-6">
               Select the service you would like to book. You can search below.
             </p>
-
-            {/* Search */}
             <input
               type="text"
               placeholder="Search services by name or category..."
@@ -183,8 +190,6 @@ export default function BookAppointmentPage() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full px-4 py-3 border border-gray-300 rounded-md outline-none focus:border-purple mb-8 text-sm bg-white"
             />
-
-            {/* Services Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {filteredServices.map((service) => {
                 const isSelected = selectedService === service.title;
@@ -209,8 +214,6 @@ export default function BookAppointmentPage() {
                 );
               })}
             </div>
-
-            {/* Next button */}
             <div className="mt-8 flex justify-end">
               <button
                 type="button"
@@ -229,7 +232,7 @@ export default function BookAppointmentPage() {
         </section>
       )}
 
-      {/* STEP 2 — SELECT LOCATION */}
+      {/* STEP 2 — LOCATION */}
       {step === 2 && (
         <section className="py-12 bg-gray-50 min-h-[600px]">
           <div className="container-custom max-w-4xl">
@@ -252,7 +255,6 @@ export default function BookAppointmentPage() {
               </svg>
               Back
             </button>
-
             <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
               Which branch would you like to visit?
             </h2>
@@ -262,7 +264,6 @@ export default function BookAppointmentPage() {
                 {selectedService}
               </span>
             </p>
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {branches.map((b) => {
                 const isSelected = selectedLocation === b.name;
@@ -300,7 +301,6 @@ export default function BookAppointmentPage() {
                 );
               })}
             </div>
-
             <div className="mt-8 flex justify-end">
               <button
                 type="button"
@@ -322,7 +322,7 @@ export default function BookAppointmentPage() {
       {/* STEP 3 — DATE & TIME */}
       {step === 3 && (
         <section className="py-12 bg-gray-50 min-h-[600px]">
-          <div className="container-custom max-w-2xl">
+          <div className="container-custom max-w-4xl">
             <button
               onClick={() => setStep(2)}
               className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-purple transition mb-6"
@@ -342,11 +342,10 @@ export default function BookAppointmentPage() {
               </svg>
               Back
             </button>
-
             <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
               When would you like to come in?
             </h2>
-            <p className="text-sm text-gray-500 mb-2">
+            <p className="text-sm text-gray-500 mb-6">
               Service:{" "}
               <span className="font-semibold text-purple">
                 {selectedService}
@@ -356,78 +355,84 @@ export default function BookAppointmentPage() {
                 {selectedLocation}
               </span>
             </p>
-            <p className="text-xs text-gray-500 mb-6">
-              Open Mon–Fri 8am–6pm · Sat 8am–4pm · Closed Sundays
-            </p>
 
-            {/* Calendar */}
-            <div className="bg-white rounded-lg p-6 border border-gray-200">
-              <div className="flex justify-between items-center mb-4">
-                <span className="font-semibold text-gray-700 text-sm">
-                  {monthName}
-                </span>
-              </div>
-
-              <div className="grid grid-cols-7 gap-2 mb-2 text-center text-xs text-gray-500">
-                <span>MO</span>
-                <span>TU</span>
-                <span>WE</span>
-                <span>TH</span>
-                <span>FR</span>
-                <span>SA</span>
-                <span>SU</span>
-              </div>
-
-              <div className="grid grid-cols-7 gap-2 mb-6">
-                {Array.from({ length: startOffset }).map((_, i) => (
-                  <div key={`empty-${i}`}></div>
-                ))}
-                {Array.from({ length: daysInMonth }).map((_, i) => {
-                  const day = i + 1;
-                  const state = getDayState(day);
-                  const isSelected = selectedDay === day;
-                  const isDisabled = state === "closed";
-                  return (
-                    <button
-                      key={day}
-                      type="button"
-                      disabled={isDisabled}
-                      onClick={() => setSelectedDay(day)}
-                      className={`aspect-square rounded-md flex items-center justify-center text-sm font-semibold transition ${
-                        stateColors[state]
-                      } ${
-                        isSelected ? "bg-green text-white border-green" : ""
-                      }`}
-                    >
-                      {day}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="flex flex-wrap gap-4 text-xs">
-                <div className="flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full border-2 border-green text-green flex items-center justify-center text-[10px] font-bold">
-                    01
-                  </span>
-                  <span className="text-gray-600">Available</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Calendar Column */}
+              <div>
+                <h3 className="text-sm font-bold text-gray-700 mb-3">
+                  1. Select a date
+                </h3>
+                <div className="bg-white rounded-lg p-4 border border-gray-200">
+                  <Calendar
+                    onChange={(value) => {
+                      setSelectedDate(value as Date);
+                      setSelectedTime("");
+                    }}
+                    value={selectedDate}
+                    tileDisabled={isDateDisabled}
+                    minDate={new Date()}
+                    className="w-full border-none"
+                  />
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full border-2 border-gray-200 text-gray-300 line-through flex items-center justify-center text-[10px] font-bold">
-                    01
-                  </span>
-                  <span className="text-gray-600">Closed</span>
-                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  Open Mon–Fri 8am–6pm · Sat 8am–4pm · Closed Sundays
+                </p>
+              </div>
+
+              {/* Time Input Column */}
+              <div>
+                <h3 className="text-sm font-bold text-gray-700 mb-3">
+                  2. Select a time
+                </h3>
+                {!selectedDate ? (
+                  <div className="bg-white rounded-lg p-6 border border-gray-200 text-center text-sm text-gray-500">
+                    Please select a date first.
+                  </div>
+                ) : (
+                  <div className="bg-white rounded-lg p-6 border border-gray-200">
+                    <label className="block text-xs font-semibold text-gray-700 mb-2">
+                      Preferred arrival time
+                    </label>
+                    <input
+                      type="time"
+                      value={selectedTime}
+                      onChange={(e) => setSelectedTime(e.target.value)}
+                      min={getMinTime()}
+                      max={getMaxTime()}
+                      className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white"
+                    />
+                    <p className="text-xs text-gray-500 mt-3 leading-relaxed">
+                      Pick any time between{" "}
+                      <span className="font-semibold text-purple">
+                        {formatTime12(getMinTime())}
+                      </span>{" "}
+                      and{" "}
+                      <span className="font-semibold text-purple">
+                        {formatTime12(getMaxTime())}
+                      </span>{" "}
+                      on{" "}
+                      {selectedDate.toLocaleDateString("en-US", {
+                        weekday: "long",
+                      })}
+                      .
+                    </p>
+                    {selectedTime && (
+                      <p className="text-xs text-green font-semibold mt-3">
+                        Selected: {formatTime12(selectedTime)}
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
             <div className="mt-8 flex justify-end">
               <button
                 type="button"
-                disabled={!selectedDay}
+                disabled={!selectedDate || !selectedTime}
                 onClick={() => setStep(4)}
                 className={`px-8 py-3 rounded-md font-semibold text-sm transition ${
-                  selectedDay
+                  selectedDate && selectedTime
                     ? "bg-purple text-white hover:bg-purple-dark"
                     : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
@@ -462,7 +467,6 @@ export default function BookAppointmentPage() {
               </svg>
               Back
             </button>
-
             <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6">
               Your Details
             </h2>
@@ -478,8 +482,12 @@ export default function BookAppointmentPage() {
                 {selectedLocation}
               </p>
               <p className="text-gray-700">
-                <span className="font-semibold">Date:</span> October{" "}
-                {selectedDay}, 2026
+                <span className="font-semibold">Date:</span>{" "}
+                {selectedDate?.toDateString()}
+              </p>
+              <p className="text-gray-700">
+                <span className="font-semibold">Time:</span>{" "}
+                {formatTime12(selectedTime)}
               </p>
             </div>
 
@@ -514,7 +522,6 @@ export default function BookAppointmentPage() {
                   />
                 </div>
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -544,7 +551,6 @@ export default function BookAppointmentPage() {
                   />
                 </div>
               </div>
-
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Additional Details
@@ -558,7 +564,6 @@ export default function BookAppointmentPage() {
                   className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple resize-none text-sm"
                 ></textarea>
               </div>
-
               <div className="flex justify-end pt-2">
                 <button
                   type="submit"
