@@ -33,6 +33,7 @@ const tags = [
 
 export default function BlogPage() {
   const featured = posts[0];
+  const remainingPosts = posts.slice(1);
   const recent = getRecentPosts(5);
 
   return (
@@ -50,55 +51,93 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* MAIN LAYOUT: ARTICLE + SIDEBAR */}
+      {/* MAIN LAYOUT: ARTICLES + SIDEBAR */}
       <section className="pb-16 bg-white">
         <div className="container-custom grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-10">
-          {/* LEFT COLUMN — FEATURED ARTICLE */}
-          <div>
-            <article>
-              <img
-                src={featured.image}
-                alt={featured.title}
-                className="w-full h-[340px] object-cover rounded-lg mb-5"
-              />
-              <div className="flex items-center gap-4 text-xs text-gray-500 mb-3">
-                <span>30 Views</span>
-                <span>0 Comments</span>
-                <span>{formatDate(featured.date)}</span>
-              </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-purple mb-3 leading-tight">
-                {featured.title}
-              </h2>
-              <p className="text-gray-700 mb-5 text-sm leading-relaxed">
-                {featured.excerpt}
-              </p>
+          
+          {/* LEFT COLUMN — FEATURED + ARTICLE GRID */}
+          <div className="space-y-8">
+            
+            {/* FEATURED ARTICLE */}
+            <Link href={`/blog/${featured.slug}`} className="group block">
+              <article className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300">
+                <div className="w-full h-[340px] overflow-hidden">
+                  <img
+                    src={featured.image}
+                    alt={featured.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
+                    <span className="inline-block bg-green text-white font-bold px-3 py-1 rounded uppercase tracking-wide">
+                      {featured.category}
+                    </span>
+                    <span>{formatDate(featured.date)}</span>
+                  </div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-purple mb-3 leading-tight group-hover:text-purple-dark transition">
+                    {featured.title}
+                  </h2>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                    {featured.excerpt}
+                  </p>
+                  <span className="inline-flex items-center text-green font-semibold text-sm">
+                    Read More
+                    <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </div>
+              </article>
+            </Link>
 
-              {/* Quick links to other posts */}
-              <div className="border-t border-gray-200 pt-5 mt-5">
-                <h3 className="text-lg font-bold text-purple mb-3">
-                  More Articles
-                </h3>
-                <ul className="space-y-2">
-                  {posts.slice(1).map((p) => (
-                    <li key={p.slug} className="flex gap-2 items-start">
-                      <span className="text-purple mt-1">&#8226;</span>
-                      <Link
-                        href={`/blog/${p.slug}`}
-                        className="text-gray-700 hover:text-purple font-medium text-sm leading-snug"
-                      >
-                        {p.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </article>
+            {/* ARTICLES GRID */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {remainingPosts.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group block"
+                >
+                  <article className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+                    <div className="w-full h-44 overflow-hidden">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="p-5 flex-1 flex flex-col">
+                      <span className="inline-block bg-purple text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide mb-3 self-start">
+                        {post.category}
+                      </span>
+                      <h3 className="font-bold text-purple text-base mb-2 leading-tight group-hover:text-purple-dark transition">
+                        {post.title}
+                      </h3>
+                      <p className="text-gray-600 text-xs leading-relaxed mb-4 flex-1">
+                        {post.excerpt}
+                      </p>
+                      <div className="flex items-center justify-between text-xs text-gray-500 pt-3 border-t border-gray-100">
+                        <span>{formatDate(post.date)}</span>
+                        <span className="text-green font-semibold flex items-center">
+                          Read
+                          <svg className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                  </article>
+                </Link>
+              ))}
+            </div>
+
           </div>
 
           {/* RIGHT COLUMN — SIDEBAR */}
-          <aside className="space-y-6">
+          <aside className="space-y-6 pb-24">
             {/* Search */}
-            <div className="bg-gray-50 rounded-lg p-5">
+            <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
               <h3 className="text-base font-bold text-purple mb-3">Search</h3>
               <div className="flex">
                 <input
@@ -113,7 +152,7 @@ export default function BlogPage() {
             </div>
 
             {/* Recent Posts */}
-            <div className="bg-gray-50 rounded-lg p-5">
+            <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
               <h3 className="text-base font-bold text-purple mb-3">
                 Recent Posts
               </h3>
@@ -132,7 +171,7 @@ export default function BlogPage() {
             </div>
 
             {/* Categories */}
-            <div className="bg-gray-50 rounded-lg p-5">
+            <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
               <h3 className="text-base font-bold text-purple mb-3">
                 Categories
               </h3>
@@ -152,7 +191,7 @@ export default function BlogPage() {
             </div>
 
             {/* Popular Posts */}
-            <div className="bg-gray-50 rounded-lg p-5">
+            <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
               <h3 className="text-base font-bold text-purple mb-3">
                 Popular Posts
               </h3>
@@ -181,7 +220,7 @@ export default function BlogPage() {
             </div>
 
             {/* Popular Tags */}
-            <div className="bg-gray-50 rounded-lg p-5">
+            <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
               <h3 className="text-base font-bold text-purple mb-3">
                 Popular Tags
               </h3>
