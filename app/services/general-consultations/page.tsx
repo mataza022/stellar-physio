@@ -6,7 +6,7 @@ export default function GeneralConsultationsPage() {
       {/* HERO */}
       <section
         className="relative h-[400px] flex items-center bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/services-hero.jpeg')" }}
+        style={{ backgroundImage: "url('/images/hero3.jpg')" }}
       >
         <div className="absolute inset-0 bg-black/50"></div>
         <div className="container-custom relative z-10 text-white">
@@ -19,8 +19,12 @@ export default function GeneralConsultationsPage() {
       {/* INTRO */}
       <section className="py-20 bg-white">
         <div className="container-custom grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="bg-purple-light rounded-lg h-80 flex items-center justify-center text-purple font-semibold">
-            Clinic Photo
+          <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
+            <img
+              src="/images/consultation2.webp"
+              alt="General Consultation at Stellar Physio"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div>
             <h2 className="text-3xl font-bold text-purple mb-4">
@@ -103,8 +107,12 @@ export default function GeneralConsultationsPage() {
       {/* WHY CHOOSE US */}
       <section className="py-20 bg-white">
         <div className="container-custom grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="bg-purple-light rounded-lg h-80 flex items-center justify-center text-purple font-semibold">
-            Consultation Photo
+          <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
+            <img
+              src="/images/clinicinterior.webp"
+              alt="Stellar Physio Clinic Interior"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div>
             <h2 className="text-3xl font-bold text-purple mb-4">
