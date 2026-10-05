@@ -17,7 +17,7 @@ export const posts: Post[] = [
     title: "Physiotherapy Week 2026: Free Stroke & Cardiovascular Consultations",
     excerpt: "Stellar Physio is offering free stroke and cardiovascular physiotherapy consultations from September 8–14, 2026. Book your one-on-one assessment today.",
     date: "2026-10-04",
-    image: "/images/physioweek2026.jpg",
+    image: "/images/physiotherapyweek.jpeg",
     category: "Health & Wellness",
     tags: ["Stroke Recovery", "Cardiovascular", "Physiotherapy Week", "Free Consultation"],
     relatedServices: ["/services/physiotherapy", "/services/general-consultations"],

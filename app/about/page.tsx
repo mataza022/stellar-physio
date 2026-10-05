@@ -21,7 +21,7 @@ export default function AboutPage() {
         <div className="container-custom grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
             <img
-              src="/images/ceo.webp"
+              src="/images/ceo.jpeg"
               alt="CEO of Stellar Physio"
               className="w-full h-full object-cover"
             />
