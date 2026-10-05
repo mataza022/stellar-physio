@@ -200,30 +200,24 @@ export default function FAQsPage() {
 
   return (
     <>
-      {/* HERO */}
-      <section
-        className="relative h-[400px] flex items-center bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/hero.jpeg')" }}
-      >
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="container-custom relative z-10 text-white">
-          <h1 className="text-4xl md:text-6xl font-bold">FAQs</h1>
+      {/* CLEAN PAGE HEADER (No Hero Image) */}
+      <section className="pt-20 pb-8 bg-white">
+        <div className="container-custom text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-purple mb-4">
+            Frequently Asked Questions
+          </h1>
+          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+            Answers about booking, pricing, insurance, services, our clinics and
+            home-based care at Stellar Physio.
+          </p>
         </div>
       </section>
 
       {/* FAQ SECTION */}
-      <section className="py-20 bg-white">
+      <section className="pb-20 bg-white">
         <div className="container-custom max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-purple text-center mb-3">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-center text-gray-600 mb-10">
-            Answers about booking, pricing, insurance, services, our clinics and
-            home-based care at Stellar Physio.
-          </p>
-
           {/* Category Tabs */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <div className="flex flex-wrap justify-center gap-2 mb-8">
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -231,7 +225,7 @@ export default function FAQsPage() {
                   setActiveCategory(cat);
                   setOpenIndex(0);
                 }}
-                className={`px-5 py-2 rounded-full text-sm font-semibold transition ${
+                className={`px-4 py-2 rounded-full text-xs md:text-sm font-semibold transition ${
                   activeCategory === cat
                     ? "bg-purple text-white"
                     : "bg-white text-gray-700 border border-gray-300 hover:border-purple hover:text-purple"
@@ -243,7 +237,7 @@ export default function FAQsPage() {
           </div>
 
           {/* FAQ Items */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             {filteredFaqs.map((faq, index) => {
               const isOpen = openIndex === index;
               return (
@@ -253,10 +247,10 @@ export default function FAQsPage() {
                 >
                   <button
                     onClick={() => toggle(index)}
-                    className="w-full flex items-center justify-between text-left px-6 py-5 bg-white hover:bg-gray-50 transition"
+                    className="w-full flex items-center justify-between text-left px-5 py-4 bg-white hover:bg-gray-50 transition"
                     aria-expanded={isOpen}
                   >
-                    <span className="font-bold text-gray-800 pr-4">
+                    <span className="font-bold text-gray-800 pr-4 text-sm md:text-base">
                       {faq.question}
                     </span>
                     <span
@@ -270,7 +264,7 @@ export default function FAQsPage() {
                     </span>
                   </button>
                   {isOpen && (
-                    <div className="px-6 pb-6 text-gray-600 bg-white">
+                    <div className="px-5 pb-5 text-gray-600 bg-white text-sm leading-relaxed">
                       {faq.answer}
                     </div>
                   )}
@@ -280,18 +274,18 @@ export default function FAQsPage() {
           </div>
 
           {/* CTA at bottom */}
-          <div className="mt-16 text-center bg-purple-light rounded-lg p-10">
+          <div className="mt-12 text-center bg-purple-light rounded-lg p-8">
             <h3 className="text-2xl font-bold text-purple mb-3">
               Still have questions?
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 mb-6 text-sm">
               Our team is happy to help. Reach out and we&apos;ll get back to
               you shortly.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-wrap justify-center gap-3">
               <Link
-                href="/book-appointment"
-                className="bg-purple text-white px-6 py-3 rounded font-semibold hover:bg-purple-dark transition"
+                href="/contact"
+                className="bg-purple text-white px-6 py-2.5 rounded font-semibold hover:bg-purple-dark transition text-sm"
               >
                 Contact Us
               </Link>
@@ -299,7 +293,7 @@ export default function FAQsPage() {
                 href="https://api.whatsapp.com/send?phone=254719881291"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-green text-white px-6 py-3 rounded font-semibold hover:bg-green-dark transition"
+                className="bg-green text-white px-6 py-2.5 rounded font-semibold hover:bg-green-dark transition text-sm"
               >
                 Chat on WhatsApp
               </a>
