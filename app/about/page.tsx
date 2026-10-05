@@ -19,11 +19,11 @@ export default function AboutPage() {
       {/* CEO MESSAGE */}
       <section className="py-20 bg-white">
         <div className="container-custom grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
+          <div className="w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-lg">
             <img
               src="/images/ceo.jpeg"
               alt="CEO of Stellar Physio"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-top"
             />
           </div>
           <div>
