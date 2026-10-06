@@ -45,7 +45,6 @@ export default function BookAppointmentPage() {
     details: "",
   });
 
-  // Submission states
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -103,18 +102,16 @@ export default function BookAppointmentPage() {
 
     try {
       await addDoc(collection(db, "bookings"), {
-        // Booking details
         service: finalServiceName,
         serviceIsCustom: selectedService === "Other",
         customServiceDescription:
           selectedService === "Other" ? customService.trim() : "",
         location: selectedLocation,
-        date: selectedDate.toISOString().split("T")[0], // "2026-10-06"
+        date: selectedDate.toISOString().split("T")[0],
         dateReadable: selectedDate.toDateString(),
-        time: selectedTime, // "14:30"
+        time: selectedTime,
         timeReadable: formatTime12(selectedTime),
 
-        // Patient details
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
         fullName: `${formData.firstName.trim()} ${formData.lastName.trim()}`,
@@ -122,7 +119,6 @@ export default function BookAppointmentPage() {
         phone: formData.phone.trim(),
         details: formData.details.trim(),
 
-        // Metadata for CRM
         status: "pending",
         source: "website",
         createdAt: serverTimestamp(),
@@ -192,8 +188,13 @@ export default function BookAppointmentPage() {
             </div>
 
             <p className="text-xs text-gray-500 mb-6">
-              A confirmation email will be sent to{" "}
-              <strong>{formData.email}</strong>
+              Our team will contact you at <strong>{formData.email}</strong>
+              {formData.phone && (
+                <>
+                  {" "}or <strong>{formData.phone}</strong>
+                </>
+              )}{" "}
+              to confirm your appointment.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -860,7 +861,6 @@ export default function BookAppointmentPage() {
                 ></textarea>
               </div>
 
-              {/* Error message */}
               {errorMessage && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">
                   {errorMessage}
