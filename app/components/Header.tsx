@@ -39,11 +39,9 @@ const aboutDropdown = [
   { label: "Careers", href: "/about/careers" },
 ];
 
-// Search index — everything searchable across the site
 type SearchItem = { type: string; title: string; href: string };
 
 const searchIndex: SearchItem[] = [
-  // SERVICES
   { type: "Service", title: "General Consultations", href: "/services/general-consultations" },
   { type: "Service", title: "Chiropractor Services", href: "/services/chiropractor-services" },
   { type: "Service", title: "Physiotherapy", href: "/services/physiotherapy" },
@@ -56,7 +54,6 @@ const searchIndex: SearchItem[] = [
   { type: "Service", title: "Occupational Therapy", href: "/services/occupational-therapy" },
   { type: "Service", title: "Nutritional Services", href: "/services/nutritional-services" },
   { type: "Service", title: "Stretch & Exercise Therapy", href: "/services/stretch-exercise-therapy" },
-  // CONDITIONS
   { type: "Condition", title: "Arthritis & Joint Pains", href: "/conditions/arthritis-joint-pains" },
   { type: "Condition", title: "Lower Back Pain & Spine Health", href: "/conditions/lower-back-pain-spine-health" },
   { type: "Condition", title: "Sports Injuries", href: "/conditions/sports-injuries" },
@@ -64,11 +61,9 @@ const searchIndex: SearchItem[] = [
   { type: "Condition", title: "Pre- & Post-Surgery Rehab", href: "/conditions/pre-post-surgery-rehab" },
   { type: "Condition", title: "Pre & Post-Natal Massages", href: "/conditions/pre-post-natal-massages" },
   { type: "Condition", title: "Developmental Milestones for Autism & Cerebral Palsy", href: "/conditions/developmental-milestones" },
-  // BRANCHES
   { type: "Branch", title: "Kenital Plaza, Ngong Road", href: "/branches/kenital-plaza" },
   { type: "Branch", title: "Karen Country Club", href: "/branches/karen-country-club" },
   { type: "Branch", title: "Parklands Sports Club", href: "/branches/parklands-sports-club" },
-  // PAGES / SECTIONS
   { type: "Page", title: "Book Appointment", href: "/book-appointment" },
   { type: "Page", title: "Contact Us", href: "/contact" },
   { type: "Page", title: "FAQs — Frequently Asked Questions", href: "/faqs" },
@@ -97,7 +92,6 @@ export default function Header() {
     setSearchQuery("");
   };
 
-  // Escape key closes search
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape" && searchOpen) closeSearch();
@@ -106,14 +100,12 @@ export default function Header() {
     return () => window.removeEventListener("keydown", onKey);
   }, [searchOpen]);
 
-  // Focus input when search opens
   useEffect(() => {
     if (searchOpen) {
       setTimeout(() => searchInputRef.current?.focus(), 200);
     }
   }, [searchOpen]);
 
-  // Filter search
   const query = searchQuery.trim().toLowerCase();
   const searchResults =
     query === ""
@@ -211,7 +203,6 @@ export default function Header() {
       {/* MAIN HEADER */}
       <header className="bg-white shadow-md sticky top-0 z-50">
         <div className="container-custom flex justify-between items-center py-3 md:py-4">
-          {/* Mobile hamburger button */}
           <button
             onClick={toggleMenu}
             className="lg:hidden text-purple hover:text-purple-dark hover:scale-110 active:scale-95 transition-all duration-200"
@@ -232,7 +223,7 @@ export default function Header() {
             </svg>
           </button>
 
-          {/* Logo — bigger, hover effect */}
+          {/* Logo — enlarged on desktop + mobile */}
           <Link
             href="/"
             className="mx-auto lg:mx-0 flex items-center transition-transform duration-300 hover:scale-105"
@@ -240,11 +231,10 @@ export default function Header() {
             <img
               src="/images/Stellarphysio_NEW_logo.png"
               alt="Stellar Physio"
-              className="h-20 md:h-28 w-auto"
+              className="h-24 md:h-36 w-auto"
             />
           </Link>
 
-          {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-6 text-sm">
             <Link href="/" className="hover:text-purple font-medium">
               Home
@@ -344,7 +334,6 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* Search icon */}
           <button
             onClick={() => setSearchOpen(true)}
             className="text-purple hover:text-purple-dark hover:scale-110 active:scale-95 transition-all duration-200"
@@ -364,7 +353,6 @@ export default function Header() {
             </svg>
           </button>
 
-          {/* Desktop appointment button */}
           <Link
             href="/book-appointment"
             className="hidden lg:inline-block bg-purple text-white px-5 py-2 rounded font-semibold hover:bg-purple-dark hover:scale-105 transition-all duration-200 text-sm"
@@ -380,7 +368,6 @@ export default function Header() {
           searchOpen ? "visible" : "invisible pointer-events-none"
         }`}
       >
-        {/* Backdrop */}
         <div
           onClick={closeSearch}
           className={`absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300 ${
@@ -388,14 +375,12 @@ export default function Header() {
           }`}
         />
 
-        {/* Search Panel — slides down from top */}
         <div
           className={`relative bg-white shadow-2xl transition-transform duration-300 ease-out ${
             searchOpen ? "translate-y-0" : "-translate-y-full"
           }`}
         >
           <div className="container-custom py-6">
-            {/* Input */}
             <div className="flex items-center gap-4 border-b-2 border-purple pb-4">
               <svg
                 viewBox="0 0 24 24"
@@ -444,7 +429,6 @@ export default function Header() {
               </button>
             </div>
 
-            {/* Results */}
             <div className="mt-4 max-h-[60vh] overflow-y-auto">
               {query === "" && (
                 <p className="text-sm text-gray-500 py-4">
@@ -544,12 +528,12 @@ export default function Header() {
             menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          {/* Header Bar (Logo Left, Icons Right) - Compact Purple Background & Cropped White Logo */}
-          <div className="relative h-16 px-4 bg-purple shadow-sm border-b border-purple-dark sticky top-0 z-10 flex items-center justify-between overflow-hidden">
+          {/* Mobile menu header — bigger logo */}
+          <div className="relative h-20 px-4 bg-purple shadow-sm border-b border-purple-dark sticky top-0 z-10 flex items-center justify-between overflow-hidden">
             <img
               src="/images/stellarphysiowhitelogo.png"
               alt="Stellar Physio"
-              className="h-28 w-auto object-contain -ml-2"
+              className="h-36 w-auto object-contain -ml-2"
             />
             <div className="flex items-center gap-1">
               <button
@@ -591,9 +575,7 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Menu items */}
           <ul className="flex-1">
-            {/* Home */}
             <li
               className={`border-b border-gray-100 ${
                 menuOpen ? "animate-fadeSlideIn" : ""
@@ -636,7 +618,6 @@ export default function Header() {
               </Link>
             </li>
 
-            {/* About Us */}
             <li
               className={`border-b border-gray-100 ${
                 menuOpen ? "animate-fadeSlideIn" : ""
@@ -709,7 +690,6 @@ export default function Header() {
               )}
             </li>
 
-            {/* Services */}
             <li
               className={`border-b border-gray-100 ${
                 menuOpen ? "animate-fadeSlideIn" : ""
@@ -772,7 +752,6 @@ export default function Header() {
               )}
             </li>
 
-            {/* Conditions */}
             <li
               className={`border-b border-gray-100 ${
                 menuOpen ? "animate-fadeSlideIn" : ""
@@ -835,7 +814,6 @@ export default function Header() {
               )}
             </li>
 
-            {/* Branches */}
             <li
               className={`border-b border-gray-100 ${
                 menuOpen ? "animate-fadeSlideIn" : ""
@@ -899,7 +877,6 @@ export default function Header() {
               )}
             </li>
 
-            {/* FAQs */}
             <li
               className={`border-b border-gray-100 ${
                 menuOpen ? "animate-fadeSlideIn" : ""
@@ -942,7 +919,6 @@ export default function Header() {
               </Link>
             </li>
 
-            {/* Contact Us */}
             <li
               className={`border-b border-gray-100 ${
                 menuOpen ? "animate-fadeSlideIn" : ""
@@ -985,7 +961,6 @@ export default function Header() {
               </Link>
             </li>
 
-            {/* Blog */}
             <li
               className={`border-b border-gray-100 ${
                 menuOpen ? "animate-fadeSlideIn" : ""
@@ -1031,7 +1006,6 @@ export default function Header() {
             </li>
           </ul>
 
-          {/* Book Appointment button at bottom */}
           <div className="p-5 border-t border-gray-200 bg-white sticky bottom-0">
             <Link
               href="/book-appointment"
