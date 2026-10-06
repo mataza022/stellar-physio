@@ -10,7 +10,8 @@ export default function ConditionsPage() {
             Conditions We Treat
           </h1>
           <p className="text-gray-600 max-w-2xl text-lg">
-            Expert physiotherapy care for a wide range of musculoskeletal and neurological conditions.
+            Expert physiotherapy care for a wide range of musculoskeletal and
+            neurological conditions.
           </p>
         </div>
 
@@ -19,14 +20,18 @@ export default function ConditionsPage() {
             <Link
               key={condition.slug}
               href={`/conditions/${condition.slug}`}
-              className="bg-white rounded-lg p-6 shadow-sm border border-gray-100 hover:shadow-lg hover:border-purple/30 transition-all duration-300 group"
+              className="bg-white rounded-lg p-6 shadow-sm border border-gray-100 hover:shadow-lg hover:border-purple/30 transition-all duration-300 group flex flex-col"
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-purple-light flex items-center justify-center flex-shrink-0 group-hover:bg-purple transition-colors">
-                  <span className="text-purple group-hover:text-white font-bold text-xl">
-                    {condition.title.charAt(0)}
-                  </span>
+                {/* Condition hero image thumbnail */}
+                <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 shadow-sm bg-gray-100">
+                  <img
+                    src={condition.heroImage}
+                    alt={condition.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
                 </div>
+
                 <div>
                   <h2 className="text-xl font-bold text-purple mb-2 group-hover:text-purple-dark transition-colors">
                     {condition.title}
@@ -36,10 +41,21 @@ export default function ConditionsPage() {
                   </p>
                 </div>
               </div>
+
               <div className="mt-4 flex items-center text-sm font-semibold text-green">
                 Read More
-                <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </div>
             </Link>
