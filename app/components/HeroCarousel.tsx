@@ -18,7 +18,7 @@ type Slide = {
 const slides: Slide[] = [
   {
     image: "/images/hero1.jpeg",
-    tag: "Expert Care Across All Ailments",
+    tag: "Expert Care",
     title: "Your Lifestyle Clinic.",
     description:
       "A leading physiotherapy clinic in Nairobi with over 12 years of experience. We identify the root cause of your pain — not just the symptoms.",
@@ -30,7 +30,7 @@ const slides: Slide[] = [
   {
     image: "/images/hero2.JPG",
     mobileImage: "/images/hero2mobile.png",
-    tag: "Expert Care Across All Ailments",
+    tag: "Expert Care",
     title: "Your Lifestyle Clinic.",
     description:
       "Expert treatment for back pain, sports injuries, joint pain, and musculoskeletal conditions. Personalized plans for lasting recovery.",

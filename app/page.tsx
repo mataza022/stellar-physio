@@ -63,7 +63,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Lower Back Pain & Spine Health */}
             <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
-              <div className="w-full h-56 bg-gray-50 flex items-center justify-center overflow-hidden">
+              <div className="w-full h-80 bg-white flex items-center justify-center overflow-hidden p-4">
                 <img
                   src="/images/lowerpain.webp"
                   alt="Lower Back Pain & Spine Health"
@@ -89,7 +89,7 @@ export default function HomePage() {
 
             {/* Stroke Rehabilitation */}
             <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
-              <div className="w-full h-56 bg-gray-50 flex items-center justify-center overflow-hidden">
+              <div className="w-full h-80 bg-white flex items-center justify-center overflow-hidden p-4">
                 <img
                   src="/images/rehabilitation.webp"
                   alt="Stroke Rehabilitation"
@@ -117,7 +117,7 @@ export default function HomePage() {
 
             {/* Arthritis & Joint Pains */}
             <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
-              <div className="w-full h-56 bg-gray-50 flex items-center justify-center overflow-hidden">
+              <div className="w-full h-80 bg-white flex items-center justify-center overflow-hidden p-4">
                 <img
                   src="/images/arthritis&jointpain.webp"
                   alt="Arthritis & Joint Pains"
