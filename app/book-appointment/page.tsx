@@ -32,6 +32,7 @@ export default function BookAppointmentPage() {
   const [step, setStep] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [customService, setCustomService] = useState("");
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string>("");
@@ -70,12 +71,23 @@ export default function BookAppointmentPage() {
     return `${hour12}:${minute} ${period}`;
   };
 
+  // Determine what to display as the final service value
+  const finalServiceName =
+    selectedService === "Other" && customService.trim()
+      ? `Other: ${customService.trim()}`
+      : selectedService;
+
+  const canContinueFromStep1 =
+    selectedService === "Other"
+      ? customService.trim().length > 2
+      : !!selectedService;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedService || !selectedLocation || !selectedDate || !selectedTime)
+    if (!finalServiceName || !selectedLocation || !selectedDate || !selectedTime)
       return;
     alert(
-      `Booking request received!\n\nService: ${selectedService}\nLocation: ${selectedLocation}\nDate: ${selectedDate.toDateString()}\nTime: ${formatTime12(
+      `Booking request received!\n\nService: ${finalServiceName}\nLocation: ${selectedLocation}\nDate: ${selectedDate.toDateString()}\nTime: ${formatTime12(
         selectedTime
       )}\n\nOur team will confirm shortly.`
     );
@@ -266,7 +278,10 @@ export default function BookAppointmentPage() {
                   <button
                     key={service.slug}
                     type="button"
-                    onClick={() => setSelectedService(service.title)}
+                    onClick={() => {
+                      setSelectedService(service.title);
+                      setCustomService("");
+                    }}
                     className={`text-left bg-white rounded-md p-4 border transition-all ${
                       isSelected
                         ? "border-purple ring-2 ring-purple/20 shadow-md"
@@ -282,14 +297,57 @@ export default function BookAppointmentPage() {
                   </button>
                 );
               })}
+
+              {/* "Other" option */}
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedService("Other");
+                  setCustomService("");
+                }}
+                className={`text-left bg-white rounded-md p-4 border transition-all ${
+                  selectedService === "Other"
+                    ? "border-purple ring-2 ring-purple/20 shadow-md"
+                    : "border-gray-200 hover:border-purple/50 hover:shadow-sm"
+                }`}
+              >
+                <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-purple mb-1">
+                  Something Else
+                </span>
+                <h3 className="text-sm md:text-base font-semibold text-gray-800">
+                  Other — describe your issue
+                </h3>
+              </button>
             </div>
+
+            {/* Custom service input (only shows when "Other" is selected) */}
+            {selectedService === "Other" && (
+              <div className="mt-6 bg-white border border-purple/30 rounded-lg p-5 shadow-sm">
+                <label className="block text-sm font-semibold text-gray-800 mb-2">
+                  Please describe your issue or the service you need
+                  <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  rows={3}
+                  value={customService}
+                  onChange={(e) => setCustomService(e.target.value)}
+                  placeholder="E.g., I have persistent shoulder pain that hasn't gone away for two weeks..."
+                  className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white resize-none"
+                />
+                <p className="text-xs text-gray-500 mt-2">
+                  A brief description helps us match you with the right
+                  specialist.
+                </p>
+              </div>
+            )}
+
             <div className="mt-8 flex justify-end">
               <button
                 type="button"
-                disabled={!selectedService}
+                disabled={!canContinueFromStep1}
                 onClick={() => setStep(2)}
                 className={`px-8 py-3 rounded-md font-semibold text-sm transition ${
-                  selectedService
+                  canContinueFromStep1
                     ? "bg-purple text-white hover:bg-purple-dark"
                     : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
@@ -330,7 +388,7 @@ export default function BookAppointmentPage() {
             <p className="text-sm text-gray-500 mb-8">
               Selected service:{" "}
               <span className="font-semibold text-purple">
-                {selectedService}
+                {finalServiceName}
               </span>
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -388,7 +446,7 @@ export default function BookAppointmentPage() {
         </section>
       )}
 
-      {/* STEP 3 — DATE & TIME (REVAMPED) */}
+      {/* STEP 3 — DATE & TIME */}
       {step === 3 && (
         <section className="py-12 bg-gray-50 min-h-[600px]">
           <div className="container-custom max-w-5xl">
@@ -417,7 +475,7 @@ export default function BookAppointmentPage() {
             <p className="text-sm text-gray-500 mb-8">
               Service:{" "}
               <span className="font-semibold text-purple">
-                {selectedService}
+                {finalServiceName}
               </span>{" "}
               · Location:{" "}
               <span className="font-semibold text-purple">
@@ -464,7 +522,7 @@ export default function BookAppointmentPage() {
                     Select a time
                   </h3>
                 </div>
-                
+
                 {!selectedDate ? (
                   <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
                     <svg className="w-12 h-12 text-gray-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
@@ -494,7 +552,7 @@ export default function BookAppointmentPage() {
                           className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-lg outline-none focus:border-purple text-lg font-semibold text-gray-800 bg-white transition"
                         />
                       </div>
-                      
+
                       <div className="mt-4 bg-purple-light/50 rounded-lg p-4">
                         <p className="text-xs text-gray-600 leading-relaxed">
                           Pick any time between{" "}
@@ -534,7 +592,6 @@ export default function BookAppointmentPage() {
               </div>
             </div>
 
-            {/* Continue button */}
             <div className="mt-8 flex justify-end">
               <button
                 type="button"
@@ -584,9 +641,9 @@ export default function BookAppointmentPage() {
             <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-8">
               <h3 className="text-sm font-bold text-gray-800 mb-4 uppercase tracking-wider">Booking Summary</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div>
+                <div className="md:col-span-2">
                   <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Service</p>
-                  <p className="font-semibold text-gray-800">{selectedService}</p>
+                  <p className="font-semibold text-gray-800">{finalServiceName}</p>
                 </div>
                 <div>
                   <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Location</p>
