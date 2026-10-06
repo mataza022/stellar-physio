@@ -18,54 +18,54 @@ export default function ServicesPage() {
           {services.map((service) => (
             <div
               key={service.slug}
-              className="bg-white rounded-lg p-6 shadow-sm border border-gray-100 hover:shadow-lg hover:border-purple/30 transition-all duration-300 group flex flex-col h-full"
+              className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group flex flex-col"
             >
-              {/* Top Section: Image + Text */}
-              <div className="flex items-start gap-4 mb-6 flex-1">
-                <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 shadow-sm bg-gray-100">
-                  <img
-                    src={service.heroImage}
-                    alt={service.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-purple mb-2 group-hover:text-purple-dark transition-colors">
-                    {service.title}
-                  </h2>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {service.shortDescription}
-                  </p>
-                </div>
+              {/* Full-width hero image */}
+              <div className="w-full h-52 overflow-hidden bg-gray-50">
+                <img
+                  src={service.heroImage}
+                  alt={service.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
               </div>
 
-              {/* Bottom Section: Buttons */}
-              <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-100">
-                <Link
-                  href="/book-appointment"
-                  className="bg-green text-white px-4 py-2 rounded text-sm font-semibold hover:bg-green-dark transition"
-                >
-                  Book Now
-                </Link>
-                <Link
-                  href={`/services/${service.slug}`}
-                  className="text-purple font-semibold text-sm flex items-center hover:text-purple-dark transition-colors group-hover:translate-x-1 duration-300"
-                >
-                  Read More
-                  <svg
-                    className="w-4 h-4 ml-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+              {/* Content */}
+              <div className="p-6 flex flex-col flex-1">
+                <h2 className="text-xl font-bold text-purple mb-2 group-hover:text-purple-dark transition-colors">
+                  {service.title}
+                </h2>
+                <p className="text-gray-600 text-sm leading-relaxed mb-6 flex-1">
+                  {service.shortDescription}
+                </p>
+
+                {/* Action buttons */}
+                <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+                  <Link
+                    href="/book-appointment"
+                    className="bg-green text-white px-4 py-2 rounded text-sm font-semibold hover:bg-green-dark transition"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </Link>
+                    Book Now
+                  </Link>
+                  <Link
+                    href={`/services/${service.slug}`}
+                    className="text-purple font-semibold text-sm flex items-center hover:text-purple-dark transition-colors"
+                  >
+                    Read More
+                    <svg
+                      className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
