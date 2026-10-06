@@ -4,9 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 import { services } from "@/lib/services";
 
-// Map each service slug to a short category label for the card badges
 const serviceCategories: Record<string, string> = {
   "general-consultations": "Consultation",
   "chiropractor-services": "Chiropractic",
@@ -44,6 +45,11 @@ export default function BookAppointmentPage() {
     details: "",
   });
 
+  // Submission states
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const filteredServices = services.filter(
     (s) =>
       s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -71,7 +77,6 @@ export default function BookAppointmentPage() {
     return `${hour12}:${minute} ${period}`;
   };
 
-  // Determine what to display as the final service value
   const finalServiceName =
     selectedService === "Other" && customService.trim()
       ? `Other: ${customService.trim()}`
@@ -82,20 +87,140 @@ export default function BookAppointmentPage() {
       ? customService.trim().length > 2
       : !!selectedService;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!finalServiceName || !selectedLocation || !selectedDate || !selectedTime)
+    setErrorMessage(null);
+
+    if (
+      !finalServiceName ||
+      !selectedLocation ||
+      !selectedDate ||
+      !selectedTime
+    )
       return;
-    alert(
-      `Booking request received!\n\nService: ${finalServiceName}\nLocation: ${selectedLocation}\nDate: ${selectedDate.toDateString()}\nTime: ${formatTime12(
-        selectedTime
-      )}\n\nOur team will confirm shortly.`
-    );
+
+    setSubmitting(true);
+
+    try {
+      await addDoc(collection(db, "bookings"), {
+        // Booking details
+        service: finalServiceName,
+        serviceIsCustom: selectedService === "Other",
+        customServiceDescription:
+          selectedService === "Other" ? customService.trim() : "",
+        location: selectedLocation,
+        date: selectedDate.toISOString().split("T")[0], // "2026-10-06"
+        dateReadable: selectedDate.toDateString(),
+        time: selectedTime, // "14:30"
+        timeReadable: formatTime12(selectedTime),
+
+        // Patient details
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        fullName: `${formData.firstName.trim()} ${formData.lastName.trim()}`,
+        email: formData.email.trim().toLowerCase(),
+        phone: formData.phone.trim(),
+        details: formData.details.trim(),
+
+        // Metadata for CRM
+        status: "pending",
+        source: "website",
+        createdAt: serverTimestamp(),
+      });
+
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Booking submission failed:", error);
+      setErrorMessage(
+        "We couldn't submit your booking. Please check your internet connection and try again, or call us directly at +254 706 101 999."
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
+  // ============================================
+  // SUCCESS SCREEN
+  // ============================================
+  if (submitted) {
+    return (
+      <section className="min-h-[70vh] flex items-center justify-center py-20 bg-gray-50">
+        <div className="container-custom max-w-lg text-center">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10">
+            <div className="w-20 h-20 rounded-full bg-green/10 flex items-center justify-center mx-auto mb-6">
+              <div className="w-14 h-14 rounded-full bg-green flex items-center justify-center">
+                <svg
+                  className="w-8 h-8 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+            </div>
+            <h1 className="text-2xl md:text-3xl font-bold text-purple mb-3">
+              Booking Request Received
+            </h1>
+            <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+              Thank you, <strong>{formData.firstName}</strong>. Our team has
+              received your booking request and will contact you shortly to
+              confirm your appointment.
+            </p>
+
+            <div className="bg-gray-50 rounded-lg p-5 text-left text-sm mb-6">
+              <p className="text-gray-500 text-xs uppercase tracking-wider mb-2 font-semibold">
+                Booking Summary
+              </p>
+              <p className="text-gray-800 mb-1">
+                <strong>Service:</strong> {finalServiceName}
+              </p>
+              <p className="text-gray-800 mb-1">
+                <strong>Location:</strong> {selectedLocation}
+              </p>
+              <p className="text-gray-800 mb-1">
+                <strong>Date:</strong> {selectedDate?.toDateString()}
+              </p>
+              <p className="text-gray-800">
+                <strong>Time:</strong> {formatTime12(selectedTime)}
+              </p>
+            </div>
+
+            <p className="text-xs text-gray-500 mb-6">
+              A confirmation email will be sent to{" "}
+              <strong>{formData.email}</strong>
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href="/"
+                className="px-6 py-2.5 rounded-md font-semibold text-sm bg-purple text-white hover:bg-purple-dark transition"
+              >
+                Back to Home
+              </Link>
+              <a
+                href="tel:+254706101999"
+                className="px-6 py-2.5 rounded-md font-semibold text-sm border border-purple text-purple hover:bg-purple-light transition"
+              >
+                Call Us Instead
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // ============================================
+  // BOOKING FLOW
+  // ============================================
   return (
     <>
-      {/* Global styles override for react-calendar */}
       <style jsx global>{`
         .react-calendar {
           width: 100%;
@@ -298,7 +423,6 @@ export default function BookAppointmentPage() {
                 );
               })}
 
-              {/* "Other" option */}
               <button
                 type="button"
                 onClick={() => {
@@ -320,7 +444,6 @@ export default function BookAppointmentPage() {
               </button>
             </div>
 
-            {/* Custom service input (only shows when "Other" is selected) */}
             {selectedService === "Other" && (
               <div className="mt-6 bg-white border border-purple/30 rounded-lg p-5 shadow-sm">
                 <label className="block text-sm font-semibold text-gray-800 mb-2">
@@ -484,7 +607,6 @@ export default function BookAppointmentPage() {
             </p>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Calendar Column */}
               <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-8 h-8 rounded-full bg-purple text-white flex items-center justify-center text-sm font-bold">
@@ -512,7 +634,6 @@ export default function BookAppointmentPage() {
                 </div>
               </div>
 
-              {/* Time Input Column */}
               <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm flex flex-col">
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-8 h-8 rounded-full bg-purple text-white flex items-center justify-center text-sm font-bold">
@@ -616,7 +737,8 @@ export default function BookAppointmentPage() {
           <div className="container-custom max-w-2xl">
             <button
               onClick={() => setStep(3)}
-              className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-purple transition mb-6"
+              disabled={submitting}
+              className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-purple transition mb-6 disabled:opacity-50"
             >
               <svg
                 className="w-4 h-4"
@@ -637,7 +759,6 @@ export default function BookAppointmentPage() {
               Your Details
             </h2>
 
-            {/* Booking Summary */}
             <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-8">
               <h3 className="text-sm font-bold text-gray-800 mb-4 uppercase tracking-wider">Booking Summary</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -669,11 +790,12 @@ export default function BookAppointmentPage() {
                   <input
                     type="text"
                     required
+                    disabled={submitting}
                     value={formData.firstName}
                     onChange={(e) =>
                       setFormData({ ...formData, firstName: e.target.value })
                     }
-                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white"
+                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white disabled:bg-gray-50"
                   />
                 </div>
                 <div>
@@ -683,11 +805,12 @@ export default function BookAppointmentPage() {
                   <input
                     type="text"
                     required
+                    disabled={submitting}
                     value={formData.lastName}
                     onChange={(e) =>
                       setFormData({ ...formData, lastName: e.target.value })
                     }
-                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white"
+                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white disabled:bg-gray-50"
                   />
                 </div>
               </div>
@@ -699,11 +822,12 @@ export default function BookAppointmentPage() {
                   <input
                     type="email"
                     required
+                    disabled={submitting}
                     value={formData.email}
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white"
+                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white disabled:bg-gray-50"
                   />
                 </div>
                 <div>
@@ -712,11 +836,12 @@ export default function BookAppointmentPage() {
                   </label>
                   <input
                     type="tel"
+                    disabled={submitting}
                     value={formData.phone}
                     onChange={(e) =>
                       setFormData({ ...formData, phone: e.target.value })
                     }
-                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white"
+                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white disabled:bg-gray-50"
                   />
                 </div>
               </div>
@@ -726,19 +851,58 @@ export default function BookAppointmentPage() {
                 </label>
                 <textarea
                   rows={4}
+                  disabled={submitting}
                   value={formData.details}
                   onChange={(e) =>
                     setFormData({ ...formData, details: e.target.value })
                   }
-                  className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple resize-none text-sm bg-white"
+                  className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple resize-none text-sm bg-white disabled:bg-gray-50"
                 ></textarea>
               </div>
+
+              {/* Error message */}
+              {errorMessage && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">
+                  {errorMessage}
+                </div>
+              )}
+
               <div className="flex justify-end pt-2">
                 <button
                   type="submit"
-                  className="bg-purple text-white px-8 py-3 rounded-md font-semibold text-sm hover:bg-purple-dark transition shadow-md"
+                  disabled={submitting}
+                  className={`px-8 py-3 rounded-md font-semibold text-sm transition shadow-md flex items-center gap-2 ${
+                    submitting
+                      ? "bg-purple/70 text-white cursor-wait"
+                      : "bg-purple text-white hover:bg-purple-dark"
+                  }`}
                 >
-                  Confirm Booking
+                  {submitting ? (
+                    <>
+                      <svg
+                        className="w-4 h-4 animate-spin"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                        />
+                      </svg>
+                      Submitting...
+                    </>
+                  ) : (
+                    "Confirm Booking"
+                  )}
                 </button>
               </div>
             </form>
