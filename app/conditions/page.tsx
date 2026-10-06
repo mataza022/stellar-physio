@@ -90,12 +90,12 @@ export default function ConditionsPage() {
               key={condition.slug}
               className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group flex flex-col"
             >
-              {/* Hero image */}
-              <div className="w-full h-52 overflow-hidden bg-gray-50">
+              {/* Hero image — no cropping */}
+              <div className="w-full h-72 bg-gray-50 flex items-center justify-center overflow-hidden p-4">
                 <img
                   src={condition.heroImage}
                   alt={condition.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-contain"
                 />
               </div>
 
