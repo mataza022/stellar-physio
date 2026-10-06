@@ -27,8 +27,9 @@ export default function HomePage() {
           ============================================ */}
       <section className="py-16 bg-white">
         <div className="container-custom max-w-4xl text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-purple mb-6">
-            Welcome to Stellar Physio Health and Wellness Centre
+          <h2 className="text-4xl md:text-5xl font-serif font-bold leading-tight mb-8">
+            <span className="block text-green">Stellar Physio</span>
+            <span className="block text-purple">Health &amp; Wellness!</span>
           </h2>
           <p className="text-gray-700 leading-relaxed text-sm md:text-base">
             Welcome to Stellar Physio Health and Wellness Centre, a leading
@@ -62,11 +63,13 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Lower Back Pain & Spine Health */}
             <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
-              <img
-                src="/images/lowerpain.webp"
-                alt="Lower Back Pain & Spine Health"
-                className="w-full h-52 object-cover"
-              />
+              <div className="w-full h-56 bg-gray-50 flex items-center justify-center overflow-hidden">
+                <img
+                  src="/images/lowerpain.webp"
+                  alt="Lower Back Pain & Spine Health"
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <div className="p-6 flex flex-col flex-1">
                 <h3 className="text-xl font-bold text-purple mb-3">
                   Lower Back Pain &amp; Spine Health
@@ -86,11 +89,13 @@ export default function HomePage() {
 
             {/* Stroke Rehabilitation */}
             <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
-              <img
-                src="/images/rehabilitation.webp"
-                alt="Stroke Rehabilitation"
-                className="w-full h-52 object-cover"
-              />
+              <div className="w-full h-56 bg-gray-50 flex items-center justify-center overflow-hidden">
+                <img
+                  src="/images/rehabilitation.webp"
+                  alt="Stroke Rehabilitation"
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <div className="p-6 flex flex-col flex-1">
                 <h3 className="text-xl font-bold text-purple mb-3">
                   Stroke Rehabilitation
@@ -112,11 +117,13 @@ export default function HomePage() {
 
             {/* Arthritis & Joint Pains */}
             <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
-              <img
-                src="/images/arthritis&jointpain.webp"
-                alt="Arthritis & Joint Pains"
-                className="w-full h-52 object-cover"
-              />
+              <div className="w-full h-56 bg-gray-50 flex items-center justify-center overflow-hidden">
+                <img
+                  src="/images/arthritis&jointpain.webp"
+                  alt="Arthritis & Joint Pains"
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <div className="p-6 flex flex-col flex-1">
                 <h3 className="text-xl font-bold text-purple mb-3">
                   Arthritis &amp; Joint Pains

@@ -41,7 +41,7 @@ const slides: Slide[] = [
   },
   {
     image: "/images/hero3.jpg",
-    tag: "Expert Care Across All Ailments",
+    tag: "Expert Care",
     title: "Your Lifestyle Clinic.",
     description:
       "Over 152,000 sessions completed. Committed to helping you recover fully and live an active, pain-free life.",
