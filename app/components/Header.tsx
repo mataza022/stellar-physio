@@ -177,7 +177,7 @@ export default function Header() {
               <rect x="3" y="4" width="18" height="18" rx="2" />
               <path d="M16 2v4M8 2v4M3 10h18" />
             </svg>
-            Book a Session
+            Book Appointment
           </Link>
           <a
             href="tel:+254719881291"
@@ -223,7 +223,7 @@ export default function Header() {
             </svg>
           </button>
 
-          {/* Logo — enlarged on desktop + mobile */}
+          {/* Logo — larger on desktop + mobile */}
           <Link
             href="/"
             className="mx-auto lg:mx-0 flex items-center transition-transform duration-300 hover:scale-105"
@@ -231,7 +231,7 @@ export default function Header() {
             <img
               src="/images/Stellarphysio_NEW_logo.png"
               alt="Stellar Physio"
-              className="h-24 md:h-36 w-auto"
+              className="h-28 md:h-44 w-auto"
             />
           </Link>
 
@@ -529,11 +529,11 @@ export default function Header() {
           }`}
         >
           {/* Mobile menu header — bigger logo */}
-          <div className="relative h-20 px-4 bg-purple shadow-sm border-b border-purple-dark sticky top-0 z-10 flex items-center justify-between overflow-hidden">
+          <div className="relative h-24 px-4 bg-purple shadow-sm border-b border-purple-dark sticky top-0 z-10 flex items-center justify-between overflow-hidden">
             <img
               src="/images/stellarphysiowhitelogo.png"
               alt="Stellar Physio"
-              className="h-36 w-auto object-contain -ml-2"
+              className="h-44 w-auto object-contain -ml-2"
             />
             <div className="flex items-center gap-1">
               <button
