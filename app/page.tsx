@@ -2,6 +2,7 @@ import Link from "next/link";
 import { posts } from "@/lib/posts";
 import PartnersCarousel from "./components/PartnersCarousel";
 import HeroCarousel from "./components/HeroCarousel";
+import GoogleReviews from "./components/GoogleReviews";
 
 export default function HomePage() {
   // Sort posts for Blog Section
@@ -15,25 +16,6 @@ export default function HomePage() {
     (a, b) => ((b as any).views || 0) - ((a as any).views || 0)
   );
   const popularPosts = sortedByViews.slice(0, 2);
-
-  // Dummy reviews data (to be replaced with backend later)
-  const dummyReviews = [
-    {
-      name: "Daniel Kigo",
-      text: "As an active person, I had knee problems but improved significantly after sessions at Stellar Physio. My knee is great now. I highly recommend regular physiotherapy.",
-      rating: 5,
-    },
-    {
-      name: "Sarah W.",
-      text: "The team at Stellar Physio is incredibly professional. The home-based care service was a lifesaver for my father after his surgery.",
-      rating: 5,
-    },
-    {
-      name: "Michael O.",
-      text: "Great chiropractic care. I walked out feeling brand new. Highly recommend the Kenital Plaza branch.",
-      rating: 4,
-    },
-  ];
 
   return (
     <>
@@ -298,62 +280,18 @@ export default function HomePage() {
       </section>
 
       {/* ============================================
-          TESTIMONIALS (Compact & Interactive)
+          TESTIMONIALS — Live Google Reviews
           ============================================ */}
       <section className="py-20 bg-purple-light">
-        <div className="container-custom max-w-4xl">
+        <div className="container-custom max-w-6xl">
           <h2 className="text-3xl md:text-4xl font-bold text-purple mb-3 text-center">
             What Our Patients Say
           </h2>
           <p className="text-center text-gray-600 mb-10">
-            Real stories from our patients.
+            Real reviews from our Google Business Profile.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            {dummyReviews.map((review, idx) => (
-              <div
-                key={idx}
-                className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex text-green mb-2">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i}>{i < review.rating ? "★" : "☆"}</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-700 text-sm italic mb-4">
-                    &quot;{review.text}&quot;
-                  </p>
-                </div>
-                <p className="font-bold text-purple text-sm">{review.name}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Add Review Form (Placeholder for Backend) */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h3 className="font-bold text-purple mb-4 text-center">
-              Add Your Review
-            </h3>
-            <form className="flex flex-col gap-3 max-w-md mx-auto">
-              <input
-                type="text"
-                placeholder="Your Name"
-                className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-purple"
-              />
-              <textarea
-                placeholder="Your Review"
-                rows={3}
-                className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-purple resize-none"
-              ></textarea>
-              <button
-                type="button"
-                className="bg-green text-white px-4 py-2 rounded font-semibold text-sm hover:bg-green-dark transition"
-              >
-                Submit Review
-              </button>
-            </form>
-          </div>
+          <GoogleReviews />
         </div>
       </section>
 
