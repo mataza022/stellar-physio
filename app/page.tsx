@@ -348,9 +348,10 @@ export default function HomePage() {
           <h2 className="text-2xl md:text-3xl font-bold text-purple mb-3">
             Trusted by Leading Organisations
           </h2>
-          <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
-            We work with Kenya&apos;s leading insurance providers and
-            organisations to make quality physiotherapy accessible to everyone.
+                    <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
+            We work with Kenya&apos;s leading insurance providers,
+            organisations and corporations to make quality physiotherapy
+            accessible to everyone.
           </p>
 
           <PartnersCarousel />
