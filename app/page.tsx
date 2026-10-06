@@ -5,13 +5,11 @@ import HeroCarousel from "./components/HeroCarousel";
 import GoogleReviews from "./components/GoogleReviews";
 
 export default function HomePage() {
-  // Sort posts for Blog Section
   const sortedByDate = [...posts].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
   const latestPost = sortedByDate[0];
 
-  // Sort by views (fallback to 0 if not yet provided by backend)
   const sortedByViews = [...posts].sort(
     (a, b) => ((b as any).views || 0) - ((a as any).views || 0)
   );
@@ -25,87 +23,126 @@ export default function HomePage() {
       <HeroCarousel />
 
       {/* ============================================
-          QUICK ACCESS
+          WELCOME / INTRO
           ============================================ */}
-      <section className="py-20 bg-white">
+      <section className="py-16 bg-white">
+        <div className="container-custom max-w-4xl text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-purple mb-6">
+            Welcome to Stellar Physio Health and Wellness Centre
+          </h2>
+          <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+            Welcome to Stellar Physio Health and Wellness Centre, a leading
+            physiotherapy clinic in Nairobi with over 10 years of experience in
+            pain relief, injury rehabilitation, and movement recovery. Our
+            expert physiotherapists specialize in treating back pain, neck pain,
+            sports injuries, joint pain, and musculoskeletal conditions using
+            evidence-based physiotherapy techniques. We conduct comprehensive
+            assessments to identify the root cause of your pain—not just the
+            symptoms—allowing us to develop personalized treatment and
+            rehabilitation plans that promote faster, long-lasting recovery.
+            Whether you are recovering from an injury, managing chronic pain, or
+            looking to improve mobility, Stellar Physio is committed to helping
+            you move better, feel stronger, and live pain-free.
+          </p>
+        </div>
+      </section>
+
+      {/* ============================================
+          CONDITIONS WE TREAT
+          ============================================ */}
+      <section className="py-20 bg-gray-50">
         <div className="container-custom">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-purple mb-3">
-            Quick Access
+            Conditions We Treat
           </h2>
           <p className="text-center text-gray-600 mb-12">
-            Access our essential physiotherapy services quickly and efficiently.
+            Expert care for a wide range of musculoskeletal and neurological
+            conditions.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Book a Session */}
-            <div className="border border-gray-200 rounded-lg p-8 hover:shadow-lg transition">
-              <div className="w-12 h-12 rounded-full overflow-hidden mb-4">
-                <img
-                  src="/images/hero3.jpg"
-                  alt="Book a Session"
-                  className="w-full h-full object-cover"
-                />
+            {/* Lower Back Pain & Spine Health */}
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
+              <img
+                src="/images/lowerpain.webp"
+                alt="Lower Back Pain & Spine Health"
+                className="w-full h-52 object-cover"
+              />
+              <div className="p-6 flex flex-col flex-1">
+                <h3 className="text-xl font-bold text-purple mb-3">
+                  Lower Back Pain &amp; Spine Health
+                </h3>
+                <p className="text-gray-600 text-sm mb-6 flex-1">
+                  We understand back pains can be frustrating. We are dedicated
+                  to helping you maintain a healthy spine and live pain-free.
+                </p>
+                <Link
+                  href="/conditions/lower-back-pain-spine-health"
+                  className="inline-block bg-green text-white px-5 py-2 rounded text-sm font-semibold hover:bg-green-dark transition self-start"
+                >
+                  Learn More
+                </Link>
               </div>
-              <h3 className="text-xl font-bold text-purple mb-3">
-                Book a Session
-              </h3>
-              <p className="text-gray-600 mb-6 text-sm">
-                Schedule an appointment with our expert physiotherapists at your
-                convenience.
-              </p>
-              <Link
-                href="/book-appointment"
-                className="inline-block bg-green text-white px-5 py-2 rounded text-sm font-semibold hover:bg-green-dark transition"
-              >
-                Book Now
-              </Link>
             </div>
 
-            {/* Conditions We Treat */}
-            <div className="border border-gray-200 rounded-lg p-8 hover:shadow-lg transition">
-              <div className="w-12 h-12 rounded-full overflow-hidden mb-4">
-                <img
-                  src="/images/chiropractor.webp"
-                  alt="Conditions We Treat"
-                  className="w-full h-full object-cover"
-                />
+            {/* Stroke Rehabilitation */}
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
+              <img
+                src="/images/rehabilitation.webp"
+                alt="Stroke Rehabilitation"
+                className="w-full h-52 object-cover"
+              />
+              <div className="p-6 flex flex-col flex-1">
+                <h3 className="text-xl font-bold text-purple mb-3">
+                  Stroke Rehabilitation
+                </h3>
+                <p className="text-gray-600 text-sm mb-6 flex-1">
+                  Full restoration and recovery is possible with the right care.
+                  We guide you through a structured rehab program to retain
+                  strength, coordination, balance and independence helping you
+                  get your life back.
+                </p>
+                <Link
+                  href="/conditions/stroke-rehabilitation"
+                  className="inline-block bg-green text-white px-5 py-2 rounded text-sm font-semibold hover:bg-green-dark transition self-start"
+                >
+                  Learn More
+                </Link>
               </div>
-              <h3 className="text-xl font-bold text-purple mb-3">
-                Conditions We Treat
-              </h3>
-              <p className="text-gray-600 mb-6 text-sm">
-                Explore our comprehensive range of treatments for back pain,
-                sports injuries, and more.
-              </p>
-              <Link
-                href="/conditions"
-                className="inline-block bg-green text-white px-5 py-2 rounded text-sm font-semibold hover:bg-green-dark transition"
-              >
-                Learn More
-              </Link>
             </div>
 
-            {/* Find a Clinic */}
-            <div className="border border-gray-200 rounded-lg p-8 hover:shadow-lg transition">
-              <div className="w-12 h-12 rounded-full overflow-hidden mb-4">
-                <img
-                  src="/images/hero1.jpeg"
-                  alt="Find a Clinic"
-                  className="w-full h-full object-cover"
-                />
+            {/* Arthritis & Joint Pains */}
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
+              <img
+                src="/images/arthritis&jointpain.webp"
+                alt="Arthritis & Joint Pains"
+                className="w-full h-52 object-cover"
+              />
+              <div className="p-6 flex flex-col flex-1">
+                <h3 className="text-xl font-bold text-purple mb-3">
+                  Arthritis &amp; Joint Pains
+                </h3>
+                <p className="text-gray-600 text-sm mb-6 flex-1">
+                  Joint pains shouldn&apos;t hold you back. Our personalized
+                  treatment plans coupled with evidence-based practice will get
+                  you back on your feet in no time.
+                </p>
+                <Link
+                  href="/conditions/arthritis-joint-pains"
+                  className="inline-block bg-green text-white px-5 py-2 rounded text-sm font-semibold hover:bg-green-dark transition self-start"
+                >
+                  Learn More
+                </Link>
               </div>
-              <h3 className="text-xl font-bold text-purple mb-3">
-                Find a Clinic
-              </h3>
-              <p className="text-gray-600 mb-6 text-sm">
-                We have multiple locations across Nairobi to serve you better.
-              </p>
-              <Link
-                href="/branches"
-                className="inline-block bg-green text-white px-5 py-2 rounded text-sm font-semibold hover:bg-green-dark transition"
-              >
-                Get Directions
-              </Link>
             </div>
+          </div>
+
+          <div className="text-center mt-10">
+            <Link
+              href="/conditions"
+              className="inline-block border-2 border-purple text-purple px-6 py-2.5 rounded font-semibold hover:bg-purple hover:text-white transition"
+            >
+              See All Conditions
+            </Link>
           </div>
         </div>
       </section>
@@ -123,20 +160,50 @@ export default function HomePage() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            {/* General Consultations */}
+            <div className="bg-white rounded-lg overflow-hidden text-gray-800 flex flex-col">
+              <img
+                src="/images/consultation2.webp"
+                alt="General Consultations"
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-6 flex flex-col flex-1">
+                <h3 className="text-lg font-bold text-purple mb-2">
+                  General Consultations
+                </h3>
+                <p className="text-gray-600 text-sm mb-4 flex-1">
+                  This is the initial stage where the doctor assesses and refers
+                  to specialists. Our consultations ensure that we identify the
+                  root cause of your symptoms, rather than just treating the
+                  surface problem.
+                </p>
+                <Link
+                  href="/services/general-consultations"
+                  className="text-green font-semibold text-sm inline-flex items-center"
+                >
+                  Read More &#8594;
+                </Link>
+              </div>
+            </div>
+
             {/* Physiotherapy */}
-            <div className="bg-white rounded-lg overflow-hidden text-gray-800">
+            <div className="bg-white rounded-lg overflow-hidden text-gray-800 flex flex-col">
               <img
                 src="/images/physio2.jpg"
                 alt="Physiotherapy"
                 className="w-full h-48 object-cover"
               />
-              <div className="p-6">
+              <div className="p-6 flex flex-col flex-1">
                 <h3 className="text-lg font-bold text-purple mb-2">
                   Physiotherapy
                 </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  A branch of medicine specializing in movement, function and
-                  disability.
+                <p className="text-gray-600 text-sm mb-4 flex-1">
+                  This is a branch of medicine that specializes in movement,
+                  function and disability. Our physiotherapists treat conditions
+                  relating to bones, muscles and nerves.
+                </p>
+                <p className="text-purple font-semibold text-xs mb-3">
+                  Recommended 2-3 times weekly.
                 </p>
                 <Link
                   href="/services/physiotherapy"
@@ -147,47 +214,25 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Chiropractor Services */}
-            <div className="bg-white rounded-lg overflow-hidden text-gray-800">
+            {/* Counselling Services */}
+            <div className="bg-white rounded-lg overflow-hidden text-gray-800 flex flex-col">
               <img
-                src="/images/chiropractor.webp"
-                alt="Chiropractor"
+                src="/images/counsellingroom.png"
+                alt="Counselling Services"
                 className="w-full h-48 object-cover"
               />
-              <div className="p-6">
+              <div className="p-6 flex flex-col flex-1">
                 <h3 className="text-lg font-bold text-purple mb-2">
-                  Chiropractor Services
+                  Counselling Services
                 </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Diagnosis and treatment of mechanical disorders of the
-                  musculoskeletal system.
+                <p className="text-gray-600 text-sm mb-4 flex-1">
+                  We provide evidence-based psychotherapy for individuals,
+                  couples, families, and adolescents. We offer structured,
+                  goal-oriented support—virtually and in-person—for relational,
+                  and behavioral challenges across all stages of life.
                 </p>
                 <Link
-                  href="/services/chiropractor-services"
-                  className="text-green font-semibold text-sm inline-flex items-center"
-                >
-                  Read More &#8594;
-                </Link>
-              </div>
-            </div>
-
-            {/* Home-Based Care */}
-            <div className="bg-white rounded-lg overflow-hidden text-gray-800">
-              <img
-                src="/images/homecare.jpeg"
-                alt="Home-Based Care"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-purple mb-2">
-                  Home-Based Care
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Expert therapy brought to your doorstep for people facing
-                  mobility challenges.
-                </p>
-                <Link
-                  href="/services/home-based-care"
+                  href="/services/counselling-services"
                   className="text-green font-semibold text-sm inline-flex items-center"
                 >
                   Read More &#8594;
@@ -284,19 +329,12 @@ export default function HomePage() {
           ============================================ */}
       <section className="py-20 bg-purple-light">
         <div className="container-custom max-w-6xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-purple mb-3 text-center">
-            What Our Patients Say
-          </h2>
-          <p className="text-center text-gray-600 mb-10">
-            Real reviews from our Google Business Profile.
-          </p>
-
           <GoogleReviews />
         </div>
       </section>
 
       {/* ============================================
-          PARTNERS — Rotating Carousel
+          PARTNERS
           ============================================ */}
       <section className="py-16 bg-white">
         <div className="container-custom text-center">
@@ -335,7 +373,6 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Featured — Latest Post */}
             {latestPost && (
               <div>
                 <img
@@ -361,7 +398,6 @@ export default function HomePage() {
               </div>
             )}
 
-            {/* Sidebar — Most Viewed Posts */}
             <div className="flex flex-col gap-6">
               {popularPosts.map((post) => (
                 <div

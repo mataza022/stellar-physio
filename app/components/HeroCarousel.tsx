@@ -18,11 +18,11 @@ type Slide = {
 const slides: Slide[] = [
   {
     image: "/images/hero1.jpeg",
-    tag: "Health & Wellness",
+    tag: "Expert Care Across All Ailments",
     title: "Your Lifestyle Clinic.",
     description:
-      "A leading physiotherapy clinic in Nairobi with over 10 years of experience. We identify the root cause of your pain — not just the symptoms.",
-    primaryLabel: "Explore Services",
+      "A leading physiotherapy clinic in Nairobi with over 12 years of experience. We identify the root cause of your pain — not just the symptoms.",
+    primaryLabel: "View Our Offers",
     primaryHref: "/services",
     secondaryLabel: "Book Appointment",
     secondaryHref: "/book-appointment",
@@ -30,32 +30,32 @@ const slides: Slide[] = [
   {
     image: "/images/hero2.JPG",
     mobileImage: "/images/hero2mobile.png",
-    tag: "Expert Care",
-    title: "Move Better. Feel Stronger.",
+    tag: "Expert Care Across All Ailments",
+    title: "Your Lifestyle Clinic.",
     description:
       "Expert treatment for back pain, sports injuries, joint pain, and musculoskeletal conditions. Personalized plans for lasting recovery.",
-    primaryLabel: "Our Services",
+    primaryLabel: "View Our Offers",
     primaryHref: "/services",
     secondaryLabel: "Book Appointment",
     secondaryHref: "/book-appointment",
   },
   {
     image: "/images/hero3.jpg",
-    tag: "Trusted Recovery",
-    title: "Live Pain-Free.",
+    tag: "Expert Care Across All Ailments",
+    title: "Your Lifestyle Clinic.",
     description:
-      "Over 96,000 sessions completed. Committed to helping you recover fully and live an active, pain-free life.",
-    primaryLabel: "Explore Conditions",
-    primaryHref: "/conditions",
+      "Over 152,000 sessions completed. Committed to helping you recover fully and live an active, pain-free life.",
+    primaryLabel: "View Our Offers",
+    primaryHref: "/services",
     secondaryLabel: "Book Appointment",
     secondaryHref: "/book-appointment",
   },
 ];
 
 const stats = [
-  { value: "10+", label: "Years of Experience" },
-  { value: "96,000+", label: "Sessions Done" },
-  { value: "9,760+", label: "Happy Clients" },
+  { value: "12+", label: "Years of Experience" },
+  { value: "152,000+", label: "Sessions Done" },
+  { value: "13,424+", label: "Happy Clients" },
 ];
 
 export default function HeroCarousel() {
@@ -76,7 +76,7 @@ export default function HeroCarousel() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Background images — cross-fade with mobile/desktop support */}
+      {/* Background images — cross-fade */}
       {slides.map((slide, i) => (
         <div
           key={i}
@@ -118,17 +118,17 @@ export default function HeroCarousel() {
                   {slide.tag}
                 </p>
               </div>
-              
+
               {/* Title */}
               <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.15] mb-3 md:mb-4">
                 {slide.title}
               </h1>
-              
+
               {/* Description */}
               <p className="text-xs sm:text-base md:text-lg text-white/80 leading-relaxed max-w-xl">
                 {slide.description}
               </p>
-              
+
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 mt-6 md:mt-8">
                 <Link
@@ -151,7 +151,9 @@ export default function HeroCarousel() {
           <div className="flex justify-between md:justify-start md:items-center gap-2 md:gap-10 mt-8 pt-5 md:mt-12 md:pt-8 border-t border-white/20 max-w-2xl">
             {stats.map((stat, idx) => (
               <div key={idx} className="flex items-center gap-4 md:gap-10">
-                {idx > 0 && <div className="hidden md:block w-px h-10 bg-white/30"></div>}
+                {idx > 0 && (
+                  <div className="hidden md:block w-px h-10 bg-white/30"></div>
+                )}
                 <div>
                   <p className="text-xl md:text-3xl font-bold text-white mb-0.5">
                     {stat.value}
@@ -174,7 +176,9 @@ export default function HeroCarousel() {
             onClick={() => setCurrent(i)}
             aria-label={`Go to slide ${i + 1}`}
             className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === current ? "w-6 bg-white" : "w-1.5 bg-white/40 hover:bg-white/70"
+              i === current
+                ? "w-6 bg-white"
+                : "w-1.5 bg-white/40 hover:bg-white/70"
             }`}
           />
         ))}
