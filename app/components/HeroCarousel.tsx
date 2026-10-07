@@ -23,7 +23,7 @@ const slides: Slide[] = [
     description:
       "A leading physiotherapy clinic in Nairobi with over 12 years of experience. We identify the root cause of your pain — not just the symptoms.",
     primaryLabel: "View Our Offers",
-    primaryHref: "/services",
+    primaryHref: "/packages",
     secondaryLabel: "Book Appointment",
     secondaryHref: "/book-appointment",
   },
