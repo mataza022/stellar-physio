@@ -15,7 +15,7 @@ const packages: Package[] = [
     name: "EXECUTIVE",
     tagline: "Premium personalized care",
     price: "4,000",
-    badge: "RECOMMENDED",
+    badge: "PREFERRED",
     headerColor: "bg-black",
     buttonColor: "bg-black",
     features: [
