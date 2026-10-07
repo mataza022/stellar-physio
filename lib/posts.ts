@@ -7,8 +7,9 @@ export type Post = {
   image: string;
   category: string;
   tags: string[];
-  relatedServices?: string[]; // <-- Made optional here
+  relatedServices?: string[];
   views?: number;
+  videos?: { url: string; title?: string }[];
 };
 
 export const posts: Post[] = [
@@ -62,6 +63,12 @@ Physiotherapy Week only comes around once a year, and this year’s focus on str
     tags: ["Kinesiology Tape", "Sports Injuries", "Ngong Road Physiotherapy", "Pain Relief"],
     relatedServices: ["/services/physiotherapy", "/services/sports-massage", "/services/stretch-exercise-therapy"],
     views: 0,
+    videos: [
+      {
+        url: "https://www.youtube.com/watch?v=lBB4r48B9Mw",
+        title: "Kinesiology Taping in Nairobi",
+      },
+    ],
     body: `You have probably seen it at the Nairobi Marathon, on the shoulders of rugby players at the RFUEA ground, or on a friend’s knee after a weekend football match: strips of bright blue, pink or black tape stuck on in unusual patterns. Some people assume it is a fashion statement. Others think it is a magic fix for pain.
 
 The truth sits somewhere in between. Kinesiology taping is a useful tool that physiotherapists use alongside hands-on treatment and exercise. Used well, it can make you more comfortable while you move and recover. Here is what it is, how it works, who it can help, and what to expect when you are taped at Stellar Physio.
@@ -209,7 +216,6 @@ Recovery is part of training, not a break from it. Whether you’re getting read
   }
 ];
 
-// Helper functions (assuming these already exist in your file)
 export function getPostBySlug(slug: string): Post | undefined {
   return posts.find((post) => post.slug === slug);
 }

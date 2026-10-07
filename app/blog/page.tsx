@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { posts, getRecentPosts, formatDate } from "@/lib/posts";
+import VideoEmbed from "../components/VideoEmbed";
 
 const categories = [
   "Allergen",
@@ -236,6 +237,31 @@ export default function BlogPage() {
               </div>
             </div>
           </aside>
+        </div>
+      </section>
+
+      {/* ============================================
+          FEATURED VIDEO — Physiotherapy Week
+          ============================================ */}
+      <section className="pb-20 bg-white">
+        <div className="container-custom">
+          <div className="max-w-3xl mx-auto text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-purple mb-2">
+              Featured Video
+            </h2>
+            <p className="text-gray-600 text-sm md:text-base">
+              Physiotherapy Week 2026 — Free Stroke &amp; Cardiovascular Consultations
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto">
+            <VideoEmbed
+              video={{
+                url: "https://www.youtube.com/watch?v=S7BHUbl4Puk",
+                title: "Physiotherapy Week 2026",
+              }}
+            />
+          </div>
         </div>
       </section>
     </>

@@ -18,6 +18,7 @@ export type Service = {
   ctaText: string;
   ctaButtonText: string;
   faqs?: { question: string; answer: string }[];
+  videos?: { url: string; title?: string }[];
 };
 
 export const services: Service[] = [

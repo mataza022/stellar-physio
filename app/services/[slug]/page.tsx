@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { services } from "@/lib/services";
+import VideoEmbed from "../../components/VideoEmbed";
 
 export function generateStaticParams() {
   return services.map((service) => ({
@@ -121,6 +122,27 @@ export default async function ServicePage({
                 {service.pricingText}
               </p>
             </div>
+
+            {/* VIDEOS */}
+            {service.videos && service.videos.length > 0 && (
+              <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                <h2 className="text-2xl font-bold text-purple mb-6 border-b border-gray-100 pb-3">
+                  Watch &amp; Learn
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {service.videos.map((video, idx) => (
+                    <div key={idx}>
+                      <VideoEmbed video={video} />
+                      {video.title && (
+                        <p className="text-sm text-gray-600 mt-3 text-center italic">
+                          {video.title}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* FAQS (If applicable) */}
             {service.faqs && service.faqs.length > 0 && (

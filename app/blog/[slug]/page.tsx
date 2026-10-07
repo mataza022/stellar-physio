@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPostBySlug, getRecentPosts, posts, formatDate } from "@/lib/posts";
+import VideoEmbed from "../../components/VideoEmbed";
 
 export function generateStaticParams() {
   return posts.map((p) => ({ slug: p.slug }));
@@ -109,6 +110,27 @@ export default async function BlogPostPage({
                 </div>
               </div>
             </div>
+
+            {/* VIDEOS */}
+            {post.videos && post.videos.length > 0 && (
+              <div className="pt-4">
+                <h3 className="text-2xl font-bold text-purple mb-6 border-b border-gray-200 pb-3">
+                  Related Videos
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {post.videos.map((video, idx) => (
+                    <div key={idx}>
+                      <VideoEmbed video={video} />
+                      {video.title && (
+                        <p className="text-sm text-gray-600 mt-3 text-center italic">
+                          {video.title}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Comment form */}
             <div className="bg-gray-50 rounded-xl p-8 border border-gray-100">

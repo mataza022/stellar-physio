@@ -18,6 +18,7 @@ export type Condition = {
   ctaTitle: string;
   ctaText: string;
   ctaButtonText: string;
+  videos?: { url: string; title?: string }[];
 };
 
 export const conditions: Condition[] = [
@@ -158,6 +159,12 @@ export const conditions: Condition[] = [
       "Comprehensive Support System with patient and caregiver education."
     ],
     whyChooseImage: "/images/stroke2.webp",
+    videos: [
+      {
+        url: "https://www.youtube.com/watch?v=uQov2csyo8M",
+        title: "Stroke Rehabilitation at Stellar Physio",
+      },
+    ],
     ctaTitle: "Take the First Step Toward Relief",
     ctaText: "Don't let stroke related complications define your life. Take the first step toward relief and improved well-being with Stellar Physio. Call us at 0706 101 999.",
     ctaButtonText: "Book Appointment"

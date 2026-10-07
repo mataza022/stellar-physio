@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { conditions } from "@/lib/conditions";
+import VideoEmbed from "../../components/VideoEmbed";
 
 export function generateStaticParams() {
   return conditions.map((condition) => ({
@@ -108,6 +109,27 @@ export default async function ConditionPage({
               ))}
             </ul>
           </div>
+
+          {/* VIDEOS */}
+          {condition.videos && condition.videos.length > 0 && (
+            <div className="bg-white p-8 rounded-lg shadow-sm">
+              <h2 className="text-2xl font-bold text-purple mb-6 border-b border-gray-200 pb-2">
+                Watch &amp; Learn
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {condition.videos.map((video, idx) => (
+                  <div key={idx}>
+                    <VideoEmbed video={video} />
+                    {video.title && (
+                      <p className="text-sm text-gray-600 mt-3 text-center italic">
+                        {video.title}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* WHY CHOOSE US (Green Section) */}
           <div className="bg-green text-white p-8 rounded-lg shadow-sm">
