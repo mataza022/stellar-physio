@@ -32,6 +32,22 @@ const tags = [
   "Why Office Workers Experience Back & Neck Pain",
 ];
 
+// All videos shown on the blog page
+const featuredVideos = [
+  {
+    url: "https://www.youtube.com/watch?v=S7BHUbl4Puk",
+    title: "Physiotherapy Week 2026 — Free Stroke & Cardiovascular Consultations",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=lBB4r48B9Mw",
+    title: "Kinesiology Taping in Nairobi",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=uQov2csyo8M",
+    title: "Stroke Rehabilitation at Stellar Physio",
+  },
+];
+
 export default function BlogPage() {
   const featured = posts[0];
   const remainingPosts = posts.slice(1);
@@ -131,6 +147,25 @@ export default function BlogPage() {
                   </article>
                 </Link>
               ))}
+            </div>
+
+            {/* VIDEOS FROM STELLAR PHYSIO — all three videos */}
+            <div className="pt-6">
+              <h3 className="text-2xl font-bold text-purple mb-6 border-b border-gray-200 pb-3">
+                Videos from Stellar Physio
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {featuredVideos.map((video, idx) => (
+                  <div key={idx}>
+                    <VideoEmbed video={video} />
+                    {video.title && (
+                      <p className="text-sm text-gray-600 mt-3 text-center italic">
+                        {video.title}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
 
           </div>
@@ -237,31 +272,6 @@ export default function BlogPage() {
               </div>
             </div>
           </aside>
-        </div>
-      </section>
-
-      {/* ============================================
-          FEATURED VIDEO — Physiotherapy Week
-          ============================================ */}
-      <section className="pb-20 bg-white">
-        <div className="container-custom">
-          <div className="max-w-3xl mx-auto text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-purple mb-2">
-              Featured Video
-            </h2>
-            <p className="text-gray-600 text-sm md:text-base">
-              Physiotherapy Week 2026 — Free Stroke &amp; Cardiovascular Consultations
-            </p>
-          </div>
-
-          <div className="max-w-3xl mx-auto">
-            <VideoEmbed
-              video={{
-                url: "https://www.youtube.com/watch?v=S7BHUbl4Puk",
-                title: "Physiotherapy Week 2026",
-              }}
-            />
-          </div>
         </div>
       </section>
     </>
