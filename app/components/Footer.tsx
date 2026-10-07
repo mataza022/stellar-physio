@@ -1,4 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 const socials = [
   {
@@ -90,6 +95,46 @@ const branchContacts = [
 ];
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage(null);
+
+    const trimmed = email.trim().toLowerCase();
+
+    // Simple email validation
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setErrorMessage("Please enter a valid email address.");
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      // Use the email itself as the document ID to prevent duplicates
+      await setDoc(doc(db, "newsletter_subscribers", trimmed), {
+        email: trimmed,
+        source: "website-footer",
+        status: "active",
+        createdAt: serverTimestamp(),
+      });
+
+      setSubscribed(true);
+      setEmail("");
+    } catch (error) {
+      console.error("Newsletter subscription failed:", error);
+      setErrorMessage(
+        "We couldn't subscribe you right now. Please try again in a moment."
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <footer className="bg-purple-dark text-white pt-16 pb-6 mt-20">
       <div className="container-custom">
@@ -103,22 +148,89 @@ export default function Footer() {
               Get the latest health tips and Stellar Physio updates delivered to
               your inbox.
             </p>
-            <form className="flex w-full mb-6">
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="flex-1 min-w-0 px-4 py-3 rounded-l bg-white text-gray-800 placeholder-gray-400 outline-none text-sm border border-white focus:border-green transition"
-              />
-              <button
-                type="submit"
-                className="bg-green text-white px-4 py-3 rounded-r font-semibold text-sm hover:bg-green-dark transition whitespace-nowrap"
-              >
-                Subscribe
-              </button>
-            </form>
+
+            {subscribed ? (
+              <div className="bg-green/20 border border-green/40 rounded-lg p-4 mb-6 flex items-start gap-3">
+                <div className="w-8 h-8 rounded-full bg-green flex items-center justify-center text-white flex-shrink-0">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-white">
+                    You&apos;re subscribed!
+                  </p>
+                  <p className="text-xs text-white/80 mt-1">
+                    We&apos;ll send health tips and updates to your inbox soon.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleSubscribe} className="flex w-full mb-3">
+                <input
+                  type="email"
+                  required
+                  disabled={submitting}
+                  placeholder="Your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="flex-1 min-w-0 px-4 py-3 rounded-l bg-white text-gray-800 placeholder-gray-400 outline-none text-sm border border-white focus:border-green transition disabled:bg-gray-100"
+                />
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className={`px-4 py-3 rounded-r font-semibold text-sm transition whitespace-nowrap flex items-center gap-2 ${
+                    submitting
+                      ? "bg-green/70 text-white cursor-wait"
+                      : "bg-green text-white hover:bg-green-dark"
+                  }`}
+                >
+                  {submitting ? (
+                    <>
+                      <svg
+                        className="w-3.5 h-3.5 animate-spin"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                        />
+                      </svg>
+                      Sending
+                    </>
+                  ) : (
+                    "Subscribe"
+                  )}
+                </button>
+              </form>
+            )}
+
+            {errorMessage && (
+              <p className="text-xs text-red-300 mb-4">{errorMessage}</p>
+            )}
 
             {/* Social Media Icons */}
-            <div>
+            <div className="mt-6">
               <h5 className="text-sm font-bold text-white mb-3">Follow Us</h5>
               <div className="flex flex-wrap gap-3">
                 {socials.map((s) => (
@@ -138,11 +250,10 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Contact Us — now with all branch numbers */}
+          {/* Contact Us */}
           <div>
             <h4 className="text-lg font-bold text-white mb-5">Contact Us</h4>
 
-            {/* Email — shared */}
             <div className="mb-4">
               <a
                 href="mailto:info@stellarphysio.com"
@@ -164,7 +275,6 @@ export default function Footer() {
               </a>
             </div>
 
-            {/* Branch phones */}
             <ul className="space-y-3 text-sm">
               {branchContacts.map((branch) => (
                 <li key={branch.tel}>
@@ -191,7 +301,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Quick Links — all services */}
+          {/* Quick Links */}
           <div>
             <h4 className="text-lg font-bold text-white mb-5">Our Services</h4>
             <ul className="space-y-2 text-sm text-white/70">
