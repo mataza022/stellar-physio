@@ -30,7 +30,6 @@ const branches = [
   { name: "Parklands Sports Club", short: "Parklands" },
 ];
 
-// Check if a service is home-based (skips branch selection)
 function isHomeBasedService(name: string | null): boolean {
   if (!name) return false;
   const n = name.toLowerCase();
@@ -422,12 +421,12 @@ function BookAppointmentInner() {
 
       {/* STEP 1 — SERVICE */}
       {step === 1 && (
-        <section className="py-12 bg-gray-50 min-h-[600px]">
-          <div className="container-custom max-w-4xl">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
+        <section className="pt-10 bg-gray-50">
+          <div className="container-custom max-w-5xl pb-4">
+            <h2 className="text-lg md:text-2xl font-bold text-gray-800 mb-1">
               Which service do you need?
             </h2>
-            <p className="text-sm text-gray-500 mb-6">
+            <p className="text-xs md:text-sm text-gray-500 mb-4">
               Select the service you would like to book. You can search below.
             </p>
             <input
@@ -435,9 +434,9 @@ function BookAppointmentInner() {
               placeholder="Search services by name or category..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md outline-none focus:border-purple mb-8 text-sm bg-white shadow-sm"
+              className="w-full px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-purple mb-5 text-sm bg-white shadow-sm"
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
               {filteredServices.map((service) => {
                 const isSelected = selectedService === service.title;
                 return (
@@ -448,16 +447,16 @@ function BookAppointmentInner() {
                       setSelectedService(service.title);
                       setCustomService("");
                     }}
-                    className={`text-left bg-white rounded-md p-4 border transition-all ${
+                    className={`text-left bg-white rounded-md px-3 py-2.5 border transition-all ${
                       isSelected
                         ? "border-purple ring-2 ring-purple/20 shadow-md"
                         : "border-gray-200 hover:border-purple/50 hover:shadow-sm"
                     }`}
                   >
-                    <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-[#c0392b] mb-1">
+                    <span className="block text-[9px] font-bold uppercase tracking-wider text-[#c0392b] mb-0.5">
                       {serviceCategories[service.slug] || "Clinical Service"}
                     </span>
-                    <h3 className="text-sm md:text-base font-semibold text-gray-800">
+                    <h3 className="text-xs md:text-sm font-semibold text-gray-800 leading-tight">
                       {service.title}
                     </h3>
                   </button>
@@ -470,25 +469,25 @@ function BookAppointmentInner() {
                   setSelectedService("Other");
                   setCustomService("");
                 }}
-                className={`text-left bg-white rounded-md p-4 border transition-all ${
+                className={`text-left bg-white rounded-md px-3 py-2.5 border transition-all ${
                   selectedService === "Other"
                     ? "border-purple ring-2 ring-purple/20 shadow-md"
                     : "border-gray-200 hover:border-purple/50 hover:shadow-sm"
                 }`}
               >
-                <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-purple mb-1">
+                <span className="block text-[9px] font-bold uppercase tracking-wider text-purple mb-0.5">
                   Something Else
                 </span>
-                <h3 className="text-sm md:text-base font-semibold text-gray-800">
+                <h3 className="text-xs md:text-sm font-semibold text-gray-800 leading-tight">
                   Other — describe your issue
                 </h3>
               </button>
             </div>
 
             {selectedService === "Other" && (
-              <div className="mt-6 bg-white border border-purple/30 rounded-lg p-5 shadow-sm">
+              <div className="mt-4 bg-white border border-purple/30 rounded-lg p-4 shadow-sm">
                 <label className="block text-sm font-semibold text-gray-800 mb-2">
-                  Please describe your issue or the service you need
+                  Please describe your issue
                   <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -496,25 +495,23 @@ function BookAppointmentInner() {
                   value={customService}
                   onChange={(e) => setCustomService(e.target.value)}
                   placeholder="E.g., I have persistent shoulder pain that hasn't gone away for two weeks..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white resize-none"
+                  className="w-full px-3 py-2 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white resize-none"
                 />
-                <p className="text-xs text-gray-500 mt-2">
-                  A brief description helps us match you with the right
-                  specialist.
-                </p>
               </div>
             )}
+          </div>
 
-            {/* Sticky continue button on mobile */}
-            <div className="mt-8 flex justify-end sticky bottom-4 z-30">
+          {/* Sticky Continue bar (full width, both views) */}
+          <div className="sticky bottom-0 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] z-30">
+            <div className="container-custom max-w-5xl flex justify-end py-3 md:py-4">
               <button
                 type="button"
                 disabled={!canContinueFromStep1}
                 onClick={() => setStep(isHomeBased ? 3 : 2)}
-                className={`px-8 py-3 rounded-md font-semibold text-sm transition shadow-xl ${
+                className={`px-8 py-2.5 md:py-3 rounded-md font-semibold text-sm transition ${
                   canContinueFromStep1
-                    ? "bg-purple text-white hover:bg-purple-dark"
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    ? "bg-purple text-white hover:bg-purple-dark shadow-md"
+                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
               >
                 Continue
@@ -526,8 +523,8 @@ function BookAppointmentInner() {
 
       {/* STEP 2 — LOCATION (only for non-home-based services) */}
       {step === 2 && !isHomeBased && (
-        <section className="py-12 bg-gray-50 min-h-[600px]">
-          <div className="container-custom max-w-4xl">
+        <section className="pt-10 bg-gray-50">
+          <div className="container-custom max-w-4xl pb-4">
             {!preSelected && (
               <button
                 onClick={() => setStep(1)}
@@ -578,10 +575,10 @@ function BookAppointmentInner() {
               </div>
             )}
 
-            <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
+            <h2 className="text-lg md:text-2xl font-bold text-gray-800 mb-1">
               Which branch would you like to visit?
             </h2>
-            <p className="text-sm text-gray-500 mb-8">
+            <p className="text-xs md:text-sm text-gray-500 mb-6">
               Selected service:{" "}
               <span className="font-semibold text-purple">
                 {finalServiceName}
@@ -624,16 +621,18 @@ function BookAppointmentInner() {
                 );
               })}
             </div>
-            {/* Sticky continue button on mobile */}
-            <div className="mt-8 flex justify-end sticky bottom-4 z-30">
+          </div>
+
+          <div className="sticky bottom-0 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] z-30">
+            <div className="container-custom max-w-4xl flex justify-end py-3 md:py-4">
               <button
                 type="button"
                 disabled={!selectedLocation}
                 onClick={() => setStep(3)}
-                className={`px-8 py-3 rounded-md font-semibold text-sm transition shadow-xl ${
+                className={`px-8 py-2.5 md:py-3 rounded-md font-semibold text-sm transition ${
                   selectedLocation
-                    ? "bg-purple text-white hover:bg-purple-dark"
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    ? "bg-purple text-white hover:bg-purple-dark shadow-md"
+                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
               >
                 Continue
@@ -645,11 +644,11 @@ function BookAppointmentInner() {
 
       {/* STEP 3 — DATE & TIME */}
       {step === 3 && (
-        <section className="py-12 bg-gray-50 min-h-[600px]">
-          <div className="container-custom max-w-5xl">
+        <section className="pt-10 bg-gray-50">
+          <div className="container-custom max-w-5xl pb-4">
             <button
               onClick={() => setStep(isHomeBased ? 1 : 2)}
-              className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-purple transition mb-6"
+              className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-purple transition mb-4"
             >
               <svg
                 className="w-4 h-4"
@@ -666,10 +665,10 @@ function BookAppointmentInner() {
               </svg>
               Back
             </button>
-            <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
+            <h2 className="text-lg md:text-2xl font-bold text-gray-800 mb-1">
               When would you like to come in?
             </h2>
-            <p className="text-sm text-gray-500 mb-8">
+            <p className="text-xs md:text-sm text-gray-500 mb-6">
               Service:{" "}
               <span className="font-semibold text-purple">
                 {finalServiceName}
@@ -686,7 +685,7 @@ function BookAppointmentInner() {
             </p>
 
             {isHomeBased && (
-              <div className="mb-8 bg-green/10 border border-green/30 rounded-lg p-4 flex items-start gap-3">
+              <div className="mb-6 bg-green/10 border border-green/30 rounded-lg p-4 flex items-start gap-3">
                 <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white flex-shrink-0">
                   <svg
                     className="w-5 h-5"
@@ -707,20 +706,20 @@ function BookAppointmentInner() {
                     Home Visit — No branch selection needed
                   </p>
                   <p className="text-xs text-gray-600 mt-1 leading-relaxed">
-                    Our therapist will come to your preferred location. We&apos;ll
-                    confirm the exact address with you after booking.
+                    Our therapist will come to your preferred location.
+                    We&apos;ll confirm the exact address with you after booking.
                   </p>
                 </div>
               </div>
             )}
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-8 h-8 rounded-full bg-purple text-white flex items-center justify-center text-sm font-bold">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-7 h-7 rounded-full bg-purple text-white flex items-center justify-center text-xs font-bold">
                     1
                   </div>
-                  <h3 className="text-base font-bold text-gray-800">
+                  <h3 className="text-sm md:text-base font-bold text-gray-800">
                     Select a date
                   </h3>
                 </div>
@@ -734,7 +733,7 @@ function BookAppointmentInner() {
                   minDate={new Date()}
                   className="w-full border-none"
                 />
-                <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-xs text-gray-500">
+                <div className="mt-3 pt-3 border-t border-gray-100 flex items-center gap-2 text-[11px] md:text-xs text-gray-500">
                   <svg
                     className="w-4 h-4 text-green"
                     fill="none"
@@ -752,20 +751,20 @@ function BookAppointmentInner() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm flex flex-col">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-8 h-8 rounded-full bg-purple text-white flex items-center justify-center text-sm font-bold">
+              <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm flex flex-col">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-7 h-7 rounded-full bg-purple text-white flex items-center justify-center text-xs font-bold">
                     2
                   </div>
-                  <h3 className="text-base font-bold text-gray-800">
+                  <h3 className="text-sm md:text-base font-bold text-gray-800">
                     Select a time
                   </h3>
                 </div>
 
                 {!selectedDate ? (
-                  <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                  <div className="flex-1 flex flex-col items-center justify-center text-center p-6 bg-gray-50 rounded-lg border border-dashed border-gray-300 min-h-[220px]">
                     <svg
-                      className="w-12 h-12 text-gray-300 mb-3"
+                      className="w-10 h-10 text-gray-300 mb-3"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -787,11 +786,11 @@ function BookAppointmentInner() {
                 ) : (
                   <div className="flex-1 flex flex-col justify-between">
                     <div>
-                      <label className="block text-xs font-semibold text-gray-700 mb-3 uppercase tracking-wider">
+                      <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wider">
                         Preferred arrival time
                       </label>
                       <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <svg
                             className="w-5 h-5 text-purple"
                             fill="none"
@@ -812,12 +811,12 @@ function BookAppointmentInner() {
                           onChange={(e) => setSelectedTime(e.target.value)}
                           min={getMinTime()}
                           max={getMaxTime()}
-                          className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-lg outline-none focus:border-purple text-lg font-semibold text-gray-800 bg-white transition"
+                          className="w-full pl-11 pr-3 py-3.5 border-2 border-gray-200 rounded-lg outline-none focus:border-purple text-base font-semibold text-gray-800 bg-white transition"
                         />
                       </div>
 
-                      <div className="mt-4 bg-purple-light/50 rounded-lg p-4">
-                        <p className="text-xs text-gray-600 leading-relaxed">
+                      <div className="mt-3 bg-purple-light/50 rounded-lg p-3">
+                        <p className="text-[11px] md:text-xs text-gray-600 leading-relaxed">
                           Pick any time between{" "}
                           <span className="font-semibold text-purple">
                             {formatTime12(getMinTime())}
@@ -838,10 +837,10 @@ function BookAppointmentInner() {
                     </div>
 
                     {selectedTime && (
-                      <div className="mt-6 bg-green/10 border border-green/20 rounded-lg p-4 flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white flex-shrink-0">
+                      <div className="mt-4 bg-green/10 border border-green/20 rounded-lg p-3 flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full bg-green flex items-center justify-center text-white flex-shrink-0">
                           <svg
-                            className="w-5 h-5"
+                            className="w-4 h-4"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -855,10 +854,10 @@ function BookAppointmentInner() {
                           </svg>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">
+                          <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">
                             Selected time
                           </p>
-                          <p className="text-base font-bold text-green">
+                          <p className="text-sm font-bold text-green">
                             {formatTime12(selectedTime)}
                           </p>
                         </div>
@@ -868,17 +867,18 @@ function BookAppointmentInner() {
                 )}
               </div>
             </div>
+          </div>
 
-            {/* Sticky continue button on mobile */}
-            <div className="mt-8 flex justify-end sticky bottom-4 z-30">
+          <div className="sticky bottom-0 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] z-30">
+            <div className="container-custom max-w-5xl flex justify-end py-3 md:py-4">
               <button
                 type="button"
                 disabled={!selectedDate || !selectedTime}
                 onClick={() => setStep(4)}
-                className={`px-8 py-3 rounded-md font-semibold text-sm transition shadow-xl ${
+                className={`px-8 py-2.5 md:py-3 rounded-md font-semibold text-sm transition ${
                   selectedDate && selectedTime
-                    ? "bg-purple text-white hover:bg-purple-dark"
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    ? "bg-purple text-white hover:bg-purple-dark shadow-md"
+                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
               >
                 Continue
