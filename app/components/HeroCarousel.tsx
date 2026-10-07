@@ -17,7 +17,7 @@ type Slide = {
 
 const slides: Slide[] = [
   {
-    image: "/images/hero1.jpeg",
+    image: "/images/physiotherapyweek.jpeg",
     tag: "Expert Care",
     title: "Your Lifestyle Clinic.",
     description:
