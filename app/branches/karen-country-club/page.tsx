@@ -1,6 +1,63 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 export default function KarenCountryClubPage() {
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    service: "Consultation & Clinic",
+    message: "",
+  });
+
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage(null);
+
+    if (
+      !formData.fullName.trim() ||
+      !formData.email.trim() ||
+      !formData.message.trim()
+    ) {
+      setErrorMessage("Please fill in your name, email, and message.");
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      await addDoc(collection(db, "branch_messages"), {
+        branch: "Karen Country Club",
+        branchSlug: "karen-country-club",
+        fullName: formData.fullName.trim(),
+        email: formData.email.trim().toLowerCase(),
+        phone: formData.phone.trim(),
+        service: formData.service,
+        message: formData.message.trim(),
+        status: "new",
+        source: "website-branch-form",
+        createdAt: serverTimestamp(),
+      });
+
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Branch message submission failed:", error);
+      setErrorMessage(
+        "We couldn't send your message. Please check your internet connection and try again, or call us directly at +254 739 110 110."
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <>
       {/* HERO — Karen Country Club */}
@@ -43,49 +100,165 @@ export default function KarenCountryClubPage() {
             </a>
           </div>
 
-          {/* Contact Form */}
+          {/* Contact Form / Success State */}
           <div>
-            <h2 className="text-3xl font-bold text-purple mb-2">Contact Us</h2>
-            <p className="text-gray-600 mb-8">Drop us a line...</p>
+            {submitted ? (
+              <div className="bg-green/5 border border-green/20 rounded-2xl p-8 text-center">
+                <div className="w-16 h-16 rounded-full bg-green flex items-center justify-center mx-auto mb-5">
+                  <svg
+                    className="w-8 h-8 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-bold text-purple mb-3">
+                  Message Sent
+                </h2>
+                <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+                  Thank you, <strong>{formData.fullName}</strong>. Our Karen
+                  team has received your message and will get back to you
+                  shortly at <strong>{formData.email}</strong>.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSubmitted(false);
+                    setFormData({
+                      fullName: "",
+                      email: "",
+                      phone: "",
+                      service: "Consultation & Clinic",
+                      message: "",
+                    });
+                  }}
+                  className="text-sm text-purple font-semibold hover:underline"
+                >
+                  Send another message
+                </button>
+              </div>
+            ) : (
+              <>
+                <h2 className="text-3xl font-bold text-purple mb-2">
+                  Contact Us
+                </h2>
+                <p className="text-gray-600 mb-8">Drop us a line...</p>
 
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple"
-                />
-                <input
-                  type="email"
-                  placeholder="Email Address"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple"
-                />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input
-                  type="tel"
-                  placeholder="Phone Number"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple"
-                />
-                <select className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple bg-white text-gray-700">
-                  <option>Consultation &amp; Clinic</option>
-                  <option>Physiotherapy Session</option>
-                  <option>Laboratory Services</option>
-                  <option>Pharmacy</option>
-                </select>
-              </div>
-              <textarea
-                placeholder="Message"
-                rows={6}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple resize-none"
-              ></textarea>
-              <button
-                type="submit"
-                className="bg-purple text-white px-8 py-3 rounded-full font-semibold hover:bg-purple-dark transition"
-              >
-                Send Message
-              </button>
-            </form>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input
+                      type="text"
+                      required
+                      disabled={submitting}
+                      placeholder="Full Name *"
+                      value={formData.fullName}
+                      onChange={(e) =>
+                        setFormData({ ...formData, fullName: e.target.value })
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple disabled:bg-gray-50"
+                    />
+                    <input
+                      type="email"
+                      required
+                      disabled={submitting}
+                      placeholder="Email Address *"
+                      value={formData.email}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple disabled:bg-gray-50"
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input
+                      type="tel"
+                      disabled={submitting}
+                      placeholder="Phone Number"
+                      value={formData.phone}
+                      onChange={(e) =>
+                        setFormData({ ...formData, phone: e.target.value })
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple disabled:bg-gray-50"
+                    />
+                    <select
+                      disabled={submitting}
+                      value={formData.service}
+                      onChange={(e) =>
+                        setFormData({ ...formData, service: e.target.value })
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple bg-white text-gray-700 disabled:bg-gray-50"
+                    >
+                      <option>Consultation &amp; Clinic</option>
+                      <option>Physiotherapy Session</option>
+                      <option>Laboratory Services</option>
+                      <option>Pharmacy</option>
+                      <option>Other Enquiry</option>
+                    </select>
+                  </div>
+                  <textarea
+                    required
+                    disabled={submitting}
+                    placeholder="Message *"
+                    rows={6}
+                    value={formData.message}
+                    onChange={(e) =>
+                      setFormData({ ...formData, message: e.target.value })
+                    }
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple resize-none disabled:bg-gray-50"
+                  ></textarea>
+
+                  {errorMessage && (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-700">
+                      {errorMessage}
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className={`px-8 py-3 rounded-full font-semibold flex items-center gap-2 transition ${
+                      submitting
+                        ? "bg-purple/70 text-white cursor-wait"
+                        : "bg-purple text-white hover:bg-purple-dark"
+                    }`}
+                  >
+                    {submitting ? (
+                      <>
+                        <svg
+                          className="w-4 h-4 animate-spin"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                          />
+                        </svg>
+                        Sending...
+                      </>
+                    ) : (
+                      "Send Message"
+                    )}
+                  </button>
+                </form>
+              </>
+            )}
           </div>
         </div>
       </section>
