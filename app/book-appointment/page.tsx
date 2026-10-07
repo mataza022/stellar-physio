@@ -30,11 +30,21 @@ const branches = [
   { name: "Parklands Sports Club", short: "Parklands" },
 ];
 
+// Check if a service is home-based (skips branch selection)
+function isHomeBasedService(name: string | null): boolean {
+  if (!name) return false;
+  const n = name.toLowerCase();
+  return n.includes("home-based") || n.includes("dial a physio");
+}
+
 function BookAppointmentInner() {
   const searchParams = useSearchParams();
   const preSelected = searchParams.get("service");
+  const preSelectedIsHome = isHomeBasedService(preSelected);
 
-  const [step, setStep] = useState(preSelected ? 2 : 1);
+  const [step, setStep] = useState(
+    preSelected ? (preSelectedIsHome ? 3 : 2) : 1
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedService, setSelectedService] = useState<string | null>(
     preSelected
@@ -54,6 +64,8 @@ function BookAppointmentInner() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const isHomeBased = isHomeBasedService(selectedService);
 
   const filteredServices = services.filter(
     (s) =>
@@ -92,17 +104,16 @@ function BookAppointmentInner() {
       ? customService.trim().length > 2
       : !!selectedService;
 
+  const effectiveLocation = isHomeBased
+    ? "Home Visit (Client's Location)"
+    : selectedLocation;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
-    if (
-      !finalServiceName ||
-      !selectedLocation ||
-      !selectedDate ||
-      !selectedTime
-    )
-      return;
+    if (!finalServiceName || !selectedDate || !selectedTime) return;
+    if (!isHomeBased && !selectedLocation) return;
 
     setSubmitting(true);
 
@@ -112,8 +123,9 @@ function BookAppointmentInner() {
         serviceIsCustom: selectedService === "Other",
         customServiceDescription:
           selectedService === "Other" ? customService.trim() : "",
+        isHomeBased,
         wasPreselected: !!preSelected,
-        location: selectedLocation,
+        location: effectiveLocation,
         date: selectedDate.toISOString().split("T")[0],
         dateReadable: selectedDate.toDateString(),
         time: selectedTime,
@@ -184,7 +196,7 @@ function BookAppointmentInner() {
                 <strong>Service:</strong> {finalServiceName}
               </p>
               <p className="text-gray-800 mb-1">
-                <strong>Location:</strong> {selectedLocation}
+                <strong>Location:</strong> {effectiveLocation}
               </p>
               <p className="text-gray-800 mb-1">
                 <strong>Date:</strong> {selectedDate?.toDateString()}
@@ -354,36 +366,56 @@ function BookAppointmentInner() {
             <div className="absolute top-4 left-0 right-0 h-0.5 bg-gray-200 z-0" />
             <div
               className="absolute top-4 left-0 h-0.5 bg-purple z-0 transition-all duration-500"
-              style={{ width: `${((step - 1) / 3) * 100}%` }}
+              style={{
+                width: `${
+                  isHomeBased
+                    ? step === 1
+                      ? 0
+                      : step === 3
+                      ? 50
+                      : 100
+                    : ((step - 1) / 3) * 100
+                }%`,
+              }}
             />
-            {[
-              { num: 1, label: "Service" },
-              { num: 2, label: "Location" },
-              { num: 3, label: "Date & Time" },
-              { num: 4, label: "Your Details" },
-            ].map((s) => (
-              <div
-                key={s.num}
-                className="flex flex-col items-center z-10 flex-1"
-              >
+            {(isHomeBased
+              ? [
+                  { num: 1, label: "Service" },
+                  { num: 3, label: "Date & Time" },
+                  { num: 4, label: "Your Details" },
+                ]
+              : [
+                  { num: 1, label: "Service" },
+                  { num: 2, label: "Location" },
+                  { num: 3, label: "Date & Time" },
+                  { num: 4, label: "Your Details" },
+                ]
+            ).map((s, idx) => {
+              const displayNum = isHomeBased ? idx + 1 : s.num;
+              return (
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all ${
-                    step >= s.num
-                      ? "bg-purple border-purple text-white"
-                      : "bg-white border-gray-300 text-gray-400"
-                  }`}
+                  key={s.num}
+                  className="flex flex-col items-center z-10 flex-1"
                 >
-                  {step > s.num ? "✓" : s.num}
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all ${
+                      step >= s.num
+                        ? "bg-purple border-purple text-white"
+                        : "bg-white border-gray-300 text-gray-400"
+                    }`}
+                  >
+                    {step > s.num ? "✓" : displayNum}
+                  </div>
+                  <span
+                    className={`mt-2 text-[10px] md:text-xs font-medium text-center ${
+                      step >= s.num ? "text-purple" : "text-gray-400"
+                    }`}
+                  >
+                    {s.label}
+                  </span>
                 </div>
-                <span
-                  className={`mt-2 text-[10px] md:text-xs font-medium text-center ${
-                    step >= s.num ? "text-purple" : "text-gray-400"
-                  }`}
-                >
-                  {s.label}
-                </span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -473,15 +505,16 @@ function BookAppointmentInner() {
               </div>
             )}
 
-            <div className="mt-8 flex justify-end">
+            {/* Sticky continue button on mobile */}
+            <div className="mt-8 flex justify-end sticky bottom-4 z-30">
               <button
                 type="button"
                 disabled={!canContinueFromStep1}
-                onClick={() => setStep(2)}
-                className={`px-8 py-3 rounded-md font-semibold text-sm transition ${
+                onClick={() => setStep(isHomeBased ? 3 : 2)}
+                className={`px-8 py-3 rounded-md font-semibold text-sm transition shadow-xl ${
                   canContinueFromStep1
                     ? "bg-purple text-white hover:bg-purple-dark"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
               >
                 Continue
@@ -491,8 +524,8 @@ function BookAppointmentInner() {
         </section>
       )}
 
-      {/* STEP 2 — LOCATION */}
-      {step === 2 && (
+      {/* STEP 2 — LOCATION (only for non-home-based services) */}
+      {step === 2 && !isHomeBased && (
         <section className="py-12 bg-gray-50 min-h-[600px]">
           <div className="container-custom max-w-4xl">
             {!preSelected && (
@@ -591,15 +624,16 @@ function BookAppointmentInner() {
                 );
               })}
             </div>
-            <div className="mt-8 flex justify-end">
+            {/* Sticky continue button on mobile */}
+            <div className="mt-8 flex justify-end sticky bottom-4 z-30">
               <button
                 type="button"
                 disabled={!selectedLocation}
                 onClick={() => setStep(3)}
-                className={`px-8 py-3 rounded-md font-semibold text-sm transition ${
+                className={`px-8 py-3 rounded-md font-semibold text-sm transition shadow-xl ${
                   selectedLocation
                     ? "bg-purple text-white hover:bg-purple-dark"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
               >
                 Continue
@@ -614,7 +648,7 @@ function BookAppointmentInner() {
         <section className="py-12 bg-gray-50 min-h-[600px]">
           <div className="container-custom max-w-5xl">
             <button
-              onClick={() => setStep(2)}
+              onClick={() => setStep(isHomeBased ? 1 : 2)}
               className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-purple transition mb-6"
             >
               <svg
@@ -639,12 +673,46 @@ function BookAppointmentInner() {
               Service:{" "}
               <span className="font-semibold text-purple">
                 {finalServiceName}
-              </span>{" "}
-              · Location:{" "}
-              <span className="font-semibold text-purple">
-                {selectedLocation}
               </span>
+              {!isHomeBased && selectedLocation && (
+                <>
+                  {" "}
+                  · Location:{" "}
+                  <span className="font-semibold text-purple">
+                    {selectedLocation}
+                  </span>
+                </>
+              )}
             </p>
+
+            {isHomeBased && (
+              <div className="mb-8 bg-green/10 border border-green/30 rounded-lg p-4 flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white flex-shrink-0">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-green">
+                    Home Visit — No branch selection needed
+                  </p>
+                  <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                    Our therapist will come to your preferred location. We&apos;ll
+                    confirm the exact address with you after booking.
+                  </p>
+                </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
@@ -801,15 +869,16 @@ function BookAppointmentInner() {
               </div>
             </div>
 
-            <div className="mt-8 flex justify-end">
+            {/* Sticky continue button on mobile */}
+            <div className="mt-8 flex justify-end sticky bottom-4 z-30">
               <button
                 type="button"
                 disabled={!selectedDate || !selectedTime}
                 onClick={() => setStep(4)}
-                className={`px-8 py-3 rounded-md font-semibold text-sm transition ${
+                className={`px-8 py-3 rounded-md font-semibold text-sm transition shadow-xl ${
                   selectedDate && selectedTime
-                    ? "bg-purple text-white hover:bg-purple-dark shadow-md"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    ? "bg-purple text-white hover:bg-purple-dark"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
               >
                 Continue
@@ -865,7 +934,7 @@ function BookAppointmentInner() {
                     Location
                   </p>
                   <p className="font-semibold text-gray-800">
-                    {selectedLocation}
+                    {effectiveLocation}
                   </p>
                 </div>
                 <div>
@@ -953,14 +1022,20 @@ function BookAppointmentInner() {
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Additional Details
+                  {isHomeBased ? "Your Home Address *" : "Additional Details"}
                 </label>
                 <textarea
                   rows={4}
+                  required={isHomeBased}
                   disabled={submitting}
                   value={formData.details}
                   onChange={(e) =>
                     setFormData({ ...formData, details: e.target.value })
+                  }
+                  placeholder={
+                    isHomeBased
+                      ? "Please provide the address where our therapist should visit you (estate, street, building, house number)..."
+                      : ""
                   }
                   className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple resize-none text-sm bg-white disabled:bg-gray-50"
                 ></textarea>
