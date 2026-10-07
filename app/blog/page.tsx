@@ -33,10 +33,10 @@ const tags = [
 ];
 
 // All videos shown on the blog page
-const featuredVideos = [
+     const featuredVideos = [
   {
     url: "https://www.youtube.com/watch?v=S7BHUbl4Puk",
-    title: "Physiotherapy Week 2026 — Free Stroke & Cardiovascular Consultations",
+    title: "Inside Stellar Physio",
   },
   {
     url: "https://www.youtube.com/watch?v=lBB4r48B9Mw",
