@@ -8,6 +8,7 @@ import "react-calendar/dist/Calendar.css";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { services } from "@/lib/services";
+import { conditions } from "@/lib/conditions";
 
 const serviceCategories: Record<string, string> = {
   "general-consultations": "Consultation",
@@ -59,12 +60,8 @@ function isHomeBasedService(name: string | null): boolean {
 function BookAppointmentInner() {
   const searchParams = useSearchParams();
   const preSelected = searchParams.get("service");
-  const preSelectedIsHome = isHomeBasedService(preSelected);
 
-  const [step, setStep] = useState(
-    preSelected ? (preSelectedIsHome ? 3 : 2) : 1
-  );
-  const [searchQuery, setSearchQuery] = useState("");
+  const [step, setStep] = useState(1);
   const [selectedService, setSelectedService] = useState<string | null>(
     preSelected
   );
@@ -84,15 +81,15 @@ function BookAppointmentInner() {
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const isHomeBased = isHomeBasedService(selectedService);
+  // Determine the final service name — either from dropdown or from free-text
+  const finalServiceName =
+    selectedService && selectedService !== "Other"
+      ? selectedService
+      : customService.trim()
+      ? `Other: ${customService.trim()}`
+      : null;
 
-  const filteredServices = services.filter(
-    (s) =>
-      s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (serviceCategories[s.slug] || "")
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase())
-  );
+  const isHomeBased = isHomeBasedService(finalServiceName);
 
   const isDateDisabled = ({ date }: { date: Date }) => {
     return date.getDay() === 0;
@@ -113,35 +110,51 @@ function BookAppointmentInner() {
     return `${hour12}:${minute} ${period}`;
   };
 
-  const finalServiceName =
-    selectedService === "Other" && customService.trim()
-      ? `Other: ${customService.trim()}`
-      : selectedService;
-
-  const canContinueFromStep1 =
-    selectedService === "Other"
-      ? customService.trim().length > 2
-      : !!selectedService;
-
   const effectiveLocation = isHomeBased
     ? "Home Visit (Client's Location)"
     : selectedLocation;
+
+  const canSubmit =
+    !!finalServiceName &&
+    !!selectedLocation &&
+    !!selectedDate &&
+    !!selectedTime &&
+    !!formData.firstName.trim() &&
+    !!formData.email.trim() &&
+    (!isHomeBased || formData.details.trim().length > 3);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
-    if (!finalServiceName || !selectedDate || !selectedTime) return;
-    if (!isHomeBased && !selectedLocation) return;
+    if (!finalServiceName) {
+      setErrorMessage("Please select a service or describe your issue.");
+      return;
+    }
+    if (!selectedLocation) {
+      setErrorMessage("Please select a branch.");
+      return;
+    }
+    if (!selectedDate || !selectedTime) {
+      setErrorMessage("Please select a date and time.");
+      return;
+    }
+    if (!formData.firstName.trim() || !formData.email.trim()) {
+      setErrorMessage("Please fill in your name and email.");
+      return;
+    }
+    if (isHomeBased && formData.details.trim().length < 4) {
+      setErrorMessage("Please provide your home address for this home visit.");
+      return;
+    }
 
     setSubmitting(true);
 
     try {
       await addDoc(collection(db, "bookings"), {
         service: finalServiceName,
-        serviceIsCustom: selectedService === "Other",
-        customServiceDescription:
-          selectedService === "Other" ? customService.trim() : "",
+        serviceIsCustom: !selectedService || selectedService === "Other",
+        customServiceDescription: customService.trim(),
         isHomeBased,
         wasPreselected: !!preSelected,
         location: effectiveLocation,
@@ -378,254 +391,57 @@ function BookAppointmentInner() {
         </div>
       </div>
 
-      {/* STEP INDICATOR */}
+      {/* STEP INDICATOR — 3 steps */}
       <div className="bg-white border-b border-gray-200">
         <div className="container-custom max-w-3xl py-6">
           <div className="flex justify-between items-start relative">
             <div className="absolute top-4 left-0 right-0 h-0.5 bg-gray-200 z-0" />
             <div
               className="absolute top-4 left-0 h-0.5 bg-purple z-0 transition-all duration-500"
-              style={{
-                width: `${
-                  isHomeBased
-                    ? step === 1
-                      ? 0
-                      : step === 3
-                      ? 50
-                      : 100
-                    : ((step - 1) / 3) * 100
-                }%`,
-              }}
+              style={{ width: `${((step - 1) / 2) * 100}%` }}
             />
-            {(isHomeBased
-              ? [
-                  { num: 1, label: "Service" },
-                  { num: 3, label: "Date & Time" },
-                  { num: 4, label: "Your Details" },
-                ]
-              : [
-                  { num: 1, label: "Service" },
-                  { num: 2, label: "Location" },
-                  { num: 3, label: "Date & Time" },
-                  { num: 4, label: "Your Details" },
-                ]
-            ).map((s, idx) => {
-              const displayNum = isHomeBased ? idx + 1 : s.num;
-              return (
+            {[
+              { num: 1, label: "Location" },
+              { num: 2, label: "Date & Time" },
+              { num: 3, label: "Your Details" },
+            ].map((s) => (
+              <div
+                key={s.num}
+                className="flex flex-col items-center z-10 flex-1"
+              >
                 <div
-                  key={s.num}
-                  className="flex flex-col items-center z-10 flex-1"
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all ${
+                    step >= s.num
+                      ? "bg-purple border-purple text-white"
+                      : "bg-white border-gray-300 text-gray-400"
+                  }`}
                 >
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all ${
-                      step >= s.num
-                        ? "bg-purple border-purple text-white"
-                        : "bg-white border-gray-300 text-gray-400"
-                    }`}
-                  >
-                    {step > s.num ? "✓" : displayNum}
-                  </div>
-                  <span
-                    className={`mt-2 text-[10px] md:text-xs font-medium text-center ${
-                      step >= s.num ? "text-purple" : "text-gray-400"
-                    }`}
-                  >
-                    {s.label}
-                  </span>
+                  {step > s.num ? "✓" : s.num}
                 </div>
-              );
-            })}
+                <span
+                  className={`mt-2 text-[10px] md:text-xs font-medium text-center ${
+                    step >= s.num ? "text-purple" : "text-gray-400"
+                  }`}
+                >
+                  {s.label}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* STEP 1 — SERVICE */}
+      {/* STEP 1 — LOCATION */}
       {step === 1 && (
         <section className="pt-10 bg-gray-50">
-          <div className="container-custom max-w-2xl pb-6">
-            <h2 className="text-lg md:text-2xl font-bold text-gray-800 mb-1">
-              Which service would you like to book?
-            </h2>
-            <p className="text-xs md:text-sm text-gray-500 mb-5">
-              Choose from the list below.
-            </p>
-
-            {/* Dropdown select */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 md:p-6">
-              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wider">
-                Service
-              </label>
-
-              <select
-                value={selectedService || ""}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setSelectedService(value || null);
-                  setCustomService("");
-                }}
-                className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-lg outline-none focus:border-purple text-sm md:text-base font-semibold text-gray-800 bg-white transition cursor-pointer"
-              >
-                <option value="" disabled>
-                  — Select a service —
-                </option>
-
-                {serviceGroups.map((group) => {
-                  const groupServices = services.filter((s) =>
-                    group.slugs.includes(s.slug)
-                  );
-                  if (groupServices.length === 0) return null;
-                  return (
-                    <optgroup key={group.label} label={group.label}>
-                      {groupServices.map((service) => (
-                        <option key={service.slug} value={service.title}>
-                          {service.title}
-                        </option>
-                      ))}
-                    </optgroup>
-                  );
-                })}
-
-                <option value="Other">
-                  Something else — describe your issue
-                </option>
-              </select>
-
-              {/* Selected preview */}
-              {selectedService && selectedService !== "Other" && (
-                <div className="mt-4 bg-purple-light border border-purple/20 rounded-lg p-3 flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">
-                      Selected
-                    </p>
-                    <p className="text-sm font-bold text-purple">
-                      {selectedService}
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* Other input */}
-              {selectedService === "Other" && (
-                <div className="mt-4">
-                  <label className="block text-sm font-semibold text-gray-800 mb-2">
-                    Please describe your issue
-                    <span className="text-red-500">*</span>
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={customService}
-                    onChange={(e) => setCustomService(e.target.value)}
-                    placeholder="E.g., I have persistent shoulder pain that hasn't gone away for two weeks..."
-                    className="w-full px-3 py-2 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white resize-none"
-                  />
-                </div>
-              )}
-            </div>
-
-            <p className="text-xs text-gray-500 mt-4 text-center">
-              Not sure what you need? Pick{" "}
-              <strong>&quot;General Consultations&quot;</strong> — our team
-              will guide you.
-            </p>
-          </div>
-
-          {/* Sticky Continue bar */}
-          <div className="sticky bottom-0 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] z-30">
-            <div className="container-custom max-w-2xl flex justify-end py-3 md:py-4">
-              <button
-                type="button"
-                disabled={!canContinueFromStep1}
-                onClick={() => setStep(isHomeBased ? 3 : 2)}
-                className={`px-8 py-2.5 md:py-3 rounded-md font-semibold text-sm transition ${
-                  canContinueFromStep1
-                    ? "bg-purple text-white hover:bg-purple-dark shadow-md"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                }`}
-              >
-                Continue
-              </button>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* STEP 2 — LOCATION (only for non-home-based services) */}
-      {step === 2 && !isHomeBased && (
-        <section className="pt-10 bg-gray-50">
           <div className="container-custom max-w-4xl pb-4">
-            {!preSelected && (
-              <button
-                onClick={() => setStep(1)}
-                className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-purple transition mb-6"
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-                Back
-              </button>
-            )}
-
-            {preSelected && (
-              <div className="mb-6 bg-purple-light border border-purple/20 rounded-lg p-4 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">
-                    Selected
-                  </p>
-                  <p className="text-sm md:text-base font-bold text-purple">
-                    {preSelected}
-                  </p>
-                </div>
-              </div>
-            )}
-
             <h2 className="text-lg md:text-2xl font-bold text-gray-800 mb-1">
               Which branch would you like to visit?
             </h2>
             <p className="text-xs md:text-sm text-gray-500 mb-6">
-              Selected service:{" "}
-              <span className="font-semibold text-purple">
-                {finalServiceName}
-              </span>
+              Select your preferred location. If you&apos;re booking a home
+              visit, just pick your nearest branch — we&apos;ll collect your
+              address later.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {branches.map((b) => {
@@ -671,7 +487,7 @@ function BookAppointmentInner() {
               <button
                 type="button"
                 disabled={!selectedLocation}
-                onClick={() => setStep(3)}
+                onClick={() => setStep(2)}
                 className={`px-8 py-2.5 md:py-3 rounded-md font-semibold text-sm transition ${
                   selectedLocation
                     ? "bg-purple text-white hover:bg-purple-dark shadow-md"
@@ -685,12 +501,12 @@ function BookAppointmentInner() {
         </section>
       )}
 
-      {/* STEP 3 — DATE & TIME */}
-      {step === 3 && (
+      {/* STEP 2 — DATE & TIME */}
+      {step === 2 && (
         <section className="pt-10 bg-gray-50">
           <div className="container-custom max-w-5xl pb-4">
             <button
-              onClick={() => setStep(isHomeBased ? 1 : 2)}
+              onClick={() => setStep(1)}
               className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-purple transition mb-4"
             >
               <svg
@@ -712,49 +528,11 @@ function BookAppointmentInner() {
               When would you like to come in?
             </h2>
             <p className="text-xs md:text-sm text-gray-500 mb-6">
-              Service:{" "}
+              Location:{" "}
               <span className="font-semibold text-purple">
-                {finalServiceName}
+                {selectedLocation}
               </span>
-              {!isHomeBased && selectedLocation && (
-                <>
-                  {" "}
-                  · Location:{" "}
-                  <span className="font-semibold text-purple">
-                    {selectedLocation}
-                  </span>
-                </>
-              )}
             </p>
-
-            {isHomeBased && (
-              <div className="mb-6 bg-green/10 border border-green/30 rounded-lg p-4 flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white flex-shrink-0">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-green">
-                    Home Visit — No branch selection needed
-                  </p>
-                  <p className="text-xs text-gray-600 mt-1 leading-relaxed">
-                    Our therapist will come to your preferred location.
-                    We&apos;ll confirm the exact address with you after booking.
-                  </p>
-                </div>
-              </div>
-            )}
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
@@ -917,7 +695,7 @@ function BookAppointmentInner() {
               <button
                 type="button"
                 disabled={!selectedDate || !selectedTime}
-                onClick={() => setStep(4)}
+                onClick={() => setStep(3)}
                 className={`px-8 py-2.5 md:py-3 rounded-md font-semibold text-sm transition ${
                   selectedDate && selectedTime
                     ? "bg-purple text-white hover:bg-purple-dark shadow-md"
@@ -931,12 +709,12 @@ function BookAppointmentInner() {
         </section>
       )}
 
-      {/* STEP 4 — DETAILS */}
-      {step === 4 && (
-        <section className="py-12 bg-gray-50 min-h-[600px]">
+      {/* STEP 3 — SERVICE + YOUR DETAILS */}
+      {step === 3 && (
+        <section className="py-12 bg-gray-50">
           <div className="container-custom max-w-2xl">
             <button
-              onClick={() => setStep(3)}
+              onClick={() => setStep(2)}
               disabled={submitting}
               className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-purple transition mb-6 disabled:opacity-50"
             >
@@ -955,33 +733,30 @@ function BookAppointmentInner() {
               </svg>
               Back
             </button>
-            <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6">
-              Your Details
-            </h2>
 
-            <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-8">
-              <h3 className="text-sm font-bold text-gray-800 mb-4 uppercase tracking-wider">
-                Booking Summary
+            <h2 className="text-lg md:text-2xl font-bold text-gray-800 mb-1">
+              Almost done — a few more details
+            </h2>
+            <p className="text-xs md:text-sm text-gray-500 mb-6">
+              Tell us what you need and how we can reach you.
+            </p>
+
+            {/* Booking summary */}
+            <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 mb-6">
+              <h3 className="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider">
+                Your selection
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div className="md:col-span-2">
-                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">
-                    Service
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div>
+                  <p className="text-gray-500 text-[11px] uppercase tracking-wider mb-1">
+                    Branch
                   </p>
                   <p className="font-semibold text-gray-800">
-                    {finalServiceName}
+                    {selectedLocation}
                   </p>
                 </div>
                 <div>
-                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">
-                    Location
-                  </p>
-                  <p className="font-semibold text-gray-800">
-                    {effectiveLocation}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">
+                  <p className="text-gray-500 text-[11px] uppercase tracking-wider mb-1">
                     Date
                   </p>
                   <p className="font-semibold text-gray-800">
@@ -989,7 +764,7 @@ function BookAppointmentInner() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">
+                  <p className="text-gray-500 text-[11px] uppercase tracking-wider mb-1">
                     Time
                   </p>
                   <p className="font-semibold text-gray-800">
@@ -1000,89 +775,218 @@ function BookAppointmentInner() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    First Name<span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    disabled={submitting}
-                    value={formData.firstName}
-                    onChange={(e) =>
-                      setFormData({ ...formData, firstName: e.target.value })
-                    }
-                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white disabled:bg-gray-50"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Last Name<span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    disabled={submitting}
-                    value={formData.lastName}
-                    onChange={(e) =>
-                      setFormData({ ...formData, lastName: e.target.value })
-                    }
-                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white disabled:bg-gray-50"
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Email<span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    disabled={submitting}
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white disabled:bg-gray-50"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Phone
-                  </label>
-                  <input
-                    type="tel"
-                    disabled={submitting}
-                    value={formData.phone}
-                    onChange={(e) =>
-                      setFormData({ ...formData, phone: e.target.value })
-                    }
-                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white disabled:bg-gray-50"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  {isHomeBased ? "Your Home Address *" : "Additional Details"}
+              {/* SERVICE / CONDITION — description first, then dropdown */}
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                {/* Description textarea shows FIRST, when nothing is selected yet */}
+                {!selectedService && (
+                  <>
+                    <label className="block text-sm font-semibold text-gray-800 mb-2">
+                      Describe your issue{" "}
+                      <span className="text-gray-400 font-normal">
+                        (optional)
+                      </span>
+                    </label>
+                    <textarea
+                      rows={3}
+                      disabled={submitting}
+                      value={customService}
+                      onChange={(e) => setCustomService(e.target.value)}
+                      placeholder="E.g., I have persistent shoulder pain that hasn't gone away for two weeks..."
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple resize-none text-sm bg-white disabled:bg-gray-50"
+                    />
+
+                    {/* Divider */}
+                    <div className="flex items-center gap-3 my-4">
+                      <div className="flex-1 h-px bg-gray-200"></div>
+                      <span className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">
+                        Or
+                      </span>
+                      <div className="flex-1 h-px bg-gray-200"></div>
+                    </div>
+                  </>
+                )}
+
+                {/* Dropdown — always shown, but the label changes if a service is picked */}
+                <label className="block text-sm font-semibold text-gray-800 mb-2">
+                  {selectedService
+                    ? "Selected service or condition"
+                    : "Select a service or condition from the list"}
                 </label>
-                <textarea
-                  rows={4}
-                  required={isHomeBased}
+
+                <select
                   disabled={submitting}
-                  value={formData.details}
-                  onChange={(e) =>
-                    setFormData({ ...formData, details: e.target.value })
-                  }
-                  placeholder={
-                    isHomeBased
-                      ? "Please provide the address where our therapist should visit you (estate, street, building, house number)..."
-                      : ""
-                  }
-                  className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple resize-none text-sm bg-white disabled:bg-gray-50"
-                ></textarea>
+                  value={selectedService || ""}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSelectedService(value || null);
+                    // If the user picks a specific service, clear the free-text description
+                    // so the dropdown value becomes the source of truth
+                    if (value) {
+                      setCustomService("");
+                    }
+                  }}
+                  className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-lg outline-none focus:border-purple text-sm md:text-base font-semibold text-gray-800 bg-white transition cursor-pointer disabled:bg-gray-50"
+                >
+                  <option value="">— Nothing selected —</option>
+
+                  {serviceGroups.map((group) => {
+                    const groupServices = services.filter((s) =>
+                      group.slugs.includes(s.slug)
+                    );
+                    if (groupServices.length === 0) return null;
+                    return (
+                      <optgroup key={group.label} label={group.label}>
+                        {groupServices.map((service) => (
+                          <option key={service.slug} value={service.title}>
+                            {service.title}
+                          </option>
+                        ))}
+                      </optgroup>
+                    );
+                  })}
+
+                  <optgroup label="Conditions We Treat">
+                    {conditions.map((condition) => (
+                      <option key={condition.slug} value={condition.title}>
+                        {condition.title}
+                      </option>
+                    ))}
+                  </optgroup>
+                </select>
+
+                {/* Once a service is selected, show a clear "clear" option */}
+                {selectedService && (
+                  <button
+                    type="button"
+                    onClick={() => setSelectedService(null)}
+                    disabled={submitting}
+                    className="mt-3 text-xs text-purple font-semibold hover:underline disabled:opacity-50"
+                  >
+                    ← Clear selection and describe my issue instead
+                  </button>
+                )}
+
+                <p className="text-xs text-gray-500 mt-3">
+                  Not sure what you need? Just describe it in your own words
+                  above, or pick{" "}
+                  <strong>&quot;General Consultations&quot;</strong> from the
+                  list — our team will guide you.
+                </p>
               </div>
+
+              {/* CONTACT DETAILS */}
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                <h3 className="text-sm font-bold text-gray-800 mb-4 uppercase tracking-wider">
+                  Your Details
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      First Name<span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      disabled={submitting}
+                      value={formData.firstName}
+                      onChange={(e) =>
+                        setFormData({ ...formData, firstName: e.target.value })
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white disabled:bg-gray-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Last Name<span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      disabled={submitting}
+                      value={formData.lastName}
+                      onChange={(e) =>
+                        setFormData({ ...formData, lastName: e.target.value })
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white disabled:bg-gray-50"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Email<span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      disabled={submitting}
+                      value={formData.email}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white disabled:bg-gray-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Phone
+                    </label>
+                    <input
+                      type="tel"
+                      disabled={submitting}
+                      value={formData.phone}
+                      onChange={(e) =>
+                        setFormData({ ...formData, phone: e.target.value })
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white disabled:bg-gray-50"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* HOME ADDRESS — only for home-based services */}
+              {isHomeBased && (
+                <div className="bg-white rounded-xl border-2 border-green/30 shadow-sm p-5">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-9 h-9 rounded-full bg-green flex items-center justify-center text-white flex-shrink-0">
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-gray-800">
+                        Home Visit Address
+                      </h3>
+                      <p className="text-xs text-gray-500">
+                        Where should our therapist come?
+                      </p>
+                    </div>
+                  </div>
+                  <textarea
+                    rows={3}
+                    required={isHomeBased}
+                    disabled={submitting}
+                    value={formData.details}
+                    onChange={(e) =>
+                      setFormData({ ...formData, details: e.target.value })
+                    }
+                    placeholder="Estate, street, building, house number..."
+                    className="w-full px-4 py-3 border border-gray-300 rounded outline-none focus:border-green resize-none text-sm bg-white disabled:bg-gray-50"
+                  />
+                </div>
+              )}
 
               {errorMessage && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">
@@ -1093,11 +997,13 @@ function BookAppointmentInner() {
               <div className="flex justify-end pt-2">
                 <button
                   type="submit"
-                  disabled={submitting}
+                  disabled={submitting || !canSubmit}
                   className={`px-8 py-3 rounded-md font-semibold text-sm transition shadow-md flex items-center gap-2 ${
                     submitting
                       ? "bg-purple/70 text-white cursor-wait"
-                      : "bg-purple text-white hover:bg-purple-dark"
+                      : canSubmit
+                      ? "bg-purple text-white hover:bg-purple-dark"
+                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
                   }`}
                 >
                   {submitting ? (
