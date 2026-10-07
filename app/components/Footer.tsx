@@ -68,7 +68,6 @@ const quickLinkServices = [
   { title: "Sports Massage", href: "/services/sports-massage" },
   { title: "Reflexology", href: "/services/reflexology" },
   { title: "Occupational Therapy", href: "/services/occupational-therapy" },
-  { title: "Nutritional Services", href: "/services/nutritional-services" },
   { title: "Stretch & Exercise Therapy", href: "/services/stretch-exercise-therapy" },
 ];
 
@@ -192,7 +191,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Quick Links — all 12 services */}
+          {/* Quick Links — all services */}
           <div>
             <h4 className="text-lg font-bold text-white mb-5">Our Services</h4>
             <ul className="space-y-2 text-sm text-white/70">

@@ -20,7 +20,6 @@ const serviceCategories: Record<string, string> = {
   "sports-massage": "Therapy",
   reflexology: "Therapy",
   "occupational-therapy": "Pediatric Therapy",
-  "nutritional-services": "Nutrition",
   "stretch-exercise-therapy": "Therapy",
 };
 
@@ -41,7 +40,7 @@ const serviceGroups = [
   { label: "Diagnostics", slugs: ["stellar-laboratory-services"] },
   {
     label: "Wellness",
-    slugs: ["counselling-services", "pharmacy", "nutritional-services"],
+    slugs: ["counselling-services", "pharmacy"],
   },
 ];
 

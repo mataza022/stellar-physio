@@ -15,7 +15,6 @@ const servicesDropdown = [
   { label: "Sports Massage", href: "/services/sports-massage" },
   { label: "Reflexology", href: "/services/reflexology" },
   { label: "Occupational Therapy", href: "/services/occupational-therapy" },
-  { label: "Nutritional Services", href: "/services/nutritional-services" },
   { label: "Stretch & Exercise Therapy", href: "/services/stretch-exercise-therapy" },
 ];
 
@@ -52,7 +51,6 @@ const searchIndex: SearchItem[] = [
   { type: "Service", title: "Sports Massage", href: "/services/sports-massage" },
   { type: "Service", title: "Reflexology", href: "/services/reflexology" },
   { type: "Service", title: "Occupational Therapy", href: "/services/occupational-therapy" },
-  { type: "Service", title: "Nutritional Services", href: "/services/nutritional-services" },
   { type: "Service", title: "Stretch & Exercise Therapy", href: "/services/stretch-exercise-therapy" },
   { type: "Condition", title: "Arthritis & Joint Pains", href: "/conditions/arthritis-joint-pains" },
   { type: "Condition", title: "Lower Back Pain & Spine Health", href: "/conditions/lower-back-pain-spine-health" },
@@ -223,7 +221,7 @@ export default function Header() {
             </svg>
           </button>
 
-          {/* Logo — larger on desktop + mobile */}
+          {/* Logo */}
           <Link
             href="/"
             className="mx-auto lg:mx-0 flex items-center transition-transform duration-300 hover:scale-105"
@@ -528,7 +526,6 @@ export default function Header() {
             menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          {/* Mobile menu header — bigger logo */}
           <div className="relative h-24 px-4 bg-purple shadow-sm border-b border-purple-dark sticky top-0 z-10 flex items-center justify-between overflow-hidden">
             <img
               src="/images/stellarphysiowhitelogo.png"
