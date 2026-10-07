@@ -24,6 +24,27 @@ const serviceCategories: Record<string, string> = {
   "stretch-exercise-therapy": "Therapy",
 };
 
+// Group services under user-friendly categories
+const serviceGroups = [
+  { label: "Consultations", slugs: ["general-consultations"] },
+  {
+    label: "Therapy",
+    slugs: [
+      "physiotherapy",
+      "chiropractor-services",
+      "sports-massage",
+      "reflexology",
+      "stretch-exercise-therapy",
+    ],
+  },
+  { label: "Rehab & Care", slugs: ["home-based-care", "occupational-therapy"] },
+  { label: "Diagnostics", slugs: ["stellar-laboratory-services"] },
+  {
+    label: "Wellness",
+    slugs: ["counselling-services", "pharmacy", "nutritional-services"],
+  },
+];
+
 const branches = [
   { name: "Kenital Plaza, Ngong Road", short: "Ngong Road" },
   { name: "Karen Country Club", short: "Karen" },
@@ -422,88 +443,111 @@ function BookAppointmentInner() {
       {/* STEP 1 — SERVICE */}
       {step === 1 && (
         <section className="pt-10 bg-gray-50">
-          <div className="container-custom max-w-5xl pb-4">
+          <div className="container-custom max-w-2xl pb-6">
             <h2 className="text-lg md:text-2xl font-bold text-gray-800 mb-1">
-              Which service do you need?
+              Which service would you like to book?
             </h2>
-            <p className="text-xs md:text-sm text-gray-500 mb-4">
-              Select the service you would like to book. You can search below.
+            <p className="text-xs md:text-sm text-gray-500 mb-5">
+              Choose from the list below.
             </p>
-            <input
-              type="text"
-              placeholder="Search services by name or category..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-purple mb-5 text-sm bg-white shadow-sm"
-            />
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
-              {filteredServices.map((service) => {
-                const isSelected = selectedService === service.title;
-                return (
-                  <button
-                    key={service.slug}
-                    type="button"
-                    onClick={() => {
-                      setSelectedService(service.title);
-                      setCustomService("");
-                    }}
-                    className={`text-left bg-white rounded-md px-3 py-2.5 border transition-all ${
-                      isSelected
-                        ? "border-purple ring-2 ring-purple/20 shadow-md"
-                        : "border-gray-200 hover:border-purple/50 hover:shadow-sm"
-                    }`}
-                  >
-                    <span className="block text-[9px] font-bold uppercase tracking-wider text-[#c0392b] mb-0.5">
-                      {serviceCategories[service.slug] || "Clinical Service"}
-                    </span>
-                    <h3 className="text-xs md:text-sm font-semibold text-gray-800 leading-tight">
-                      {service.title}
-                    </h3>
-                  </button>
-                );
-              })}
 
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedService("Other");
+            {/* Dropdown select */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 md:p-6">
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wider">
+                Service
+              </label>
+
+              <select
+                value={selectedService || ""}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setSelectedService(value || null);
                   setCustomService("");
                 }}
-                className={`text-left bg-white rounded-md px-3 py-2.5 border transition-all ${
-                  selectedService === "Other"
-                    ? "border-purple ring-2 ring-purple/20 shadow-md"
-                    : "border-gray-200 hover:border-purple/50 hover:shadow-sm"
-                }`}
+                className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-lg outline-none focus:border-purple text-sm md:text-base font-semibold text-gray-800 bg-white transition cursor-pointer"
               >
-                <span className="block text-[9px] font-bold uppercase tracking-wider text-purple mb-0.5">
-                  Something Else
-                </span>
-                <h3 className="text-xs md:text-sm font-semibold text-gray-800 leading-tight">
-                  Other — describe your issue
-                </h3>
-              </button>
+                <option value="" disabled>
+                  — Select a service —
+                </option>
+
+                {serviceGroups.map((group) => {
+                  const groupServices = services.filter((s) =>
+                    group.slugs.includes(s.slug)
+                  );
+                  if (groupServices.length === 0) return null;
+                  return (
+                    <optgroup key={group.label} label={group.label}>
+                      {groupServices.map((service) => (
+                        <option key={service.slug} value={service.title}>
+                          {service.title}
+                        </option>
+                      ))}
+                    </optgroup>
+                  );
+                })}
+
+                <option value="Other">
+                  Something else — describe your issue
+                </option>
+              </select>
+
+              {/* Selected preview */}
+              {selectedService && selectedService !== "Other" && (
+                <div className="mt-4 bg-purple-light border border-purple/20 rounded-lg p-3 flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0">
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">
+                      Selected
+                    </p>
+                    <p className="text-sm font-bold text-purple">
+                      {selectedService}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Other input */}
+              {selectedService === "Other" && (
+                <div className="mt-4">
+                  <label className="block text-sm font-semibold text-gray-800 mb-2">
+                    Please describe your issue
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={customService}
+                    onChange={(e) => setCustomService(e.target.value)}
+                    placeholder="E.g., I have persistent shoulder pain that hasn't gone away for two weeks..."
+                    className="w-full px-3 py-2 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white resize-none"
+                  />
+                </div>
+              )}
             </div>
 
-            {selectedService === "Other" && (
-              <div className="mt-4 bg-white border border-purple/30 rounded-lg p-4 shadow-sm">
-                <label className="block text-sm font-semibold text-gray-800 mb-2">
-                  Please describe your issue
-                  <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  rows={3}
-                  value={customService}
-                  onChange={(e) => setCustomService(e.target.value)}
-                  placeholder="E.g., I have persistent shoulder pain that hasn't gone away for two weeks..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded outline-none focus:border-purple text-sm bg-white resize-none"
-                />
-              </div>
-            )}
+            <p className="text-xs text-gray-500 mt-4 text-center">
+              Not sure what you need? Pick{" "}
+              <strong>&quot;General Consultations&quot;</strong> — our team
+              will guide you.
+            </p>
           </div>
 
-          {/* Sticky Continue bar (full width, both views) */}
+          {/* Sticky Continue bar */}
           <div className="sticky bottom-0 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] z-30">
-            <div className="container-custom max-w-5xl flex justify-end py-3 md:py-4">
+            <div className="container-custom max-w-2xl flex justify-end py-3 md:py-4">
               <button
                 type="button"
                 disabled={!canContinueFromStep1}
