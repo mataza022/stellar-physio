@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
@@ -29,10 +30,15 @@ const branches = [
   { name: "Parklands Sports Club", short: "Parklands" },
 ];
 
-export default function BookAppointmentPage() {
-  const [step, setStep] = useState(1);
+function BookAppointmentInner() {
+  const searchParams = useSearchParams();
+  const preSelected = searchParams.get("service");
+
+  const [step, setStep] = useState(preSelected ? 2 : 1);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [selectedService, setSelectedService] = useState<string | null>(
+    preSelected
+  );
   const [customService, setCustomService] = useState("");
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -106,6 +112,7 @@ export default function BookAppointmentPage() {
         serviceIsCustom: selectedService === "Other",
         customServiceDescription:
           selectedService === "Other" ? customService.trim() : "",
+        wasPreselected: !!preSelected,
         location: selectedLocation,
         date: selectedDate.toISOString().split("T")[0],
         dateReadable: selectedDate.toDateString(),
@@ -191,7 +198,8 @@ export default function BookAppointmentPage() {
               Our team will contact you at <strong>{formData.email}</strong>
               {formData.phone && (
                 <>
-                  {" "}or <strong>{formData.phone}</strong>
+                  {" "}
+                  or <strong>{formData.phone}</strong>
                 </>
               )}{" "}
               to confirm your appointment.
@@ -487,25 +495,56 @@ export default function BookAppointmentPage() {
       {step === 2 && (
         <section className="py-12 bg-gray-50 min-h-[600px]">
           <div className="container-custom max-w-4xl">
-            <button
-              onClick={() => setStep(1)}
-              className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-purple transition mb-6"
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2.5"
+            {!preSelected && (
+              <button
+                onClick={() => setStep(1)}
+                className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-purple transition mb-6"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-              Back
-            </button>
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+                Back
+              </button>
+            )}
+
+            {preSelected && (
+              <div className="mb-6 bg-purple-light border border-purple/20 rounded-lg p-4 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-purple flex items-center justify-center text-white flex-shrink-0">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">
+                    Selected
+                  </p>
+                  <p className="text-sm md:text-base font-bold text-purple">
+                    {preSelected}
+                  </p>
+                </div>
+              </div>
+            )}
+
             <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
               Which branch would you like to visit?
             </h2>
@@ -628,8 +667,18 @@ export default function BookAppointmentPage() {
                   className="w-full border-none"
                 />
                 <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-xs text-gray-500">
-                  <svg className="w-4 h-4 text-green" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <svg
+                    className="w-4 h-4 text-green"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
                   </svg>
                   Open Mon–Fri 8am–6pm · Sat 8am–4pm · Closed Sundays
                 </div>
@@ -647,11 +696,25 @@ export default function BookAppointmentPage() {
 
                 {!selectedDate ? (
                   <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-                    <svg className="w-12 h-12 text-gray-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    <svg
+                      className="w-12 h-12 text-gray-300 mb-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
                     </svg>
-                    <p className="text-sm text-gray-500 font-medium">Please select a date first</p>
-                    <p className="text-xs text-gray-400 mt-1">Your available time slots will appear here</p>
+                    <p className="text-sm text-gray-500 font-medium">
+                      Please select a date first
+                    </p>
+                    <p className="text-xs text-gray-400 mt-1">
+                      Your available time slots will appear here
+                    </p>
                   </div>
                 ) : (
                   <div className="flex-1 flex flex-col justify-between">
@@ -661,8 +724,18 @@ export default function BookAppointmentPage() {
                       </label>
                       <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                          <svg className="w-5 h-5 text-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          <svg
+                            className="w-5 h-5 text-purple"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
                           </svg>
                         </div>
                         <input
@@ -699,13 +772,27 @@ export default function BookAppointmentPage() {
                     {selectedTime && (
                       <div className="mt-6 bg-green/10 border border-green/20 rounded-lg p-4 flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white flex-shrink-0">
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M5 13l4 4L19 7"
+                            />
                           </svg>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">Selected time</p>
-                          <p className="text-base font-bold text-green">{formatTime12(selectedTime)}</p>
+                          <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">
+                            Selected time
+                          </p>
+                          <p className="text-base font-bold text-green">
+                            {formatTime12(selectedTime)}
+                          </p>
                         </div>
                       </div>
                     )}
@@ -761,23 +848,41 @@ export default function BookAppointmentPage() {
             </h2>
 
             <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-8">
-              <h3 className="text-sm font-bold text-gray-800 mb-4 uppercase tracking-wider">Booking Summary</h3>
+              <h3 className="text-sm font-bold text-gray-800 mb-4 uppercase tracking-wider">
+                Booking Summary
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div className="md:col-span-2">
-                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Service</p>
-                  <p className="font-semibold text-gray-800">{finalServiceName}</p>
+                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">
+                    Service
+                  </p>
+                  <p className="font-semibold text-gray-800">
+                    {finalServiceName}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Location</p>
-                  <p className="font-semibold text-gray-800">{selectedLocation}</p>
+                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">
+                    Location
+                  </p>
+                  <p className="font-semibold text-gray-800">
+                    {selectedLocation}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Date</p>
-                  <p className="font-semibold text-gray-800">{selectedDate?.toDateString()}</p>
+                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">
+                    Date
+                  </p>
+                  <p className="font-semibold text-gray-800">
+                    {selectedDate?.toDateString()}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Time</p>
-                  <p className="font-semibold text-gray-800">{formatTime12(selectedTime)}</p>
+                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">
+                    Time
+                  </p>
+                  <p className="font-semibold text-gray-800">
+                    {formatTime12(selectedTime)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -910,5 +1015,13 @@ export default function BookAppointmentPage() {
         </section>
       )}
     </>
+  );
+}
+
+export default function BookAppointmentPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[60vh] bg-gray-50" />}>
+      <BookAppointmentInner />
+    </Suspense>
   );
 }

@@ -112,7 +112,7 @@ export default function ConditionsPage() {
                 {/* Action buttons */}
                 <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
                   <Link
-                    href="/book-appointment"
+                    href={`/book-appointment?service=${encodeURIComponent(condition.title)}`}
                     className="bg-green text-white px-4 py-2 rounded text-sm font-semibold hover:bg-green-dark transition"
                   >
                     Book Now
