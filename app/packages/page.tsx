@@ -80,8 +80,8 @@ const packages: Package[] = [
     tagline: "Convenient Home-based care",
     price: "6,000",
     badge: "POPULAR",
-    headerColor: "bg-purple-dark",
-    buttonColor: "bg-purple-dark",
+    headerColor: "bg-[#b593c9]",
+    buttonColor: "bg-[#b593c9]",
     features: [
       { label: "Treatment time", value: "1 ½ Hours" },
       { label: "Physio", value: "Specialized Therapist" },
