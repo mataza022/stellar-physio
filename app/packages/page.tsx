@@ -15,7 +15,7 @@ const packages: Package[] = [
     name: "EXECUTIVE",
     tagline: "Premium personalized care",
     price: "4,000",
-    badge: "Preferred",
+    badge: "RECOMMENDED",
     headerColor: "bg-black",
     buttonColor: "bg-black",
     features: [
@@ -38,7 +38,6 @@ const packages: Package[] = [
   {
     name: "CORPORATE",
     tagline: "Wellness for professionals",
-    // No price — negotiated with insurer
     headerColor: "bg-purple",
     buttonColor: "bg-purple",
     features: [
@@ -80,9 +79,9 @@ const packages: Package[] = [
     name: "DIAL A PHYSIO",
     tagline: "Convenient Home-based care",
     price: "6,000",
-    badge: "Popular",
-    headerColor: "bg-purple-light",
-    buttonColor: "bg-purple-light",
+    badge: "POPULAR",
+    headerColor: "bg-purple-dark",
+    buttonColor: "bg-purple-dark",
     features: [
       { label: "Treatment time", value: "1 ½ Hours" },
       { label: "Physio", value: "Specialized Therapist" },
@@ -104,108 +103,104 @@ const packages: Package[] = [
 
 export default function PackagesPage() {
   return (
-    <>
-      {/* HERO */}
-      <section className="relative h-[280px] md:h-[340px] flex items-center bg-gray-900">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
-        <div className="container-custom relative z-10 text-white">
-          <h1 className="text-4xl md:text-6xl font-bold">Service Packages</h1>
-          <p className="mt-3 text-sm md:text-lg text-white/80 max-w-xl">
+    <section className="py-12 md:py-20 bg-gray-50">
+      <div className="container-custom">
+        <div className="text-center mb-10 md:mb-14">
+          <h1 className="text-3xl md:text-5xl font-bold text-purple mb-3">
+            Service Packages
+          </h1>
+          <p className="text-gray-600 text-sm md:text-base max-w-xl mx-auto">
             Compare our packages and choose the one that fits your needs.
           </p>
         </div>
-      </section>
 
-      {/* PACKAGES GRID — 2 columns on all screen sizes for comparison */}
-      <section className="py-12 md:py-20 bg-gray-50">
-        <div className="container-custom">
-          <div className="grid grid-cols-2 gap-3 md:gap-8 max-w-5xl mx-auto">
-            {packages.map((pkg) => (
+        <div className="grid grid-cols-2 gap-3 md:gap-8 max-w-5xl mx-auto">
+          {packages.map((pkg) => (
+            <div
+              key={pkg.name}
+              className="relative bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col"
+            >
+              {/* Diagonal corner ribbon */}
+              {pkg.badge && (
+                <div className="absolute top-0 right-0 w-20 h-20 md:w-28 md:h-28 overflow-hidden z-20 pointer-events-none">
+                  <span className="absolute top-3 md:top-5 -right-7 md:-right-10 w-28 md:w-40 bg-green text-white text-[8px] md:text-[11px] font-bold text-center py-1 md:py-1.5 rotate-45 shadow-md tracking-wider">
+                    {pkg.badge}
+                  </span>
+                </div>
+              )}
+
+              {/* Header */}
               <div
-                key={pkg.name}
-                className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col"
+                className={`${pkg.headerColor} text-white p-3 md:p-6 text-center`}
               >
-                {/* Header */}
-                <div
-                  className={`relative ${pkg.headerColor} text-white p-3 md:p-6 text-center`}
-                >
-                  {pkg.badge && (
-                    <span className="absolute top-0 right-0 bg-white text-gray-800 text-[9px] md:text-xs font-bold uppercase px-2 md:px-3 py-0.5 md:py-1 rounded-bl-lg">
-                      {pkg.badge}
-                    </span>
-                  )}
-                  <h2 className="text-sm md:text-2xl font-bold tracking-wide">
-                    {pkg.name}
-                  </h2>
-                  <p className="text-[9px] md:text-sm mt-1 opacity-90 leading-tight">
-                    {pkg.tagline}
-                  </p>
-                </div>
-
-                {/* Price block */}
-                <div className="text-center py-3 md:py-6 border-b border-gray-100">
-                  {pkg.price ? (
-                    <div className="flex items-baseline justify-center gap-1">
-                      <span className="text-xs md:text-base text-gray-500 font-semibold">
-                        Ksh
-                      </span>
-                      <span className="text-2xl md:text-5xl font-bold text-gray-800">
-                        {pkg.price}
-                      </span>
-                    </div>
-                  ) : (
-                    <p className="text-[9px] md:text-sm text-gray-500 italic px-2 leading-tight">
-                      Price negotiated with your insurance provider
-                    </p>
-                  )}
-                </div>
-
-                {/* Features list */}
-                <div className="px-3 md:px-6 pt-3 md:pt-6 flex-1">
-                  <ul className="space-y-2 md:space-y-3">
-                    {pkg.features.map((f, i) => (
-                      <li
-                        key={i}
-                        className="flex gap-1.5 md:gap-2 items-start"
-                      >
-                        <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-green flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <svg
-                            className="w-1.5 h-1.5 md:w-2.5 md:h-2.5 text-white"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                        </span>
-                        <span className="text-[10px] md:text-sm text-gray-600 leading-snug">
-                          <strong className="text-gray-900">{f.label}:</strong>{" "}
-                          {f.value}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* CTA */}
-                <div className="p-3 md:p-6 pt-4 md:pt-6">
-                  <Link
-                    href="/book-appointment"
-                    className={`block w-full text-center ${pkg.buttonColor} text-white py-2 md:py-3 rounded font-semibold text-[10px] md:text-sm hover:opacity-90 transition tracking-wider`}
-                  >
-                    BOOK NOW
-                  </Link>
-                </div>
+                <h2 className="text-sm md:text-2xl font-bold tracking-wide">
+                  {pkg.name}
+                </h2>
+                <p className="text-[9px] md:text-sm mt-1 opacity-90 leading-tight">
+                  {pkg.tagline}
+                </p>
               </div>
-            ))}
-          </div>
+
+              {/* Price block */}
+              <div className="text-center py-3 md:py-6 border-b border-gray-100">
+                {pkg.price ? (
+                  <div className="flex items-baseline justify-center gap-1">
+                    <span className="text-xs md:text-base text-gray-500 font-semibold">
+                      Ksh
+                    </span>
+                    <span className="text-2xl md:text-5xl font-bold text-gray-800">
+                      {pkg.price}
+                    </span>
+                  </div>
+                ) : (
+                  <p className="text-[9px] md:text-sm text-gray-500 italic px-2 leading-tight">
+                    Price negotiated with your insurance provider
+                  </p>
+                )}
+              </div>
+
+              {/* Features list */}
+              <div className="px-3 md:px-6 pt-3 md:pt-6 flex-1">
+                <ul className="space-y-2 md:space-y-3">
+                  {pkg.features.map((f, i) => (
+                    <li key={i} className="flex gap-1.5 md:gap-2 items-start">
+                      <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-green flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg
+                          className="w-1.5 h-1.5 md:w-2.5 md:h-2.5 text-white"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      </span>
+                      <span className="text-[10px] md:text-sm text-gray-600 leading-snug">
+                        <strong className="text-gray-900">{f.label}:</strong>{" "}
+                        {f.value}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* CTA */}
+              <div className="p-3 md:p-6 pt-4 md:pt-6">
+                <Link
+                  href="/book-appointment"
+                  className={`block w-full text-center ${pkg.buttonColor} text-white py-2 md:py-3 rounded font-semibold text-[10px] md:text-sm hover:opacity-90 transition tracking-wider`}
+                >
+                  BOOK NOW
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
