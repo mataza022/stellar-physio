@@ -23,6 +23,9 @@ export default async function ServicePage({
   // Get other services for the sidebar
   const otherServices = services.filter((s) => s.slug !== service.slug).slice(0, 5);
 
+  // Pre-selected booking link for this service
+  const bookHref = `/book-appointment?service=${encodeURIComponent(service.title)}`;
+
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* HERO SECTION */}
@@ -158,7 +161,7 @@ export default async function ServicePage({
                 </a>
               </div>
               <Link
-                href="/book-appointment"
+                href={bookHref}
                 className="block w-full text-center bg-purple text-white py-3 rounded font-semibold hover:bg-purple-dark transition text-sm"
               >
                 Book Appointment
@@ -222,7 +225,7 @@ export default async function ServicePage({
             {service.ctaText}
           </p>
           <Link
-            href="/book-appointment"
+            href={bookHref}
             className="inline-block bg-purple text-white px-8 py-3 rounded font-semibold hover:bg-purple-dark transition"
           >
             {service.ctaButtonText}

@@ -20,6 +20,9 @@ export default async function ConditionPage({
     notFound();
   }
 
+  // Pre-selected booking link for this condition
+  const bookHref = `/book-appointment?service=${encodeURIComponent(condition.title)}`;
+
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* HERO SECTION */}
@@ -84,7 +87,7 @@ export default async function ConditionPage({
               </div>
             )}
             <Link
-              href="/book-appointment"
+              href={bookHref}
               className="inline-block bg-white text-purple px-6 py-2 rounded font-semibold hover:bg-gray-100 transition mt-6 text-sm"
             >
               Book an Appointment
@@ -122,7 +125,7 @@ export default async function ConditionPage({
                   ))}
                 </ul>
                 <Link
-                  href="/book-appointment"
+                  href={bookHref}
                   className="inline-block bg-white text-green px-6 py-2 rounded font-semibold hover:bg-gray-100 transition mt-6 text-sm"
                 >
                   Book an Appointment
@@ -149,7 +152,7 @@ export default async function ConditionPage({
             {condition.ctaText}
           </p>
           <Link
-            href="/book-appointment"
+            href={bookHref}
             className="inline-block bg-purple text-white px-8 py-3 rounded font-semibold hover:bg-purple-dark transition"
           >
             {condition.ctaButtonText}
