@@ -1,11 +1,19 @@
 "use client";
 
 import { Fragment, useEffect, useState } from "react";
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  deleteDoc,
+  updateDoc,
+  doc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { getDb } from "@/lib/firebase";
 
 type Row = {
   id: string;
+  realId: string;
   collection: string;
   data: Record<string, any>;
 };
@@ -23,13 +31,27 @@ const LABELS: Record<string, string> = {
   notes: "Notes",
   service: "Service",
   branch: "Branch",
+  location: "Location",
   source: "Source",
   status: "Status",
+  details: "Details",
+  customServiceDescription: "Custom service",
+  serviceIsCustom: "Custom service?",
+  wasPreselected: "Was preselected",
+  isHomeBased: "Home based?",
+  time: "Time",
+  timeReadable: "Time",
+  date: "Booking date",
+  dateReadable: "Booking date",
+  preferredDate: "Booking date",
+  appointmentDate: "Booking date",
+  selectedDate: "Booking date",
+  bookingDate: "Booking date",
+  submitted: "Submitted",
   createdAt: "Submitted",
   updatedAt: "Updated",
-  date: "Date",
-  preferredDate: "Preferred date",
-  preferredTime: "Preferred time",
+  approvedAt: "Approved",
+  cancelledAt: "Cancelled",
 };
 
 function labelFor(key: string): string {
@@ -66,10 +88,27 @@ function sortTime(data: Record<string, any>, dateField?: string): number {
   if (dateField && data[dateField]?.toDate) {
     return data[dateField].toDate().getTime();
   }
-  for (const k of ["createdAt", "submittedAt", "date", "timestamp"]) {
+  for (const k of ["submitted", "createdAt", "date", "timestamp"]) {
     if (data[k]?.toDate) return data[k].toDate().getTime();
   }
   return 0;
+}
+
+function StatusBadge({ status }: { status: string }) {
+  const s = (status || "pending").toLowerCase();
+  const styles: Record<string, string> = {
+    approved: "bg-green-100 text-green-800 border-green-200",
+    pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
+    cancelled: "bg-red-100 text-red-800 border-red-200",
+  };
+  const cls = styles[s] ?? "bg-gray-100 text-gray-700 border-gray-200";
+  return (
+    <span
+      className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded border uppercase tracking-wide ${cls}`}
+    >
+      {s}
+    </span>
+  );
 }
 
 type Props = {
@@ -80,6 +119,7 @@ type Props = {
   dateField?: string;
   searchable?: string[];
   allowDelete?: boolean;
+  statusField?: string;
 };
 
 export default function AdminCollectionView({
@@ -87,16 +127,17 @@ export default function AdminCollectionView({
   description,
   collections,
   primaryFields,
-  dateField = "createdAt",
+  dateField = "submitted",
   searchable,
   allowDelete = true,
+  statusField,
 }: Props) {
   const [rows, setRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [openId, setOpenId] = useState<string | null>(null);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [busyId, setBusyId] = useState<string | null>(null);
 
   const collectionsKey = collections.join(",");
 
@@ -113,12 +154,15 @@ export default function AdminCollectionView({
           snap.docs.forEach((d) =>
             all.push({
               id: `${name}::${d.id}`,
+              realId: d.id,
               collection: name,
               data: d.data(),
             })
           );
         }
-        all.sort((a, b) => sortTime(b.data, dateField) - sortTime(a.data, dateField));
+        all.sort(
+          (a, b) => sortTime(b.data, dateField) - sortTime(a.data, dateField)
+        );
         if (!cancelled) setRows(all);
       } catch (err) {
         console.error(err);
@@ -133,20 +177,59 @@ export default function AdminCollectionView({
     };
   }, [collectionsKey, dateField]);
 
-  const handleDelete = async (row: Row) => {
-    if (!confirm("Delete this entry? This cannot be undone.")) return;
-    setDeletingId(row.id);
+  const updateStatus = async (
+    row: Row,
+    newStatus: "approved" | "cancelled" | "pending"
+  ) => {
+    if (!statusField) return;
+    const verb =
+      newStatus === "approved"
+        ? "Approve"
+        : newStatus === "cancelled"
+        ? "Cancel"
+        : "Reset";
+    if (!confirm(`${verb} this entry?`)) return;
+    setBusyId(row.id);
     try {
       const db = getDb();
-      const realId = row.id.split("::")[1];
-      await deleteDoc(doc(db, row.collection, realId));
+      const updates: Record<string, any> = {
+        [statusField]: newStatus,
+        updatedAt: serverTimestamp(),
+      };
+      if (newStatus === "approved") updates.approvedAt = serverTimestamp();
+      if (newStatus === "cancelled") updates.cancelledAt = serverTimestamp();
+
+      await updateDoc(doc(db, row.collection, row.realId), updates);
+      setRows((prev) =>
+        prev.map((r) =>
+          r.id === row.id ? { ...r, data: { ...r.data, ...updates } } : r
+        )
+      );
+    } catch (err) {
+      console.error(err);
+      alert(
+        "Update failed: " + (err instanceof Error ? err.message : "Unknown")
+      );
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const handleDelete = async (row: Row) => {
+    if (!confirm("Delete this entry? This cannot be undone.")) return;
+    setBusyId(row.id);
+    try {
+      const db = getDb();
+      await deleteDoc(doc(db, row.collection, row.realId));
       setRows((prev) => prev.filter((r) => r.id !== row.id));
       if (openId === row.id) setOpenId(null);
     } catch (err) {
       console.error(err);
-      alert("Delete failed: " + (err instanceof Error ? err.message : "Unknown"));
+      alert(
+        "Delete failed: " + (err instanceof Error ? err.message : "Unknown")
+      );
     } finally {
-      setDeletingId(null);
+      setBusyId(null);
     }
   };
 
@@ -161,13 +244,16 @@ export default function AdminCollectionView({
       })
     : rows;
 
+  const extraCols = statusField ? 1 : 0;
+
   return (
     <div>
       <div className="flex items-start justify-between mb-6 gap-4 flex-wrap">
         <div>
           <h1 className="text-2xl font-bold text-purple">{title}</h1>
           <p className="text-gray-500 text-sm">
-            {description ?? `${rows.length} ${rows.length === 1 ? "entry" : "entries"}`}
+            {description ??
+              `${rows.length} ${rows.length === 1 ? "entry" : "entries"}`}
           </p>
         </div>
         <input
@@ -190,7 +276,9 @@ export default function AdminCollectionView({
       {!loading && !error && filtered.length === 0 && (
         <div className="bg-white rounded-xl border border-gray-100 p-8 text-center">
           <p className="text-gray-500 text-sm">
-            {rows.length === 0 ? "Nothing here yet." : "No matches for that search."}
+            {rows.length === 0
+              ? "Nothing here yet."
+              : "No matches for that search."}
           </p>
         </div>
       )}
@@ -200,6 +288,9 @@ export default function AdminCollectionView({
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr className="text-left text-xs uppercase tracking-wide text-gray-500">
+                {statusField && (
+                  <th className="px-4 py-3 font-semibold w-24">Status</th>
+                )}
                 {primaryFields.map((f) => (
                   <th key={f} className="px-4 py-3 font-semibold">
                     {labelFor(f)}
@@ -211,18 +302,63 @@ export default function AdminCollectionView({
             <tbody>
               {filtered.map((r) => {
                 const isOpen = openId === r.id;
+                const busy = busyId === r.id;
+                const status = (r.data[statusField ?? ""] ?? "pending") as string;
                 return (
                   <Fragment key={r.id}>
                     <tr
                       className="border-b border-gray-100 hover:bg-gray-50/50 cursor-pointer"
                       onClick={() => setOpenId(isOpen ? null : r.id)}
                     >
+                      {statusField && (
+                        <td className="px-4 py-3 align-top">
+                          <StatusBadge status={status} />
+                        </td>
+                      )}
                       {primaryFields.map((f) => (
                         <td key={f} className="px-4 py-3 text-gray-700 align-top">
-                          <span className="line-clamp-2">{formatValue(r.data[f])}</span>
+                          <span className="line-clamp-2">
+                            {formatValue(r.data[f])}
+                          </span>
                         </td>
                       ))}
                       <td className="px-4 py-3 text-right whitespace-nowrap align-top">
+                        {statusField && status !== "approved" && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              updateStatus(r, "approved");
+                            }}
+                            disabled={busy}
+                            className="text-green-700 font-semibold text-xs hover:underline mr-3 disabled:opacity-50"
+                          >
+                            {busy ? "…" : "Approve"}
+                          </button>
+                        )}
+                        {statusField && status !== "cancelled" && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              updateStatus(r, "cancelled");
+                            }}
+                            disabled={busy}
+                            className="text-orange-600 font-semibold text-xs hover:underline mr-3 disabled:opacity-50"
+                          >
+                            {busy ? "…" : "Cancel"}
+                          </button>
+                        )}
+                        {statusField && status !== "pending" && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              updateStatus(r, "pending");
+                            }}
+                            disabled={busy}
+                            className="text-gray-500 font-semibold text-xs hover:underline mr-3 disabled:opacity-50"
+                          >
+                            {busy ? "…" : "Reset"}
+                          </button>
+                        )}
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
@@ -238,10 +374,10 @@ export default function AdminCollectionView({
                               e.stopPropagation();
                               handleDelete(r);
                             }}
-                            disabled={deletingId === r.id}
+                            disabled={busy}
                             className="text-red-600 font-semibold text-xs hover:underline disabled:opacity-50"
                           >
-                            {deletingId === r.id ? "Deleting…" : "Delete"}
+                            Delete
                           </button>
                         )}
                       </td>
@@ -249,7 +385,7 @@ export default function AdminCollectionView({
                     {isOpen && (
                       <tr className="bg-gray-50 border-b border-gray-100">
                         <td
-                          colSpan={primaryFields.length + 1}
+                          colSpan={primaryFields.length + extraCols + 1}
                           className="px-4 py-5"
                         >
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">

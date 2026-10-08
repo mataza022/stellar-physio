@@ -6,9 +6,26 @@ export default function BookingsAdminPage() {
       title="Bookings"
       description="Appointment requests submitted from the website."
       collections={["bookings"]}
-      primaryFields={["name", "email", "phone", "service", "preferredDate", "createdAt"]}
-      dateField="createdAt"
-      searchable={["name", "email", "phone", "service", "branch", "message", "notes"]}
+      primaryFields={[
+        "name",
+        "email",
+        "phone",
+        "service",
+        "dateReadable",
+        "submitted",
+      ]}
+      dateField="submitted"
+      statusField="status"
+      searchable={[
+        "name",
+        "email",
+        "phone",
+        "service",
+        "location",
+        "customServiceDescription",
+        "date",
+        "dateReadable",
+      ]}
     />
   );
 }
