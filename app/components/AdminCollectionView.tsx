@@ -31,6 +31,7 @@ const LABELS: Record<string, string> = {
   notes: "Notes",
   service: "Service",
   branch: "Branch",
+  branchSlug: "Branch slug",
   location: "Location",
   source: "Source",
   status: "Status",
@@ -52,6 +53,8 @@ const LABELS: Record<string, string> = {
   updatedAt: "Updated",
   approvedAt: "Approved",
   cancelledAt: "Cancelled",
+  postSlug: "Post",
+  text: "Comment",
 };
 
 function labelFor(key: string): string {
@@ -61,6 +64,16 @@ function labelFor(key: string): string {
     .replace(/^./, (c) => c.toUpperCase())
     .trim();
 }
+
+const COLLECTION_LABELS: Record<string, string> = {
+  contact: "Contact",
+  branch_messages: "Branch",
+};
+
+const COLLECTION_STYLES: Record<string, string> = {
+  contact: "bg-blue-50 text-blue-700 border-blue-200",
+  branch_messages: "bg-purple-50 text-purple-700 border-purple-200",
+};
 
 function formatValue(v: any): string {
   if (v === null || v === undefined || v === "") return "—";
@@ -100,6 +113,7 @@ function StatusBadge({ status }: { status: string }) {
     approved: "bg-green-100 text-green-800 border-green-200",
     pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
     cancelled: "bg-red-100 text-red-800 border-red-200",
+    new: "bg-blue-100 text-blue-800 border-blue-200",
   };
   const cls = styles[s] ?? "bg-gray-100 text-gray-700 border-gray-200";
   return (
@@ -107,6 +121,20 @@ function StatusBadge({ status }: { status: string }) {
       className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded border uppercase tracking-wide ${cls}`}
     >
       {s}
+    </span>
+  );
+}
+
+function SourceBadge({ collectionName }: { collectionName: string }) {
+  const label = COLLECTION_LABELS[collectionName] ?? collectionName;
+  const cls =
+    COLLECTION_STYLES[collectionName] ??
+    "bg-gray-50 text-gray-700 border-gray-200";
+  return (
+    <span
+      className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded border uppercase tracking-wide ${cls}`}
+    >
+      {label}
     </span>
   );
 }
@@ -140,6 +168,7 @@ export default function AdminCollectionView({
   const [busyId, setBusyId] = useState<string | null>(null);
 
   const collectionsKey = collections.join(",");
+  const showSource = collections.length > 1;
 
   useEffect(() => {
     let cancelled = false;
@@ -244,7 +273,7 @@ export default function AdminCollectionView({
       })
     : rows;
 
-  const extraCols = statusField ? 1 : 0;
+  const extraCols = (statusField ? 1 : 0) + (showSource ? 1 : 0);
 
   return (
     <div>
@@ -294,6 +323,11 @@ export default function AdminCollectionView({
                       Status
                     </th>
                   )}
+                  {showSource && (
+                    <th className="px-4 py-3 font-semibold w-24 whitespace-nowrap">
+                      Source
+                    </th>
+                  )}
                   {primaryFields.map((f) => (
                     <th
                       key={f}
@@ -322,6 +356,11 @@ export default function AdminCollectionView({
                         {statusField && (
                           <td className="px-4 py-3 align-top whitespace-nowrap">
                             <StatusBadge status={status} />
+                          </td>
+                        )}
+                        {showSource && (
+                          <td className="px-4 py-3 align-top whitespace-nowrap">
+                            <SourceBadge collectionName={r.collection} />
                           </td>
                         )}
                         {primaryFields.map((f) => (

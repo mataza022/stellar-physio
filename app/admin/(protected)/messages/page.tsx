@@ -6,8 +6,9 @@ export default function MessagesAdminPage() {
       title="Messages"
       description="Contact form and branch enquiry submissions."
       collections={["contact", "branch_messages"]}
-      primaryFields={["fullName", "service", "createdAt"]}
+      primaryFields={["fullName", "service", "message", "createdAt"]}
       dateField="createdAt"
+      statusField="status"
       searchable={[
         "fullName",
         "email",
