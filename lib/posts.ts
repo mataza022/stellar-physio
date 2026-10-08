@@ -14,6 +14,51 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "heel-pain-quick-tips-plantar-fasciitis",
+    title: "Heel Pain? Quick Tips to Relieve Plantar Fasciitis",
+    excerpt: "Waking up with a sharp stab in your heel? Learn what plantar fasciitis really is, simple daily habits that ease the pain, and when it's time to see a physiotherapist in Nairobi.",
+    date: "2026-10-05",
+    image: "/images/heelpain-tips.jpeg",
+    category: "Health & Wellness",
+    tags: ["Heel Pain", "Plantar Fasciitis", "Foot Pain", "Physiotherapy", "Nairobi"],
+    relatedServices: ["/services/physiotherapy", "/services/reflexology"],
+    views: 0,
+    body: `That sharp, stabbing pain in your heel when you take your first steps out of bed is one of the most recognisable signs of plantar fasciitis. The plantar fascia is a thick band of tissue that runs along the sole of your foot, from your heel bone to your toes. When it gets overloaded or irritated, it becomes inflamed, and every step can feel like you are walking on a bruise.
+
+The good news is that most cases of heel pain respond very well to conservative care. The infographic above covers the essentials, but a few habits make the biggest difference: stretch your calf and the sole of your foot before you get out of bed, ice the area after activity, choose supportive footwear instead of flat or worn-out shoes, and cut down time spent standing on hard surfaces. Load management matters more than any single "miracle" stretch. Doing a little consistently beats doing everything for one week.
+
+### Why the first steps in the morning hurt most
+While you sleep, the plantar fascia and calf muscles shorten and the tissue cools down. That first step stretches everything suddenly, which is why the pain is often worst right out of bed and eases as you move around. This is also why a gentle stretch before your feet hit the floor, or even a few ankle circles under the covers, can take the edge off those first few minutes.
+
+### Common causes and who is most at risk
+Plantar fasciitis rarely comes out of nowhere. It usually builds up over weeks or months, and a few things tend to show up in the history:
+- A sudden increase in walking, running or standing, especially on hard surfaces
+- Flat feet, high arches, or a change in how you walk
+- Worn-out or unsupportive shoes, including some flat sandals and old trainers
+- Tight calves and stiff ankles, which change how your foot lands
+- Weight gain, pregnancy, or spending long hours on your feet at work
+- Age, with most cases appearing between 40 and 60
+
+### When heel pain is something else
+Not all heel pain is plantar fasciitis, and getting the diagnosis right matters because the treatment differs. Other causes include nerve irritation or entrapment, a stress fracture in the heel bone, Achilles tendon problems, fat pad bruising, and referred pain from the lower back or hip. Signs worth taking seriously include numbness, tingling or burning, swelling, pain that continues at rest or at night, and pain that follows a fall or a sudden increase in training.
+
+### Simple things you can start today
+- Stretch your calves and the sole of your foot gently, morning and evening
+- Roll your arch over a frozen bottle or a tennis ball for a minute or two
+- Wear shoes with a supportive heel and a bit of cushioning, even around the house
+- Avoid going barefoot on hard floors for long periods
+- Build up walking and running gradually rather than in bursts
+- Ice for 10 to 15 minutes after activity if the area feels hot or sore
+
+### When to book an assessment
+If your heel pain has lasted more than a few weeks, is stopping you from walking, working or exercising, or is getting worse rather than better, it is worth getting assessed properly. Persistent heel pain can also be linked to other causes such as nerve irritation, stress fractures or changes in how you walk, and the right treatment depends on the right diagnosis. Pushing through pain that is escalating usually lengthens recovery rather than shortening it.
+
+### How we treat heel pain at Stellar Physio
+At our clinics, we treat heel pain and plantar fasciitis with a combination of physiotherapy and reflexology. Physiotherapy focuses on manual therapy, targeted stretching and strengthening of the calf and foot, and a load management plan built around your work and training. Reflexology supports pain relief and circulation, and many patients find it a useful complement to their rehabilitation.
+
+If you have been putting up with heel pain, book a consultation and we will build a plan around your feet, your work and your goals.`
+  },
+  {
     slug: "physiotherapy-week-2026-free-stroke-cardiovascular-consultations",
     title: "Physiotherapy Week 2026: Free Stroke & Cardiovascular Consultations",
     excerpt: "Stellar Physio is offering free stroke and cardiovascular physiotherapy consultations from September 8–14, 2026. Book your one-on-one assessment today.",
@@ -213,51 +258,6 @@ When you come in for a session, here’s how it usually goes:
 
 ### Book your sports massage in Parklands
 Recovery is part of training, not a break from it. Whether you’re getting ready for a big match, bouncing back from a tough week, or simply want your legs to feel lighter, our team at Stellar Physio Parklands is here to help. Visit us at Parklands Sports Club, 49 Parklands Road, or book your appointment online.`
-  },
-  {
-    slug: "heel-pain-quick-tips-plantar-fasciitis",
-    title: "Heel Pain? Quick Tips to Relieve Plantar Fasciitis",
-    excerpt: "Waking up with a sharp stab in your heel? Learn what plantar fasciitis really is, simple daily habits that ease the pain, and when it's time to see a physiotherapist in Nairobi.",
-    date: "2026-10-01",
-    image: "/images/heelpain-tips.jpeg",
-    category: "Health & Wellness",
-    tags: ["Heel Pain", "Plantar Fasciitis", "Foot Pain", "Physiotherapy", "Nairobi"],
-    relatedServices: ["/services/physiotherapy", "/services/reflexology"],
-    views: 0,
-    body: `That sharp, stabbing pain in your heel when you take your first steps out of bed is one of the most recognisable signs of plantar fasciitis. The plantar fascia is a thick band of tissue that runs along the sole of your foot, from your heel bone to your toes. When it gets overloaded or irritated, it becomes inflamed, and every step can feel like you are walking on a bruise.
-
-The good news is that most cases of heel pain respond very well to conservative care. The infographic above covers the essentials, but a few habits make the biggest difference: stretch your calf and the sole of your foot before you get out of bed, ice the area after activity, choose supportive footwear instead of flat or worn-out shoes, and cut down time spent standing on hard surfaces. Load management matters more than any single "miracle" stretch. Doing a little consistently beats doing everything for one week.
-
-### Why the first steps in the morning hurt most
-While you sleep, the plantar fascia and calf muscles shorten and the tissue cools down. That first step stretches everything suddenly, which is why the pain is often worst right out of bed and eases as you move around. This is also why a gentle stretch before your feet hit the floor, or even a few ankle circles under the covers, can take the edge off those first few minutes.
-
-### Common causes and who is most at risk
-Plantar fasciitis rarely comes out of nowhere. It usually builds up over weeks or months, and a few things tend to show up in the history:
-- A sudden increase in walking, running or standing, especially on hard surfaces
-- Flat feet, high arches, or a change in how you walk
-- Worn-out or unsupportive shoes, including some flat sandals and old trainers
-- Tight calves and stiff ankles, which change how your foot lands
-- Weight gain, pregnancy, or spending long hours on your feet at work
-- Age, with most cases appearing between 40 and 60
-
-### When heel pain is something else
-Not all heel pain is plantar fasciitis, and getting the diagnosis right matters because the treatment differs. Other causes include nerve irritation or entrapment, a stress fracture in the heel bone, Achilles tendon problems, fat pad bruising, and referred pain from the lower back or hip. Signs worth taking seriously include numbness, tingling or burning, swelling, pain that continues at rest or at night, and pain that follows a fall or a sudden increase in training.
-
-### Simple things you can start today
-- Stretch your calves and the sole of your foot gently, morning and evening
-- Roll your arch over a frozen bottle or a tennis ball for a minute or two
-- Wear shoes with a supportive heel and a bit of cushioning, even around the house
-- Avoid going barefoot on hard floors for long periods
-- Build up walking and running gradually rather than in bursts
-- Ice for 10 to 15 minutes after activity if the area feels hot or sore
-
-### When to book an assessment
-If your heel pain has lasted more than a few weeks, is stopping you from walking, working or exercising, or is getting worse rather than better, it is worth getting assessed properly. Persistent heel pain can also be linked to other causes such as nerve irritation, stress fractures or changes in how you walk, and the right treatment depends on the right diagnosis. Pushing through pain that is escalating usually lengthens recovery rather than shortening it.
-
-### How we treat heel pain at Stellar Physio
-At our clinics, we treat heel pain and plantar fasciitis with a combination of physiotherapy and reflexology. Physiotherapy focuses on manual therapy, targeted stretching and strengthening of the calf and foot, and a load management plan built around your work and training. Reflexology supports pain relief and circulation, and many patients find it a useful complement to their rehabilitation.
-
-If you have been putting up with heel pain, book a consultation and we will build a plan around your feet, your work and your goals.`
   }
 ];
 

@@ -89,10 +89,11 @@ export default async function BlogPostPage({
           {/* LEFT — POST CONTENT */}
           <article className="space-y-8">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              {/* HERO IMAGE — shown fully, never cropped */}
               <img
                 src={post.image}
                 alt={post.title}
-                className="w-full h-[340px] object-cover"
+                className="w-full h-auto object-contain bg-gray-50"
               />
               <div className="p-8">
                 <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
