@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPostBySlug, getRecentPosts, posts, formatDate } from "@/lib/posts";
 import VideoEmbed from "../../components/VideoEmbed";
+import CommentForm from "../../components/CommentForm";
 
 export function generateStaticParams() {
   return posts.map((p) => ({ slug: p.slug }));
@@ -134,25 +135,7 @@ export default async function BlogPostPage({
             )}
 
             {/* Comment form */}
-            <div className="bg-gray-50 rounded-xl p-8 border border-gray-100">
-              <h3 className="text-xl font-bold text-purple mb-4">
-                Leave a Comment
-              </h3>
-              <p className="text-gray-600 mb-3 text-xs">
-                Logged in as Stellar Physio.{" "}
-                <a href="#" className="text-purple underline">
-                  Log out?
-                </a>
-              </p>
-              <textarea
-                placeholder="Write Your Comment *"
-                rows={5}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple resize-none mb-4 text-sm bg-white"
-              ></textarea>
-              <button className="bg-purple text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-dark transition text-sm">
-                Post Comment &#8594;
-              </button>
-            </div>
+            <CommentForm postSlug={post.slug} />
 
             {/* RELATED POSTS (Fills the empty space at the bottom left) */}
             <div className="pt-4">
