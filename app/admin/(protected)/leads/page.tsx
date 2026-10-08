@@ -6,9 +6,20 @@ export default function LeadsAdminPage() {
       title="Leads"
       description="CRM leads from ads, social media, and other sources."
       collections={["leads"]}
-      primaryFields={["name", "email", "phone", "source", "status", "createdAt"]}
+      primaryFields={["fullName", "email", "phone", "source", "status", "createdAt"]}
       dateField="createdAt"
-      searchable={["name", "email", "phone", "source", "status", "message", "notes"]}
+      statusField="status"
+      searchable={[
+        "fullName",
+        "name",
+        "email",
+        "phone",
+        "source",
+        "status",
+        "message",
+        "notes",
+        "interest",
+      ]}
     />
   );
 }

@@ -6,9 +6,9 @@ export default function SubscribersAdminPage() {
       title="Newsletter Subscribers"
       description="People who signed up via the footer newsletter form."
       collections={["newsletter_subscribers"]}
-      primaryFields={["email", "createdAt"]}
+      primaryFields={["email", "source", "status", "createdAt"]}
       dateField="createdAt"
-      searchable={["email"]}
+      searchable={["email", "source", "status"]}
     />
   );
 }
