@@ -127,7 +127,7 @@ export default function AdminCollectionView({
   description,
   collections,
   primaryFields,
-  dateField = "submitted",
+  dateField = "createdAt",
   searchable,
   allowDelete = true,
   statusField,
@@ -285,129 +285,142 @@ export default function AdminCollectionView({
 
       {!loading && !error && filtered.length > 0 && (
         <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-100">
-              <tr className="text-left text-xs uppercase tracking-wide text-gray-500">
-                {statusField && (
-                  <th className="px-4 py-3 font-semibold w-24">Status</th>
-                )}
-                {primaryFields.map((f) => (
-                  <th key={f} className="px-4 py-3 font-semibold">
-                    {labelFor(f)}
-                  </th>
-                ))}
-                <th className="px-4 py-3 font-semibold text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((r) => {
-                const isOpen = openId === r.id;
-                const busy = busyId === r.id;
-                const status = (r.data[statusField ?? ""] ?? "pending") as string;
-                return (
-                  <Fragment key={r.id}>
-                    <tr
-                      className="border-b border-gray-100 hover:bg-gray-50/50 cursor-pointer"
-                      onClick={() => setOpenId(isOpen ? null : r.id)}
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-[640px]">
+              <thead className="bg-gray-50 border-b border-gray-100">
+                <tr className="text-left text-xs uppercase tracking-wide text-gray-500">
+                  {statusField && (
+                    <th className="px-4 py-3 font-semibold w-24 whitespace-nowrap">
+                      Status
+                    </th>
+                  )}
+                  {primaryFields.map((f) => (
+                    <th
+                      key={f}
+                      className="px-4 py-3 font-semibold whitespace-nowrap"
                     >
-                      {statusField && (
-                        <td className="px-4 py-3 align-top">
-                          <StatusBadge status={status} />
-                        </td>
-                      )}
-                      {primaryFields.map((f) => (
-                        <td key={f} className="px-4 py-3 text-gray-700 align-top">
-                          <span className="line-clamp-2">
-                            {formatValue(r.data[f])}
-                          </span>
-                        </td>
-                      ))}
-                      <td className="px-4 py-3 text-right whitespace-nowrap align-top">
-                        {statusField && status !== "approved" && (
+                      {labelFor(f)}
+                    </th>
+                  ))}
+                  <th className="px-4 py-3 font-semibold text-right whitespace-nowrap">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((r) => {
+                  const isOpen = openId === r.id;
+                  const busy = busyId === r.id;
+                  const status = (r.data[statusField ?? ""] ??
+                    "pending") as string;
+                  return (
+                    <Fragment key={r.id}>
+                      <tr
+                        className="border-b border-gray-100 hover:bg-gray-50/50 cursor-pointer"
+                        onClick={() => setOpenId(isOpen ? null : r.id)}
+                      >
+                        {statusField && (
+                          <td className="px-4 py-3 align-top whitespace-nowrap">
+                            <StatusBadge status={status} />
+                          </td>
+                        )}
+                        {primaryFields.map((f) => (
+                          <td
+                            key={f}
+                            className="px-4 py-3 text-gray-700 align-top"
+                          >
+                            <span className="line-clamp-2">
+                              {formatValue(r.data[f])}
+                            </span>
+                          </td>
+                        ))}
+                        <td className="px-4 py-3 text-right whitespace-nowrap align-top">
+                          {statusField && status !== "approved" && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                updateStatus(r, "approved");
+                              }}
+                              disabled={busy}
+                              className="text-green-700 font-semibold text-xs hover:underline mr-3 disabled:opacity-50"
+                            >
+                              {busy ? "…" : "Approve"}
+                            </button>
+                          )}
+                          {statusField && status !== "cancelled" && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                updateStatus(r, "cancelled");
+                              }}
+                              disabled={busy}
+                              className="text-orange-600 font-semibold text-xs hover:underline mr-3 disabled:opacity-50"
+                            >
+                              {busy ? "…" : "Cancel"}
+                            </button>
+                          )}
+                          {statusField && status !== "pending" && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                updateStatus(r, "pending");
+                              }}
+                              disabled={busy}
+                              className="text-gray-500 font-semibold text-xs hover:underline mr-3 disabled:opacity-50"
+                            >
+                              {busy ? "…" : "Reset"}
+                            </button>
+                          )}
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              updateStatus(r, "approved");
+                              setOpenId(isOpen ? null : r.id);
                             }}
-                            disabled={busy}
-                            className="text-green-700 font-semibold text-xs hover:underline mr-3 disabled:opacity-50"
+                            className="text-purple font-semibold text-xs hover:underline mr-3"
                           >
-                            {busy ? "…" : "Approve"}
+                            {isOpen ? "Close" : "View"}
                           </button>
-                        )}
-                        {statusField && status !== "cancelled" && (
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              updateStatus(r, "cancelled");
-                            }}
-                            disabled={busy}
-                            className="text-orange-600 font-semibold text-xs hover:underline mr-3 disabled:opacity-50"
-                          >
-                            {busy ? "…" : "Cancel"}
-                          </button>
-                        )}
-                        {statusField && status !== "pending" && (
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              updateStatus(r, "pending");
-                            }}
-                            disabled={busy}
-                            className="text-gray-500 font-semibold text-xs hover:underline mr-3 disabled:opacity-50"
-                          >
-                            {busy ? "…" : "Reset"}
-                          </button>
-                        )}
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setOpenId(isOpen ? null : r.id);
-                          }}
-                          className="text-purple font-semibold text-xs hover:underline mr-3"
-                        >
-                          {isOpen ? "Close" : "View"}
-                        </button>
-                        {allowDelete && (
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDelete(r);
-                            }}
-                            disabled={busy}
-                            className="text-red-600 font-semibold text-xs hover:underline disabled:opacity-50"
-                          >
-                            Delete
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                    {isOpen && (
-                      <tr className="bg-gray-50 border-b border-gray-100">
-                        <td
-                          colSpan={primaryFields.length + extraCols + 1}
-                          className="px-4 py-5"
-                        >
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
-                            {Object.entries(r.data).map(([k, v]) => (
-                              <div key={k}>
-                                <p className="text-[11px] uppercase tracking-wide text-gray-400 font-semibold mb-0.5">
-                                  {labelFor(k)}
-                                </p>
-                                <p className="text-sm text-gray-700 whitespace-pre-wrap break-words">
-                                  {formatValue(v)}
-                                </p>
-                              </div>
-                            ))}
-                          </div>
+                          {allowDelete && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(r);
+                              }}
+                              disabled={busy}
+                              className="text-red-600 font-semibold text-xs hover:underline disabled:opacity-50"
+                            >
+                              Delete
+                            </button>
+                          )}
                         </td>
                       </tr>
-                    )}
-                  </Fragment>
-                );
-              })}
-            </tbody>
-          </table>
+                      {isOpen && (
+                        <tr className="bg-gray-50 border-b border-gray-100">
+                          <td
+                            colSpan={primaryFields.length + extraCols + 1}
+                            className="px-4 py-5"
+                          >
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+                              {Object.entries(r.data).map(([k, v]) => (
+                                <div key={k}>
+                                  <p className="text-[11px] uppercase tracking-wide text-gray-400 font-semibold mb-0.5">
+                                    {labelFor(k)}
+                                  </p>
+                                  <p className="text-sm text-gray-700 whitespace-pre-wrap break-words">
+                                    {formatValue(v)}
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </Fragment>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
