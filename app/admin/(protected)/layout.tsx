@@ -9,6 +9,7 @@ import { onAuthChange, signOut } from "@/lib/auth";
 const nav = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/posts", label: "Blog Posts" },
+  { href: "/admin/jobs", label: "Jobs" },
   { href: "/admin/comments", label: "Comments" },
   { href: "/admin/services", label: "Services" },
   { href: "/admin/conditions", label: "Conditions" },

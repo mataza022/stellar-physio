@@ -1,4 +1,8 @@
 import Link from "next/link";
+import { getOpenJobs, type Job } from "@/lib/jobs";
+import { formatDate } from "@/lib/posts";
+
+export const revalidate = 60;
 
 const socials = [
   {
@@ -57,10 +61,12 @@ const socials = [
   },
 ];
 
-export default function CareersPage() {
+export default async function CareersPage() {
+  const jobs = await getOpenJobs();
+
   return (
     <>
-      {/* CLEAN PAGE HEADER (No Hero Image) */}
+      {/* HEADER */}
       <section className="pt-20 pb-10 bg-white">
         <div className="container-custom text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-purple mb-4">
@@ -90,39 +96,56 @@ export default function CareersPage() {
         </div>
       </section>
 
-      {/* EMPTY STATE */}
+      {/* JOBS LIST or EMPTY STATE */}
       <section className="py-16 bg-gray-50">
-        <div className="container-custom max-w-2xl text-center">
-          <div className="bg-white border border-gray-200 rounded-lg p-12">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-purple-light flex items-center justify-center">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#5c2c7e"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-10 h-10"
+        <div className="container-custom max-w-4xl">
+          {jobs.length === 0 ? (
+            <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-purple-light flex items-center justify-center">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#5c2c7e"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-10 h-10"
+                >
+                  <rect x="2" y="7" width="20" height="14" rx="2" />
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-purple mb-3">
+                No Current Openings
+              </h3>
+              <p className="text-gray-600 mb-8">
+                We currently have no open positions. Please check back soon, or
+                send your CV to the email below and we&apos;ll keep it on file for
+                future opportunities.
+              </p>
+              <a
+                href="mailto:hr@stellarphysio.co.ke"
+                className="inline-block bg-green text-white px-6 py-3 rounded font-semibold hover:bg-green-dark transition"
               >
-                <rect x="2" y="7" width="20" height="14" rx="2" />
-                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-              </svg>
+                Send Your CV
+              </a>
             </div>
-            <h3 className="text-2xl font-bold text-purple mb-3">
-              No Current Openings
-            </h3>
-            <p className="text-gray-600 mb-8">
-              We currently have no open positions. Please check back soon, or
-              send your CV to the email below and we&apos;ll keep it on file for
-              future opportunities.
-            </p>
-            <a
-              href="mailto:hr@stellarphysio.co.ke"
-              className="inline-block bg-green text-white px-6 py-3 rounded font-semibold hover:bg-green-dark transition"
-            >
-              Send Your CV
-            </a>
-          </div>
+          ) : (
+            <div className="space-y-6">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-purple mb-2">
+                  Open Positions
+                </h2>
+                <p className="text-gray-600">
+                  {jobs.length} {jobs.length === 1 ? "role" : "roles"} currently
+                  available
+                </p>
+              </div>
+              {jobs.map((job) => (
+                <JobCard key={job.slug} job={job} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -137,7 +160,6 @@ export default function CareersPage() {
             positions open up.
           </p>
 
-          {/* Social Icons Row */}
           <div className="flex flex-wrap justify-center gap-4">
             {socials.map((s) => (
               <a
@@ -166,5 +188,92 @@ export default function CareersPage() {
         </div>
       </section>
     </>
+  );
+}
+
+function JobCard({ job }: { job: Job }) {
+  const applyHref = `mailto:${job.applyEmail}?subject=${encodeURIComponent(
+    `Application: ${job.title}`
+  )}`;
+
+  return (
+    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition">
+      <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
+        <div>
+          <h3 className="text-xl font-bold text-purple leading-tight mb-1">
+            {job.title}
+          </h3>
+          <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
+            {job.department && <span>{job.department}</span>}
+            {job.department && job.location && <span>·</span>}
+            {job.location && <span>{job.location}</span>}
+            <span>·</span>
+            <span className="inline-block bg-purple-light text-purple font-semibold px-2 py-0.5 rounded">
+              {job.type}
+            </span>
+          </div>
+        </div>
+        <span className="text-xs text-gray-400">
+          Posted {formatDate(job.postedAt)}
+        </span>
+      </div>
+
+      {job.description && (
+        <p className="text-gray-700 text-sm leading-relaxed mb-5 whitespace-pre-wrap">
+          {job.description}
+        </p>
+      )}
+
+      {job.responsibilities.length > 0 && (
+        <div className="mb-5">
+          <h4 className="text-sm font-bold text-purple mb-2">
+            Key Responsibilities
+          </h4>
+          <ul className="list-disc pl-5 space-y-1">
+            {job.responsibilities.map((r, i) => (
+              <li key={i} className="text-gray-700 text-sm leading-relaxed">
+                {r}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {job.requirements.length > 0 && (
+        <div className="mb-5">
+          <h4 className="text-sm font-bold text-purple mb-2">Requirements</h4>
+          <ul className="list-disc pl-5 space-y-1">
+            {job.requirements.map((r, i) => (
+              <li key={i} className="text-gray-700 text-sm leading-relaxed">
+                {r}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-gray-100">
+        <div className="text-xs text-gray-500">
+          {job.salaryRange && (
+            <p>
+              <span className="font-semibold text-purple">Salary:</span>{" "}
+              {job.salaryRange}
+            </p>
+          )}
+          {job.deadline && (
+            <p>
+              <span className="font-semibold text-purple">Deadline:</span>{" "}
+              {formatDate(job.deadline)}
+            </p>
+          )}
+        </div>
+        <a
+          href={applyHref}
+          className="bg-green text-white px-5 py-2.5 rounded font-semibold text-sm hover:bg-green-dark transition"
+        >
+          Apply Now
+        </a>
+      </div>
+    </div>
   );
 }
