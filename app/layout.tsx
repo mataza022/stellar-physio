@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
+import SiteChrome from "./components/SiteChrome";
 
 export const metadata: Metadata = {
   title: "Stellar Physio | Best Physiotherapy Clinic in Nairobi",
@@ -18,10 +19,17 @@ export default function RootLayout({
   return (
     <html lang="en-GB">
       <body>
-        <Header />
-        {children}
-        <Footer />
-        <WhatsAppButton />
+        <SiteChrome
+          header={<Header />}
+          footer={
+            <>
+              <Footer />
+              <WhatsAppButton />
+            </>
+          }
+        >
+          {children}
+        </SiteChrome>
       </body>
     </html>
   );
