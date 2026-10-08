@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { posts, getRecentPosts, formatDate } from "@/lib/posts";
+import { getPosts, getRecentPosts, formatDate } from "@/lib/posts";
 import VideoEmbed from "../components/VideoEmbed";
 
 const categories = [
@@ -33,7 +33,7 @@ const tags = [
 ];
 
 // All videos shown on the blog page
-     const featuredVideos = [
+const featuredVideos = [
   {
     url: "https://www.youtube.com/watch?v=S7BHUbl4Puk",
     title: "Inside Stellar Physio",
@@ -48,10 +48,13 @@ const tags = [
   },
 ];
 
-export default function BlogPage() {
+export const revalidate = 60;
+
+export default async function BlogPage() {
+  const posts = await getPosts();
   const featured = posts[0];
   const remainingPosts = posts.slice(1);
-  const recent = getRecentPosts(5);
+  const recent = await getRecentPosts(5);
 
   return (
     <>

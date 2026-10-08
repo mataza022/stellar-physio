@@ -1,17 +1,21 @@
 import Link from "next/link";
-import { posts } from "@/lib/posts";
+import { getPosts } from "@/lib/posts";
 import PartnersCarousel from "./components/PartnersCarousel";
 import HeroCarousel from "./components/HeroCarousel";
 import GoogleReviews from "./components/GoogleReviews";
 
-export default function HomePage() {
+export const revalidate = 60;
+
+export default async function HomePage() {
+  const posts = await getPosts();
+
   const sortedByDate = [...posts].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
   const latestPost = sortedByDate[0];
 
   const sortedByViews = [...posts].sort(
-    (a, b) => ((b as any).views || 0) - ((a as any).views || 0)
+    (a, b) => (b.views || 0) - (a.views || 0)
   );
   const popularPosts = sortedByViews.slice(0, 2);
 

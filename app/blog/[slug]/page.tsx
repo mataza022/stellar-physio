@@ -1,10 +1,18 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPostBySlug, getRecentPosts, posts, formatDate } from "@/lib/posts";
+import {
+  getPostBySlug,
+  getRecentPosts,
+  getPosts,
+  formatDate,
+} from "@/lib/posts";
 import VideoEmbed from "../../components/VideoEmbed";
 import CommentForm from "../../components/CommentForm";
 
-export function generateStaticParams() {
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const posts = await getPosts();
   return posts.map((p) => ({ slug: p.slug }));
 }
 
@@ -58,15 +66,16 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
-  const recent = getRecentPosts(5);
+  const post = await getPostBySlug(slug);
+  const recent = await getRecentPosts(5);
 
   if (!post) {
     notFound();
   }
 
   // Get related posts for the bottom of the page
-  const relatedPosts = posts.filter((p) => p.slug !== post.slug).slice(0, 3);
+  const all = await getPosts();
+  const relatedPosts = all.filter((p) => p.slug !== post.slug).slice(0, 3);
 
   return (
     <>
@@ -101,7 +110,7 @@ export default async function BlogPostPage({
                   <span className="inline-block bg-green text-white font-bold px-3 py-1 rounded uppercase tracking-wide">
                     {post.category}
                   </span>
-                  <span>30 Views</span>
+                  <span>{post.views ?? 0} Views</span>
                   <span>{formatDate(post.date)}</span>
                 </div>
                 <h1 className="text-2xl md:text-3xl font-bold text-purple mb-6 leading-tight">
