@@ -6,13 +6,14 @@ import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { getDb } from "@/lib/firebase";
 import { formatDate } from "@/lib/posts";
 
-type Row = {
+     type Row = {
   slug: string;
   title: string;
   location: string;
   type: string;
   status: string;
   postedAt: string;
+  image: string;
 };
 
 export default function AdminJobsListPage() {
@@ -27,13 +28,14 @@ export default function AdminJobsListPage() {
       const snap = await getDocs(collection(db, "jobs"));
       const list: Row[] = snap.docs.map((d) => {
         const data = d.data();
-        return {
+           return {
           slug: d.id,
           title: data.title ?? "",
           location: data.location ?? "",
           type: data.type ?? "",
           status: data.status ?? "open",
           postedAt: data.postedAt ?? "",
+          image: data.image ?? "",
         };
       });
       list.sort(
@@ -104,7 +106,8 @@ export default function AdminJobsListPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm min-w-[640px]">
               <thead className="bg-gray-50 border-b border-gray-100">
-                <tr className="text-left text-xs uppercase tracking-wide text-gray-500">
+                          <tr className="text-left text-xs uppercase tracking-wide text-gray-500">
+                  <th className="px-4 py-3 font-semibold w-16"></th>
                   <th className="px-4 py-3 font-semibold">Title</th>
                   <th className="px-4 py-3 font-semibold">Location</th>
                   <th className="px-4 py-3 font-semibold">Type</th>
@@ -119,6 +122,17 @@ export default function AdminJobsListPage() {
                     key={r.slug}
                     className="border-b border-gray-100 last:border-0 hover:bg-gray-50/50"
                   >
+                    <td className="px-4 py-3">
+                      {r.image ? (
+                        <img
+                          src={r.image}
+                          alt=""
+                          className="w-12 h-12 rounded object-cover bg-gray-100"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded bg-gray-100" />
+                      )}
+                    </td>
                     <td className="px-4 py-3">
                       <p className="font-semibold text-purple leading-tight">
                         {r.title}

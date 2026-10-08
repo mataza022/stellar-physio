@@ -15,6 +15,7 @@ export type Job = {
   postedAt: string;
   status: "open" | "closed";
   applyEmail: string;
+  image?: string;
 };
 
 function mapDoc(id: string, data: any): Job {
@@ -32,6 +33,7 @@ function mapDoc(id: string, data: any): Job {
     postedAt: data.postedAt ?? "",
     status: data.status ?? "open",
     applyEmail: data.applyEmail ?? "hr@stellarphysio.co.ke",
+    image: data.image ?? "",
   };
 }
 

@@ -28,6 +28,7 @@ type FormState = {
   postedAt: string;
   status: "open" | "closed";
   applyEmail: string;
+  image: string;
 };
 
 const emptyForm = (): FormState => ({
@@ -44,6 +45,7 @@ const emptyForm = (): FormState => ({
   postedAt: new Date().toISOString().slice(0, 10),
   status: "open",
   applyEmail: "hr@stellarphysio.co.ke",
+  image: "",
 });
 
 function slugify(s: string) {
@@ -73,6 +75,7 @@ export default function AdminJobEditorPage() {
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [slugTouched, setSlugTouched] = useState(!isNew);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     if (isNew) return;
@@ -100,6 +103,7 @@ export default function AdminJobEditorPage() {
           postedAt: d.postedAt ?? "",
           status: d.status ?? "open",
           applyEmail: d.applyEmail ?? "hr@stellarphysio.co.ke",
+          image: d.image ?? "",
         });
       } catch (err) {
         console.error(err);
@@ -143,27 +147,25 @@ export default function AdminJobEditorPage() {
         await deleteDoc(doc(db, "jobs", params.slug));
       }
 
-      await setDoc(
-        ref,
-        {
-          title: form.title.trim(),
-          department: form.department.trim(),
-          location: form.location.trim(),
-          type: form.type,
-          description: form.description,
-          responsibilities: linesToArray(form.responsibilities),
-          requirements: linesToArray(form.requirements),
-          salaryRange: form.salaryRange.trim(),
-          deadline: form.deadline,
-          postedAt: form.postedAt,
-          status: form.status,
-          applyEmail: form.applyEmail.trim() || "hr@stellarphysio.co.ke",
-          updatedAt: serverTimestamp(),
-          ...(isNew ? { createdAt: serverTimestamp() } : {}),
-        },
-        { merge: true }
-      );
+      const payload: Record<string, any> = {
+        title: form.title.trim(),
+        department: form.department.trim(),
+        location: form.location.trim(),
+        type: form.type,
+        description: form.description,
+        responsibilities: linesToArray(form.responsibilities),
+        requirements: linesToArray(form.requirements),
+        salaryRange: form.salaryRange.trim(),
+        deadline: form.deadline,
+        postedAt: form.postedAt,
+        status: form.status,
+        applyEmail: form.applyEmail.trim() || "hr@stellarphysio.co.ke",
+        updatedAt: serverTimestamp(),
+        ...(isNew ? { createdAt: serverTimestamp() } : {}),
+      };
+      if (form.image.trim()) payload.image = form.image.trim();
 
+      await setDoc(ref, payload, { merge: true });
       router.push("/admin/jobs");
     } catch (err) {
       console.error(err);
@@ -320,6 +322,45 @@ export default function AdminJobEditorPage() {
               className={inputCls}
             />
           </Field>
+        </Card>
+
+        <Card title="Featured Image (optional)">
+          <Field
+            label="Image path"
+            hint="e.g. /images/senior-physio-role.jpg — file must exist in public/images/. Leave blank to show a text-only card."
+          >
+            <input
+              type="text"
+              placeholder="/images/your-image.jpg"
+              value={form.image}
+              onChange={(e) => {
+                setImageError(false);
+                update("image", e.target.value);
+              }}
+              className={`${inputCls} font-mono`}
+            />
+          </Field>
+          {form.image && (
+            <div>
+              <p className="text-xs font-semibold text-gray-700 mb-2">
+                Preview
+              </p>
+              {imageError ? (
+                <p className="text-xs text-red-600">
+                  Image not found at <code>{form.image}</code>. Check the
+                  path and that the file exists in <code>public/images/</code>.
+                </p>
+              ) : (
+                <img
+                  src={form.image}
+                  alt="Job featured image preview"
+                  className="max-h-64 rounded border border-gray-200 bg-gray-50"
+                  onError={() => setImageError(true)}
+                  onLoad={() => setImageError(false)}
+                />
+              )}
+            </div>
+          )}
         </Card>
 
         <Card title="Description">
