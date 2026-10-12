@@ -5,19 +5,26 @@ import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import type { User } from "firebase/auth";
 import { onAuthChange, signOut } from "@/lib/auth";
+import { getAdminCounts, type AdminCounts } from "@/lib/adminCounts";
 
-const nav = [
+type NavItem = {
+  href: string;
+  label: string;
+  badge?: keyof AdminCounts;
+};
+
+const nav: NavItem[] = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/posts", label: "Blog Posts" },
   { href: "/admin/videos", label: "Videos" },
   { href: "/admin/jobs", label: "Jobs" },
-  { href: "/admin/comments", label: "Comments" },
+  { href: "/admin/comments", label: "Comments", badge: "comments" },
   { href: "/admin/services", label: "Services" },
   { href: "/admin/conditions", label: "Conditions" },
-  { href: "/admin/bookings", label: "Bookings" },
-  { href: "/admin/messages", label: "Messages" },
-  { href: "/admin/leads", label: "Leads" },
-  { href: "/admin/subscribers", label: "Newsletter" },
+  { href: "/admin/bookings", label: "Bookings", badge: "bookings" },
+  { href: "/admin/messages", label: "Messages", badge: "messages" },
+  { href: "/admin/leads", label: "Leads", badge: "leads" },
+  { href: "/admin/subscribers", label: "Newsletter", badge: "subscribers" },
 ];
 
 export default function AdminLayout({
@@ -28,6 +35,13 @@ export default function AdminLayout({
   const router = useRouter();
   const pathname = usePathname();
   const [user, setUser] = useState<User | null | undefined>(undefined);
+  const [counts, setCounts] = useState<AdminCounts>({
+    bookings: 0,
+    messages: 0,
+    comments: 0,
+    leads: 0,
+    subscribers: 0,
+  });
 
   useEffect(() => {
     const unsub = onAuthChange((u) => setUser(u));
@@ -37,6 +51,31 @@ export default function AdminLayout({
   useEffect(() => {
     if (user === null) router.replace("/admin/login");
   }, [user, router]);
+
+  // Fetch counts while signed in; refresh every 60s and on route change
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+
+    const load = async () => {
+      const fresh = await getAdminCounts();
+      if (!cancelled) setCounts(fresh);
+    };
+
+    load();
+    const interval = setInterval(load, 60_000);
+
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") load();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [user, pathname]);
 
   if (user === undefined || user === null) {
     return (
@@ -66,17 +105,32 @@ export default function AdminLayout({
               item.href === "/admin"
                 ? pathname === "/admin"
                 : pathname.startsWith(item.href);
+
+            const count = item.badge ? counts[item.badge] : 0;
+            const showBadge = item.badge !== undefined && count > 0;
+
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`block px-3 py-2 rounded-lg text-sm font-medium transition ${
+                className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition ${
                   active
                     ? "bg-purple text-white"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
               >
-                {item.label}
+                <span>{item.label}</span>
+                {showBadge && (
+                  <span
+                    className={`ml-2 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-[10px] font-bold ${
+                      active
+                        ? "bg-white text-purple"
+                        : "bg-purple text-white"
+                    }`}
+                  >
+                    {count > 99 ? "99+" : count}
+                  </span>
+                )}
               </Link>
             );
           })}
