@@ -526,11 +526,11 @@ export default function Header() {
             menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="relative h-24 px-4 bg-purple shadow-sm border-b border-purple-dark sticky top-0 z-10 flex items-center justify-between overflow-hidden">
+          <div className="relative h-16 px-4 bg-purple shadow-sm border-b border-purple-dark sticky top-0 z-10 flex items-center justify-between">
             <img
               src="/images/stellarphysiowhitelogo.png"
               alt="Stellar Physio"
-              className="h-44 w-auto object-contain -ml-2"
+              className="h-10 w-auto object-contain"
             />
             <div className="flex items-center gap-1">
               <button
