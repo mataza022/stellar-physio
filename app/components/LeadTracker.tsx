@@ -23,10 +23,16 @@ export default function LeadTracker() {
 
       if (href.startsWith("tel:")) {
         type = "call";
-        phone = href.replace(/^tel:/, "").trim();
+        phone = href.replace(/^tel:/, "").split("?")[0].trim();
       } else if (/wa\.me|api\.whatsapp\.com|whatsapp\.com\/send/i.test(href)) {
         type = "whatsapp";
-        phone = href.replace(/^.*wa\.me\//, "").split("?")[0].trim();
+        const wa = href.match(/wa\.me\/(\d+)/);
+        if (wa) {
+          phone = wa[1];
+        } else {
+          const q = href.match(/[?&]phone=(\d+)/);
+          if (q) phone = q[1];
+        }
       } else if (href.startsWith("mailto:")) {
         type = "email";
         email = href.replace(/^mailto:/, "").split("?")[0].trim();
@@ -38,12 +44,16 @@ export default function LeadTracker() {
 
       if (!type) return;
 
-      // Session dedup: only log once per (type, path) per session
       const key = `lead:${type}:${pathname}`;
       if (sessionStorage.getItem(key)) return;
       sessionStorage.setItem(key, "1");
 
-      const label = target.textContent?.trim().slice(0, 120) ?? "";
+      const label =
+        (target.textContent?.trim() ||
+          target.getAttribute("aria-label") ||
+          target.getAttribute("title") ||
+          "")
+          .slice(0, 120);
 
       trackLead({
         type,
