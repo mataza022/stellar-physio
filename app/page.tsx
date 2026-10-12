@@ -288,7 +288,7 @@ export default async function HomePage() {
               {[
                 {
                   name: "Kenital Plaza",
-                  img: "/images/hero1.jpeg",
+                  img: "/images/kenitalplaza.jpeg",
                   href: "/branches/kenital-plaza",
                 },
                 {
