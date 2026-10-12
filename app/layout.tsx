@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
 import SiteChrome from "./components/SiteChrome";
+import LeadTracker from "./components/LeadTracker";
 
 export const metadata: Metadata = {
   title: "Stellar Physio | Best Physiotherapy Clinic in Nairobi",
@@ -30,6 +31,7 @@ export default function RootLayout({
         >
           {children}
         </SiteChrome>
+        <LeadTracker />
       </body>
     </html>
   );
