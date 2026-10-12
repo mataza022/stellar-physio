@@ -3,36 +3,6 @@ import { getPosts, getRecentPosts, formatDate } from "@/lib/posts";
 import { getActiveVideos } from "@/lib/videos";
 import VideoEmbed from "../components/VideoEmbed";
 
-const categories = [
-  "Allergen",
-  "Blood",
-  "Food",
-  "Health",
-  "Health & Wellness",
-  "Mental Health",
-  "Sports Injury",
-  "Therapy",
-  "Walking",
-];
-
-const tags = [
-  "ACL", "Adhesive Capsulitis", "Anterior Cruciate Ligament", "Back & Neck Pain",
-  "Best Ergonomic Practices For Lower Back Health", "Chiropractic", "Chiropractic Care",
-  "Chronic Back Pain", "Disc Bulge", "Foot Pain", "Health & Wellness",
-  "How Your Daily Habits Impact Spine Health", "Knee Physiotherapy", "Lower Back",
-  "Lower Back Pain", "Lumbar Spondylosis", "MRI Interpretation Guide",
-  "Ngong Road Physiotherapy", "Office Workers", "Osgood-Schlatter Disease", "Pain",
-  "Parklands Physiotherapy", "Physio", "Physiotherapy And MRI Scans",
-  "Physiotherapy For Office Workers", "Physiotherapy For Sleep Quality",
-  "Physiotherapy Techniques To Improve Balance", "Plantar Fasciitis",
-  "Post-Surgery Recovery", "Sciatica", "Spine Degeneration", "Stroke Recovery Therapy",
-  "Stroke Rehabilitation", "Symptoms Of Disc Bulge", "Tennis Elbow", "Traction Therapy",
-  "Traction Therapy Effective Spinal Pain Relief", "Types Of Traction Therapy",
-  "Understanding And Managing Tennis Elbow", "Understanding Disc Bulge",
-  "What Is Chiropractic Care?", "What Is Lumbar Spondylosis?", "What Is Osgood-Schlatter Disease?",
-  "Why Office Workers Experience Back & Neck Pain",
-];
-
 export const revalidate = 60;
 
 export default async function BlogPage() {
@@ -42,9 +12,35 @@ export default async function BlogPage() {
   const recent = await getRecentPosts(5);
   const videos = await getActiveVideos();
 
+  // Derive categories from real posts
+  const categoryCounts = posts.reduce<Record<string, number>>((acc, p) => {
+    const cat = p.category?.trim() || "Uncategorized";
+    acc[cat] = (acc[cat] || 0) + 1;
+    return acc;
+  }, {});
+  const categories = Object.entries(categoryCounts).sort(
+    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
+  );
+
+  // Derive tags from real posts
+  const tagCounts = posts.reduce<Record<string, number>>((acc, p) => {
+    (p.tags || []).forEach((tag) => {
+      const t = tag.trim();
+      if (t) acc[t] = (acc[t] || 0) + 1;
+    });
+    return acc;
+  }, {});
+  const tags = Object.entries(tagCounts).sort(
+    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
+  );
+
+  // Popular posts by views
+  const popularPosts = [...posts]
+    .sort((a, b) => (b.views ?? 0) - (a.views ?? 0))
+    .slice(0, 4);
+
   return (
     <>
-      {/* CLEAN PAGE HEADER (No Hero Image) */}
       <section className="pt-20 pb-8 bg-white">
         <div className="container-custom text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-purple mb-4">
@@ -57,14 +53,9 @@ export default async function BlogPage() {
         </div>
       </section>
 
-      {/* MAIN LAYOUT: ARTICLES + SIDEBAR */}
       <section className="pb-16 bg-white">
         <div className="container-custom grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-10">
-          
-          {/* LEFT COLUMN — FEATURED + ARTICLE GRID */}
           <div className="space-y-8">
-            
-            {/* FEATURED ARTICLE */}
             <Link href={`/blog/${featured.slug}`} className="group block">
               <article className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300">
                 <div className="w-full h-[340px] overflow-hidden">
@@ -97,7 +88,6 @@ export default async function BlogPage() {
               </article>
             </Link>
 
-            {/* ARTICLES GRID */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {remainingPosts.map((post) => (
                 <Link
@@ -138,7 +128,6 @@ export default async function BlogPage() {
               ))}
             </div>
 
-            {/* VIDEOS FROM STELLAR PHYSIO — pulled from Firestore */}
             {videos.length > 0 && (
               <div className="pt-6">
                 <h3 className="text-2xl font-bold text-purple mb-6 border-b border-gray-200 pb-3">
@@ -158,12 +147,9 @@ export default async function BlogPage() {
                 </div>
               </div>
             )}
-
           </div>
 
-          {/* RIGHT COLUMN — SIDEBAR */}
           <aside className="space-y-6 pb-24 lg:sticky lg:top-24 h-fit">
-            {/* Search */}
             <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
               <h3 className="text-base font-bold text-purple mb-3">Search</h3>
               <div className="flex">
@@ -178,7 +164,6 @@ export default async function BlogPage() {
               </div>
             </div>
 
-            {/* Recent Posts */}
             <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
               <h3 className="text-base font-bold text-purple mb-3">
                 Recent Posts
@@ -197,70 +182,80 @@ export default async function BlogPage() {
               </ul>
             </div>
 
-            {/* Categories */}
             <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
               <h3 className="text-base font-bold text-purple mb-3">
                 Categories
               </h3>
-              <ul className="space-y-1.5">
-                {categories.map((cat, i) => (
-                  <li
-                    key={cat}
-                    className="flex justify-between items-center text-xs border-b border-gray-200 pb-1.5"
-                  >
-                    <span className="text-gray-700">{cat}</span>
-                    <span className="bg-purple text-white text-[10px] px-2 py-0.5 rounded">
-                      {i === 0 ? 8 : i === 1 ? 1 : i === 2 ? 1 : i === 3 ? 1 : i === 4 ? 12 : 5}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              {categories.length === 0 ? (
+                <p className="text-xs text-gray-500">No categories yet.</p>
+              ) : (
+                <ul className="space-y-1.5">
+                  {categories.map(([cat, count]) => (
+                    <li
+                      key={cat}
+                      className="flex justify-between items-center text-xs border-b border-gray-200 pb-1.5"
+                    >
+                      <span className="text-gray-700">{cat}</span>
+                      <span className="bg-purple text-white text-[10px] px-2 py-0.5 rounded">
+                        {count}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
-            {/* Popular Posts */}
             <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
               <h3 className="text-base font-bold text-purple mb-3">
                 Popular Posts
               </h3>
-              <ul className="space-y-3">
-                {recent.slice(0, 4).map((p) => (
-                  <li key={p.slug} className="flex gap-3">
-                    <img
-                      src={p.image}
-                      alt={p.title}
-                      className="w-14 h-14 object-cover rounded flex-shrink-0"
-                    />
-                    <div>
-                      <Link
-                        href={`/blog/${p.slug}`}
-                        className="text-gray-700 hover:text-purple text-xs font-medium leading-tight block mb-1"
-                      >
-                        {p.title}
-                      </Link>
-                      <span className="text-[10px] text-gray-500">
-                        {formatDate(p.date)}
-                      </span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              {popularPosts.length === 0 ? (
+                <p className="text-xs text-gray-500">No posts yet.</p>
+              ) : (
+                <ul className="space-y-3">
+                  {popularPosts.map((p) => (
+                    <li key={p.slug} className="flex gap-3">
+                      <img
+                        src={p.image}
+                        alt={p.title}
+                        className="w-14 h-14 object-cover rounded flex-shrink-0"
+                      />
+                      <div>
+                        <Link
+                          href={`/blog/${p.slug}`}
+                          className="text-gray-700 hover:text-purple text-xs font-medium leading-tight block mb-1"
+                        >
+                          {p.title}
+                        </Link>
+                        <span className="text-[10px] text-gray-500">
+                          {formatDate(p.date)}
+                        </span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
-            {/* Popular Tags */}
             <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
               <h3 className="text-base font-bold text-purple mb-3">
                 Popular Tags
               </h3>
-              <div className="flex flex-wrap gap-1.5">
-                {tags.slice(0, 20).map((tag) => (
-                  <span
-                    key={tag}
-                    className="bg-white border border-gray-200 text-gray-700 text-[10px] px-2 py-1 rounded-full hover:bg-purple hover:text-white cursor-pointer transition"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+              {tags.length === 0 ? (
+                <p className="text-xs text-gray-500">No tags yet.</p>
+              ) : (
+                <div className="flex flex-wrap gap-1.5">
+                  {tags.slice(0, 20).map(([tag, count]) => (
+                    <span
+                      key={tag}
+                      title={`${count} post${count === 1 ? "" : "s"}`}
+                      className="bg-white border border-gray-200 text-gray-700 text-[10px] px-2 py-1 rounded-full hover:bg-purple hover:text-white cursor-pointer transition"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </aside>
         </div>
