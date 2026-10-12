@@ -52,7 +52,7 @@ const listingServices: ListingService[] = [
     title: "Pharmacy Services in Ngong Road, Nairobi",
     description:
       "Whether you need prescription medications or over-the-counter products, we stock all essential medicines to meet your needs. Our pharmacy is dedicated to ensuring that you receive the right medications and professional guidance to support your recovery and well-being.",
-    heroImage: "/images/pharmacy1.webp",
+    heroImage: "/images/pharmacy.jpeg",
   },
   {
     slug: "stretch-exercise-therapy",
