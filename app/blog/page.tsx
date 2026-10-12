@@ -162,7 +162,7 @@ export default async function BlogPage() {
           </div>
 
           {/* RIGHT COLUMN — SIDEBAR */}
-          <aside className="space-y-6 pb-24">
+          <aside className="space-y-6 pb-24 lg:sticky lg:top-24 h-fit">
             {/* Search */}
             <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
               <h3 className="text-base font-bold text-purple mb-3">Search</h3>
