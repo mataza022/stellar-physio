@@ -353,9 +353,9 @@ export default function Header() {
 
           <Link
             href="/book-appointment"
-            className="hidden lg:inline-block bg-purple text-white px-5 py-2 rounded font-semibold hover:bg-purple-dark hover:scale-105 transition-all duration-200 text-sm"
+            className="hidden lg:inline-block bg-purple text-white px-5 py-2 rounded font-semibold hover:bg-purple-dark hover:scale-105 transition-all duration-200 text-sm whitespace-nowrap"
           >
-            Appointment
+            Book Appointment
           </Link>
         </div>
       </header>
