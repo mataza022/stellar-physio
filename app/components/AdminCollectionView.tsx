@@ -36,7 +36,7 @@ const LABELS: Record<string, string> = {
   source: "Source",
   status: "Status",
   details: "Details",
-  customServiceDescription: "Custom service",
+  customServiceDescription: "Condition details",
   serviceIsCustom: "Custom service?",
   wasPreselected: "Was preselected",
   isHomeBased: "Home based?",
@@ -139,6 +139,24 @@ function SourceBadge({ collectionName }: { collectionName: string }) {
   );
 }
 
+const BADGE_COLORS: Record<string, string> = {
+  green: "bg-green-50 text-green-700 border-green-200",
+  blue: "bg-blue-50 text-blue-700 border-blue-200",
+  purple: "bg-purple-50 text-purple-700 border-purple-200",
+  amber: "bg-amber-50 text-amber-700 border-amber-200",
+};
+
+type BadgeConfig = {
+  /** The boolean field on the doc that triggers the badge. */
+  whenField: string;
+  /** Text shown inside the badge when the field is truthy. */
+  label: string;
+  /** Render the badge next to this field's value. */
+  onField: string;
+  /** Optional color preset. Defaults to green. */
+  color?: "green" | "blue" | "purple" | "amber";
+};
+
 type Props = {
   title: string;
   description?: string;
@@ -148,6 +166,7 @@ type Props = {
   searchable?: string[];
   allowDelete?: boolean;
   statusField?: string;
+  badge?: BadgeConfig;
 };
 
 export default function AdminCollectionView({
@@ -159,6 +178,7 @@ export default function AdminCollectionView({
   searchable,
   allowDelete = true,
   statusField,
+  badge,
 }: Props) {
   const [rows, setRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
@@ -347,6 +367,10 @@ export default function AdminCollectionView({
                   const busy = busyId === r.id;
                   const status = (r.data[statusField ?? ""] ??
                     "pending") as string;
+                  const showBadge =
+                    badge && r.data[badge.whenField] === true;
+                  const badgeCls =
+                    BADGE_COLORS[badge?.color ?? "green"] ?? BADGE_COLORS.green;
                   return (
                     <Fragment key={r.id}>
                       <tr
@@ -371,6 +395,13 @@ export default function AdminCollectionView({
                             <span className="line-clamp-2">
                               {formatValue(r.data[f])}
                             </span>
+                            {showBadge && badge && badge.onField === f && (
+                              <span
+                                className={`ml-2 inline-block align-middle text-[10px] font-bold px-1.5 py-0.5 rounded border uppercase tracking-wide ${badgeCls}`}
+                              >
+                                {badge.label}
+                              </span>
+                            )}
                           </td>
                         ))}
                         <td className="px-4 py-3 text-right whitespace-nowrap align-top">

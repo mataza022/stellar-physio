@@ -10,21 +10,6 @@ import { db } from "@/lib/firebase";
 import { services } from "@/lib/services";
 import { conditions } from "@/lib/conditions";
 
-const serviceCategories: Record<string, string> = {
-  "general-consultations": "Consultation",
-  "chiropractor-services": "Chiropractic",
-  physiotherapy: "Therapy",
-  "home-based-care": "Homecare",
-  "stellar-laboratory-services": "Diagnostic",
-  pharmacy: "Pharmacy",
-  "counselling-services": "Mental Health",
-  "sports-massage": "Therapy",
-  reflexology: "Therapy",
-  "occupational-therapy": "Pediatric Therapy",
-  "stretch-exercise-therapy": "Therapy",
-};
-
-// Group services under user-friendly categories
 const serviceGroups = [
   { label: "Consultations", slugs: ["general-consultations"] },
   {
@@ -60,6 +45,7 @@ function isHomeBasedService(name: string | null): boolean {
 function BookAppointmentInner() {
   const searchParams = useSearchParams();
   const preSelected = searchParams.get("service");
+  const isPreselectedMode = !!preSelected;
 
   const [step, setStep] = useState(1);
   const [selectedService, setSelectedService] = useState<string | null>(
@@ -81,7 +67,6 @@ function BookAppointmentInner() {
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Determine the final service name — either from dropdown or from free-text
   const finalServiceName =
     selectedService && selectedService !== "Other"
       ? selectedService
@@ -121,7 +106,8 @@ function BookAppointmentInner() {
     !!selectedTime &&
     !!formData.firstName.trim() &&
     !!formData.email.trim() &&
-    (!isHomeBased || formData.details.trim().length > 3);
+    (!isHomeBased || formData.details.trim().length > 3) &&
+    (!isPreselectedMode || customService.trim().length > 3);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -141,6 +127,10 @@ function BookAppointmentInner() {
     }
     if (!formData.firstName.trim() || !formData.email.trim()) {
       setErrorMessage("Please fill in your name and email.");
+      return;
+    }
+    if (isPreselectedMode && customService.trim().length < 4) {
+      setErrorMessage("Please describe your condition so we can prepare.");
       return;
     }
     if (isHomeBased && formData.details.trim().length < 4) {
@@ -186,9 +176,6 @@ function BookAppointmentInner() {
     }
   };
 
-  // ============================================
-  // SUCCESS SCREEN
-  // ============================================
   if (submitted) {
     return (
       <section className="min-h-[70vh] flex items-center justify-center py-20 bg-gray-50">
@@ -269,9 +256,6 @@ function BookAppointmentInner() {
     );
   }
 
-  // ============================================
-  // BOOKING FLOW
-  // ============================================
   return (
     <>
       <style jsx global>{`
@@ -347,7 +331,6 @@ function BookAppointmentInner() {
         }
       `}</style>
 
-      {/* BREADCRUMB BAR */}
       <div className="bg-white border-b border-gray-200">
         <div className="container-custom flex justify-between items-center py-4">
           <Link
@@ -391,7 +374,6 @@ function BookAppointmentInner() {
         </div>
       </div>
 
-      {/* STEP INDICATOR — 3 steps */}
       <div className="bg-white border-b border-gray-200">
         <div className="container-custom max-w-3xl py-6">
           <div className="flex justify-between items-start relative">
@@ -431,7 +413,6 @@ function BookAppointmentInner() {
         </div>
       </div>
 
-      {/* STEP 1 — LOCATION */}
       {step === 1 && (
         <section className="pt-10 bg-gray-50">
           <div className="container-custom max-w-4xl pb-4">
@@ -501,7 +482,6 @@ function BookAppointmentInner() {
         </section>
       )}
 
-      {/* STEP 2 — DATE & TIME */}
       {step === 2 && (
         <section className="pt-10 bg-gray-50">
           <div className="container-custom max-w-5xl pb-4">
@@ -709,7 +689,6 @@ function BookAppointmentInner() {
         </section>
       )}
 
-      {/* STEP 3 — SERVICE + YOUR DETAILS */}
       {step === 3 && (
         <section className="py-12 bg-gray-50">
           <div className="container-custom max-w-2xl">
@@ -735,10 +714,14 @@ function BookAppointmentInner() {
             </button>
 
             <h2 className="text-lg md:text-2xl font-bold text-gray-800 mb-1">
-              Almost done — a few more details
+              {isPreselectedMode
+                ? "Tell us about your condition"
+                : "Almost done — a few more details"}
             </h2>
             <p className="text-xs md:text-sm text-gray-500 mb-6">
-              Tell us what you need and how we can reach you.
+              {isPreselectedMode
+                ? "We already know what you're booking — just add a few details so we can prepare."
+                : "Tell us what you need and how we can reach you."}
             </p>
 
             {/* Booking summary */}
@@ -747,6 +730,16 @@ function BookAppointmentInner() {
                 Your selection
               </h3>
               <div className="grid grid-cols-2 gap-3 text-sm">
+                {isPreselectedMode && (
+                  <div className="col-span-2">
+                    <p className="text-gray-500 text-[11px] uppercase tracking-wider mb-1">
+                      Service
+                    </p>
+                    <p className="font-semibold text-purple">
+                      {preSelected}
+                    </p>
+                  </div>
+                )}
                 <div>
                   <p className="text-gray-500 text-[11px] uppercase tracking-wider mb-1">
                     Branch
@@ -775,104 +768,135 @@ function BookAppointmentInner() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
-              {/* SERVICE / CONDITION — description first, then dropdown */}
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-                {/* Description textarea shows FIRST, when nothing is selected yet */}
-                {!selectedService && (
-                  <>
-                    <label className="block text-sm font-semibold text-gray-800 mb-2">
-                      Describe your issue{" "}
-                      <span className="text-gray-400 font-normal">
-                        (optional)
-                      </span>
-                    </label>
-                    <textarea
-                      rows={3}
-                      disabled={submitting}
-                      value={customService}
-                      onChange={(e) => setCustomService(e.target.value)}
-                      placeholder="E.g., I have persistent shoulder pain that hasn't gone away for two weeks..."
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple resize-none text-sm bg-white disabled:bg-gray-50"
-                    />
+              {isPreselectedMode ? (
+                /* ─── PRESELECTED MODE ─── */
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                  <div className="bg-purple-light/50 rounded-lg p-4 mb-5">
+                    <p className="text-[10px] uppercase tracking-wider text-purple/70 font-semibold mb-1">
+                      You&apos;re booking
+                    </p>
+                    <p className="text-lg font-bold text-purple">
+                      {preSelected}
+                    </p>
+                  </div>
 
-                    {/* Divider */}
-                    <div className="flex items-center gap-3 my-4">
-                      <div className="flex-1 h-px bg-gray-200"></div>
-                      <span className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">
-                        Or
-                      </span>
-                      <div className="flex-1 h-px bg-gray-200"></div>
-                    </div>
-                  </>
-                )}
-
-                {/* Dropdown — always shown, but the label changes if a service is picked */}
-                <label className="block text-sm font-semibold text-gray-800 mb-2">
-                  {selectedService
-                    ? "Selected service or condition"
-                    : "Select a service or condition from the list"}
-                </label>
-
-                <select
-                  disabled={submitting}
-                  value={selectedService || ""}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setSelectedService(value || null);
-                    // If the user picks a specific service, clear the free-text description
-                    // so the dropdown value becomes the source of truth
-                    if (value) {
-                      setCustomService("");
-                    }
-                  }}
-                  className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-lg outline-none focus:border-purple text-sm md:text-base font-semibold text-gray-800 bg-white transition cursor-pointer disabled:bg-gray-50"
-                >
-                  <option value="">— Nothing selected —</option>
-
-                  {serviceGroups.map((group) => {
-                    const groupServices = services.filter((s) =>
-                      group.slugs.includes(s.slug)
-                    );
-                    if (groupServices.length === 0) return null;
-                    return (
-                      <optgroup key={group.label} label={group.label}>
-                        {groupServices.map((service) => (
-                          <option key={service.slug} value={service.title}>
-                            {service.title}
-                          </option>
-                        ))}
-                      </optgroup>
-                    );
-                  })}
-
-                  <optgroup label="Conditions We Treat">
-                    {conditions.map((condition) => (
-                      <option key={condition.slug} value={condition.title}>
-                        {condition.title}
-                      </option>
-                    ))}
-                  </optgroup>
-                </select>
-
-                {/* Once a service is selected, show a clear "clear" option */}
-                {selectedService && (
-                  <button
-                    type="button"
-                    onClick={() => setSelectedService(null)}
+                  <label className="block text-sm font-semibold text-gray-800 mb-2">
+                    Tell us more about your condition
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    rows={4}
+                    required
                     disabled={submitting}
-                    className="mt-3 text-xs text-purple font-semibold hover:underline disabled:opacity-50"
-                  >
-                    ← Clear selection and describe my issue instead
-                  </button>
-                )}
+                    value={customService}
+                    onChange={(e) => setCustomService(e.target.value)}
+                    placeholder="Describe your symptoms, how long you've had them, and anything else that will help us prepare for your visit..."
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple resize-none text-sm bg-white disabled:bg-gray-50"
+                  />
+                  <p className="text-xs text-gray-500 mt-3">
+                    Not what you wanted?{" "}
+                    <Link
+                      href="/book-appointment"
+                      className="text-purple font-semibold hover:underline"
+                    >
+                      Choose a different service
+                    </Link>
+                  </p>
+                </div>
+              ) : (
+                /* ─── MANUAL MODE ─── */
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                  {!selectedService && (
+                    <>
+                      <label className="block text-sm font-semibold text-gray-800 mb-2">
+                        Describe your issue{" "}
+                        <span className="text-gray-400 font-normal">
+                          (optional)
+                        </span>
+                      </label>
+                      <textarea
+                        rows={3}
+                        disabled={submitting}
+                        value={customService}
+                        onChange={(e) => setCustomService(e.target.value)}
+                        placeholder="E.g., I have persistent shoulder pain that hasn't gone away for two weeks..."
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple resize-none text-sm bg-white disabled:bg-gray-50"
+                      />
 
-                <p className="text-xs text-gray-500 mt-3">
-                  Not sure what you need? Just describe it in your own words
-                  above, or pick{" "}
-                  <strong>&quot;General Consultations&quot;</strong> from the
-                  list — our team will guide you.
-                </p>
-              </div>
+                      <div className="flex items-center gap-3 my-4">
+                        <div className="flex-1 h-px bg-gray-200"></div>
+                        <span className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">
+                          Or
+                        </span>
+                        <div className="flex-1 h-px bg-gray-200"></div>
+                      </div>
+                    </>
+                  )}
+
+                  <label className="block text-sm font-semibold text-gray-800 mb-2">
+                    {selectedService
+                      ? "Selected service or condition"
+                      : "Select a service or condition from the list"}
+                  </label>
+
+                  <select
+                    disabled={submitting}
+                    value={selectedService || ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setSelectedService(value || null);
+                      if (value) {
+                        setCustomService("");
+                      }
+                    }}
+                    className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-lg outline-none focus:border-purple text-sm md:text-base font-semibold text-gray-800 bg-white transition cursor-pointer disabled:bg-gray-50"
+                  >
+                    <option value="">— Nothing selected —</option>
+
+                    {serviceGroups.map((group) => {
+                      const groupServices = services.filter((s) =>
+                        group.slugs.includes(s.slug)
+                      );
+                      if (groupServices.length === 0) return null;
+                      return (
+                        <optgroup key={group.label} label={group.label}>
+                          {groupServices.map((service) => (
+                            <option key={service.slug} value={service.title}>
+                              {service.title}
+                            </option>
+                          ))}
+                        </optgroup>
+                      );
+                    })}
+
+                    <optgroup label="Conditions We Treat">
+                      {conditions.map((condition) => (
+                        <option key={condition.slug} value={condition.title}>
+                          {condition.title}
+                        </option>
+                      ))}
+                    </optgroup>
+                  </select>
+
+                  {selectedService && (
+                    <button
+                      type="button"
+                      onClick={() => setSelectedService(null)}
+                      disabled={submitting}
+                      className="mt-3 text-xs text-purple font-semibold hover:underline disabled:opacity-50"
+                    >
+                      ← Clear selection and describe my issue instead
+                    </button>
+                  )}
+
+                  <p className="text-xs text-gray-500 mt-3">
+                    Not sure what you need? Just describe it in your own words
+                    above, or pick{" "}
+                    <strong>&quot;General Consultations&quot;</strong> from the
+                    list — our team will guide you.
+                  </p>
+                </div>
+              )}
 
               {/* CONTACT DETAILS */}
               <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
