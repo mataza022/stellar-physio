@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { conditions } from "@/lib/conditions";
+import { getConditionBySlug, getConditions } from "@/lib/conditions";
 import VideoEmbed from "../../components/VideoEmbed";
 
-export function generateStaticParams() {
-  return conditions.map((condition) => ({
-    slug: condition.slug,
-  }));
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const conditions = await getConditions();
+  return conditions.map((condition) => ({ slug: condition.slug }));
 }
 
 export default async function ConditionPage({
@@ -15,18 +16,16 @@ export default async function ConditionPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const condition = conditions.find((c) => c.slug === slug);
+  const condition = await getConditionBySlug(slug);
 
   if (!condition) {
     notFound();
   }
 
-  // Pre-selected booking link for this condition
   const bookHref = `/book-appointment?service=${encodeURIComponent(condition.title)}`;
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      {/* HERO SECTION */}
       <section className="relative h-[400px] flex items-center overflow-hidden">
         <img
           src={condition.heroImage}
@@ -35,16 +34,15 @@ export default async function ConditionPage({
         />
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="container-custom relative z-10 text-white">
-          <p className="text-sm mb-2 opacity-80">Conditions / {condition.title}</p>
+          <p className="text-sm mb-2 opacity-80">
+            Conditions / {condition.title}
+          </p>
           <h1 className="text-4xl md:text-6xl font-bold">{condition.title}</h1>
         </div>
       </section>
 
-      {/* MAIN CONTENT */}
       <section className="py-16">
         <div className="container-custom space-y-12">
-          
-          {/* INTRO */}
           <div className="bg-white p-8 rounded-lg shadow-sm">
             <div className="flex flex-col md:flex-row gap-8 items-start mt-2">
               <img
@@ -53,31 +51,41 @@ export default async function ConditionPage({
                 className="w-full md:w-1/2 h-64 object-cover rounded-lg shadow"
               />
               <div className="w-full md:w-1/2">
-                <h2 className="text-2xl font-bold text-purple mb-3">{condition.introTitle}</h2>
-                <p className="text-gray-700 leading-relaxed text-sm">{condition.introText}</p>
+                <h2 className="text-2xl font-bold text-purple mb-3">
+                  {condition.introTitle}
+                </h2>
+                <p className="text-gray-700 leading-relaxed text-sm">
+                  {condition.introText}
+                </p>
               </div>
             </div>
           </div>
 
-          {/* UNDERSTANDING / SYMPTOMS (Purple Section) */}
           <div className="bg-purple text-white p-8 rounded-lg shadow-sm">
             <h2 className="text-2xl font-bold mb-6 border-b border-white/20 pb-2">
               {condition.understandingTitle}
             </h2>
-            <p className="text-purple-light mb-4 text-sm">{condition.understandingText}</p>
-            {condition.understandingList && (
-              <ul className="space-y-2 text-purple-light text-sm mb-4">
-                {condition.understandingList.map((item, idx) => (
-                  <li key={idx} className="flex gap-3">
-                    <span>•</span> {item}
-                  </li>
-                ))}
-              </ul>
-            )}
-            {condition.symptomsList && (
+            <p className="text-purple-light mb-4 text-sm">
+              {condition.understandingText}
+            </p>
+            {condition.understandingList &&
+              condition.understandingList.length > 0 && (
+                <ul className="space-y-2 text-purple-light text-sm mb-4">
+                  {condition.understandingList.map((item, idx) => (
+                    <li key={idx} className="flex gap-3">
+                      <span>•</span> {item}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            {condition.symptomsList && condition.symptomsList.length > 0 && (
               <div className="mt-6">
-                <h3 className="font-bold text-lg mb-3">Symptoms You Should Not Ignore</h3>
-                <p className="text-purple-light mb-2 text-sm">You may need physiotherapy if you experience:</p>
+                <h3 className="font-bold text-lg mb-3">
+                  Symptoms You Should Not Ignore
+                </h3>
+                <p className="text-purple-light mb-2 text-sm">
+                  You may need physiotherapy if you experience:
+                </p>
                 <ul className="space-y-2 text-purple-light text-sm">
                   {condition.symptomsList.map((item, idx) => (
                     <li key={idx} className="flex gap-3">
@@ -95,22 +103,25 @@ export default async function ConditionPage({
             </Link>
           </div>
 
-          {/* TREATMENTS (White Section) */}
           <div className="bg-white p-8 rounded-lg shadow-sm">
             <h2 className="text-2xl font-bold text-purple mb-6 border-b border-gray-200 pb-2">
               {condition.treatmentTitle}
             </h2>
             <ul className="space-y-4">
               {condition.treatmentList.map((item, idx) => (
-                <li key={idx} className="flex gap-3 items-start text-sm text-gray-700">
-                  <span className="text-purple font-bold text-lg leading-none mt-1">•</span>
+                <li
+                  key={idx}
+                  className="flex gap-3 items-start text-sm text-gray-700"
+                >
+                  <span className="text-purple font-bold text-lg leading-none mt-1">
+                    •
+                  </span>
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* VIDEOS */}
           {condition.videos && condition.videos.length > 0 && (
             <div className="bg-white p-8 rounded-lg shadow-sm">
               <h2 className="text-2xl font-bold text-purple mb-6 border-b border-gray-200 pb-2">
@@ -131,7 +142,6 @@ export default async function ConditionPage({
             </div>
           )}
 
-          {/* WHY CHOOSE US (Green Section) */}
           <div className="bg-green text-white p-8 rounded-lg shadow-sm">
             <h2 className="text-2xl font-bold mb-6 border-b border-white/20 pb-2">
               {condition.whyChooseTitle}
@@ -140,8 +150,13 @@ export default async function ConditionPage({
               <div className="w-full md:w-1/2">
                 <ul className="space-y-3">
                   {condition.whyChooseList.map((item, idx) => (
-                    <li key={idx} className="flex gap-3 items-start text-sm text-white/90">
-                      <span className="text-white font-bold text-lg leading-none mt-1">•</span>
+                    <li
+                      key={idx}
+                      className="flex gap-3 items-start text-sm text-white/90"
+                    >
+                      <span className="text-white font-bold text-lg leading-none mt-1">
+                        •
+                      </span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -163,7 +178,6 @@ export default async function ConditionPage({
         </div>
       </section>
 
-      {/* CTA SECTION */}
       <section className="py-16 bg-white text-center">
         <div className="container-custom max-w-3xl">
           <h2 className="text-3xl md:text-4xl font-bold text-purple mb-4">

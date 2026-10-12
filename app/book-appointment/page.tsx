@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { services } from "@/lib/services";
-import { conditions } from "@/lib/conditions";
+import { getServices, type Service } from "@/lib/services";
+import { getConditions, type Condition } from "@/lib/conditions";
 
 const serviceGroups = [
   { label: "Consultations", slugs: ["general-consultations"] },
@@ -62,6 +62,14 @@ function BookAppointmentInner() {
     phone: "",
     details: "",
   });
+
+  const [services, setServices] = useState<Service[]>([]);
+  const [conditions, setConditions] = useState<Condition[]>([]);
+
+  useEffect(() => {
+    getServices().then(setServices).catch(console.error);
+    getConditions().then(setConditions).catch(console.error);
+  }, []);
 
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -724,7 +732,6 @@ function BookAppointmentInner() {
                 : "Tell us what you need and how we can reach you."}
             </p>
 
-            {/* Booking summary */}
             <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 mb-6">
               <h3 className="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider">
                 Your selection
@@ -735,9 +742,7 @@ function BookAppointmentInner() {
                     <p className="text-gray-500 text-[11px] uppercase tracking-wider mb-1">
                       Service
                     </p>
-                    <p className="font-semibold text-purple">
-                      {preSelected}
-                    </p>
+                    <p className="font-semibold text-purple">{preSelected}</p>
                   </div>
                 )}
                 <div>
@@ -769,7 +774,6 @@ function BookAppointmentInner() {
 
             <form onSubmit={handleSubmit} className="space-y-5">
               {isPreselectedMode ? (
-                /* ─── PRESELECTED MODE ─── */
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
                   <div className="bg-purple-light/50 rounded-lg p-4 mb-5">
                     <p className="text-[10px] uppercase tracking-wider text-purple/70 font-semibold mb-1">
@@ -804,7 +808,6 @@ function BookAppointmentInner() {
                   </p>
                 </div>
               ) : (
-                /* ─── MANUAL MODE ─── */
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
                   {!selectedService && (
                     <>
@@ -898,7 +901,6 @@ function BookAppointmentInner() {
                 </div>
               )}
 
-              {/* CONTACT DETAILS */}
               <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
                 <h3 className="text-sm font-bold text-gray-800 mb-4 uppercase tracking-wider">
                   Your Details
@@ -970,7 +972,6 @@ function BookAppointmentInner() {
                 </div>
               </div>
 
-              {/* HOME ADDRESS — only for home-based services */}
               {isHomeBased && (
                 <div className="bg-white rounded-xl border-2 border-green/30 shadow-sm p-5">
                   <div className="flex items-center gap-3 mb-4">
