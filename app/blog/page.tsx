@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getPosts, getRecentPosts, formatDate } from "@/lib/posts";
+import { getActiveVideos } from "@/lib/videos";
 import VideoEmbed from "../components/VideoEmbed";
 
 const categories = [
@@ -32,22 +33,6 @@ const tags = [
   "Why Office Workers Experience Back & Neck Pain",
 ];
 
-// All videos shown on the blog page
-const featuredVideos = [
-  {
-    url: "https://www.youtube.com/watch?v=S7BHUbl4Puk",
-    title: "Inside Stellar Physio",
-  },
-  {
-    url: "https://www.youtube.com/watch?v=lBB4r48B9Mw",
-    title: "Kinesiology Taping in Nairobi",
-  },
-  {
-    url: "https://www.youtube.com/watch?v=uQov2csyo8M",
-    title: "Stroke Rehabilitation at Stellar Physio",
-  },
-];
-
 export const revalidate = 60;
 
 export default async function BlogPage() {
@@ -55,6 +40,7 @@ export default async function BlogPage() {
   const featured = posts[0];
   const remainingPosts = posts.slice(1);
   const recent = await getRecentPosts(5);
+  const videos = await getActiveVideos();
 
   return (
     <>
@@ -152,24 +138,26 @@ export default async function BlogPage() {
               ))}
             </div>
 
-            {/* VIDEOS FROM STELLAR PHYSIO — all three videos */}
-            <div className="pt-6">
-              <h3 className="text-2xl font-bold text-purple mb-6 border-b border-gray-200 pb-3">
-                Videos from Stellar Physio
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {featuredVideos.map((video, idx) => (
-                  <div key={idx}>
-                    <VideoEmbed video={video} />
-                    {video.title && (
-                      <p className="text-sm text-gray-600 mt-3 text-center italic">
-                        {video.title}
-                      </p>
-                    )}
-                  </div>
-                ))}
+            {/* VIDEOS FROM STELLAR PHYSIO — pulled from Firestore */}
+            {videos.length > 0 && (
+              <div className="pt-6">
+                <h3 className="text-2xl font-bold text-purple mb-6 border-b border-gray-200 pb-3">
+                  Videos from Stellar Physio
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {videos.map((video) => (
+                    <div key={video.slug}>
+                      <VideoEmbed video={video} />
+                      {video.title && (
+                        <p className="text-sm text-gray-600 mt-3 text-center italic">
+                          {video.title}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
           </div>
 
