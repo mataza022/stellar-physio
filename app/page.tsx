@@ -283,12 +283,6 @@ export default async function HomePage() {
                 Stellar Physio clinics offer convenient access to specialist
                 care across Nairobi and beyond.
               </p>
-              <Link
-                href="/branches"
-                className="inline-block border-2 border-purple text-purple px-5 py-2 rounded font-semibold hover:bg-purple hover:text-white transition"
-              >
-                Explore All Locations
-              </Link>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {[
