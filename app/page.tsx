@@ -37,7 +37,7 @@ export default async function HomePage() {
           </h2>
           <p className="text-gray-700 leading-relaxed text-sm md:text-base">
             Welcome to Stellar Physio Health and Wellness Centre, a leading
-            physiotherapy clinic in Nairobi with over 10 years of experience in
+            physiotherapy clinic in Nairobi with over 12 years of experience in
             pain relief, injury rehabilitation, and movement recovery. Our
             expert physiotherapists specialize in treating back pain, neck pain,
             sports injuries, joint pain, and musculoskeletal conditions using
@@ -123,7 +123,7 @@ export default async function HomePage() {
             <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
               <div className="w-full h-64 overflow-hidden">
                 <img
-                  src="/images/arthritis&jointpain.webp"
+                  src="/images/gym.JPG"
                   alt="Arthritis & Joint Pains"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                 />

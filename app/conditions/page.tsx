@@ -23,7 +23,7 @@ const listingConditions: ListingCondition[] = [
     title: "Arthritis & Joint Pains",
     description:
       "Joint pains shouldn't hold you back. Our personalized treatment plans coupled with evidence-based practice will get you back on your feet in no time.",
-    heroImage: "/images/arthritis&jointpain.webp",
+    heroImage: "/images/gym.JPG",
   },
   {
     slug: "stroke-rehabilitation",
