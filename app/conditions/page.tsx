@@ -23,14 +23,14 @@ const listingConditions: ListingCondition[] = [
     title: "Arthritis & Joint Pains",
     description:
       "Joint pains shouldn't hold you back. Our personalized treatment plans coupled with evidence-based practice will get you back on your feet in no time.",
-    heroImage: "/images/gym.JPG",
+    heroImage: "/images/arthritis&jointpain.webp",
   },
   {
     slug: "stroke-rehabilitation",
     title: "Stroke Rehabilitation",
     description:
       "Full restoration and recovery is possible with the right care. We guide you through a structured rehab program to retain strength, coordination, balance and independence helping you get your life back.",
-    heroImage: "/images/rehabilitation.webp",
+    heroImage: "/images/gym.JPG",
   },
   {
     slug: "sports-injuries",

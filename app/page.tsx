@@ -95,7 +95,7 @@ export default async function HomePage() {
             <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
               <div className="w-full h-64 overflow-hidden">
                 <img
-                  src="/images/rehabilitation.webp"
+                  src="/images/gym.JPG"
                   alt="Stroke Rehabilitation"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                 />
@@ -123,7 +123,7 @@ export default async function HomePage() {
             <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
               <div className="w-full h-64 overflow-hidden">
                 <img
-                  src="/images/gym.JPG"
+                  src="/images/arthritis&jointpain.webp"
                   alt="Arthritis & Joint Pains"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                 />
