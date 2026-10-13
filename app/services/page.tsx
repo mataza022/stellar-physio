@@ -14,7 +14,7 @@ const listingServices: ListingService[] = [
     title: "General Medical Consultations in Ngong Road, Nairobi",
     description:
       "This is the initial stage where the doctor assesses and refers to specialists. Our consultations ensure that we identify the root cause of your symptoms, rather than just treating the surface problem.",
-    heroImage: "/images/consultation2.webp",
+    heroImage: "/images/hero2.JPG",
   },
   {
     slug: "physiotherapy",
