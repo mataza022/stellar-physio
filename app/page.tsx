@@ -67,11 +67,11 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Lower Back Pain & Spine Health */}
             <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
-              <div className="w-full h-80 bg-white flex items-center justify-center overflow-hidden p-4">
+              <div className="w-full h-64 overflow-hidden">
                 <img
                   src="/images/lowerpain.webp"
                   alt="Lower Back Pain & Spine Health"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                 />
               </div>
               <div className="p-6 flex flex-col flex-1">
@@ -93,11 +93,11 @@ export default async function HomePage() {
 
             {/* Stroke Rehabilitation */}
             <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
-              <div className="w-full h-80 bg-white flex items-center justify-center overflow-hidden p-4">
+              <div className="w-full h-64 overflow-hidden">
                 <img
                   src="/images/rehabilitation.webp"
                   alt="Stroke Rehabilitation"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                 />
               </div>
               <div className="p-6 flex flex-col flex-1">
@@ -121,11 +121,11 @@ export default async function HomePage() {
 
             {/* Arthritis & Joint Pains */}
             <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">
-              <div className="w-full h-80 bg-white flex items-center justify-center overflow-hidden p-4">
+              <div className="w-full h-64 overflow-hidden">
                 <img
                   src="/images/arthritis&jointpain.webp"
                   alt="Arthritis & Joint Pains"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                 />
               </div>
               <div className="p-6 flex flex-col flex-1">
@@ -346,7 +346,7 @@ export default async function HomePage() {
           <h2 className="text-2xl md:text-3xl font-bold text-purple mb-3">
             Trusted by Leading Organisations
           </h2>
-                    <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
+          <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
             We work with Kenya&apos;s leading insurance providers,
             organisations and corporations to make quality physiotherapy
             accessible to everyone.
