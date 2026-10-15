@@ -64,6 +64,19 @@ export default function ContactPage() {
         createdAt: serverTimestamp(),
       });
 
+      fetch("/api/zoho-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          source: "Website Contact Form: Contact Us",
+        }),
+        keepalive: true,
+      }).catch((err) => console.error("Zoho sync failed:", err));
+
       setSubmitted(true);
     } catch (error) {
       console.error("Contact form submission failed:", error);

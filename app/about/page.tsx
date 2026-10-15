@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function AboutPage() {
   return (
     <>
-      {/* CLEAN PAGE HEADER */}
+      {/* PAGE HEADER */}
       <section className="pt-20 pb-10 bg-white">
         <div className="container-custom text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-purple mb-4">
@@ -73,82 +73,11 @@ export default function AboutPage() {
                 Thank you for being part of our journey.
               </p>
               <div className="pt-4">
-                <p className="font-bold text-purple">
-                  Founder &amp; Chief Executive Officer
-                </p>
-                <p className="text-gray-600">
-                  Stellar Physio Health &amp; Wellness Centre.
-                </p>
+                <p className="font-bold text-purple text-lg">Stellar Mwende</p>
+                <p className="text-gray-700">Founder &amp; Chief Executive Officer</p>
+                <p className="text-gray-600">Stellar Physio Health &amp; Wellness Centre.</p>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* WHO WE ARE */}
-      <section className="py-20 bg-purple text-white">
-        <div className="container-custom grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className="text-green font-bold tracking-widest uppercase text-sm mb-3">
-              Who We Are
-            </p>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              We are your One-stop solution for comprehensive Health, Physio
-              and Wellness.
-            </h2>
-            <p className="text-purple-light mb-8">
-              At Stellar Physio Health &amp; Wellness Centre, we are dedicated
-              to providing exceptional care tailored to meet your unique health
-              and wellness needs. From expert physiotherapy to specialist
-              clinics, our comprehensive services ensure you are supported
-              every step of your journey to optimal health.
-            </p>
-            <Link
-              href="/book-appointment"
-              className="inline-block border-2 border-white text-white px-6 py-3 rounded font-semibold hover:bg-white hover:text-purple transition"
-            >
-              Book Appointment
-            </Link>
-          </div>
-          <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
-            <img
-              src="/images/clinicinterior.webp"
-              alt="Clinic Interior"
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* OUR JOURNEY */}
-      <section className="py-20 bg-white">
-        <div className="container-custom grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
-            <img
-              src="/images/consultation.webp"
-              alt="Consultation at Stellar Physio"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div>
-            <h2 className="text-3xl font-bold text-purple mb-6">Our Journey</h2>
-            <p className="text-gray-700 mb-4">
-              Founded in <strong>August 2015</strong>, Stellar Physio began as a
-              small physiotherapy clinic with a mission to deliver exceptional
-              care and pain relief. Over the years, we have expanded into a
-              fully-fledged medical center offering:
-            </p>
-            <ul className="list-disc list-inside text-gray-700 mb-4 space-y-1">
-              <li>Consultation Services</li>
-              <li>Specialist Clinics</li>
-              <li>Laboratory Services</li>
-              <li>Pharmacy</li>
-            </ul>
-            <p className="text-gray-700">
-              Our approach focuses on identifying and addressing the root cause
-              of pain through comprehensive assessments, ensuring long-term
-              relief and improved quality of life.
-            </p>
           </div>
         </div>
       </section>
@@ -188,7 +117,6 @@ export default function AboutPage() {
             </p>
           </div>
 
-          {/* Highlights */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-14">
             <div className="bg-white rounded-lg p-8 border border-gray-100 shadow-sm text-center">
               <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-green/10 flex items-center justify-center text-green">
@@ -238,7 +166,6 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Partner logos */}
           <div className="text-center">
             <p className="text-gray-500 text-xs uppercase tracking-widest font-semibold mb-8">
               In partnership with
@@ -248,141 +175,30 @@ export default function AboutPage() {
                 <img
                   src="/images/tuskerfclogo.jpg"
                   alt="Tusker FC"
-                  className="max-h-full max-w-full object-contain mix-blend-multiply"
+                  className="max-h-full max-w-full object-contain"
                 />
               </div>
               <div className="flex items-center justify-center h-20 w-40">
                 <img
                   src="/images/brookhouselogo.png"
                   alt="Brookhouse Schools"
-                  className="max-h-full max-w-full object-contain mix-blend-multiply"
+                  className="max-h-full max-w-full object-contain"
                 />
               </div>
               <div className="flex items-center justify-center h-20 w-40">
                 <img
                   src="/images/karencountryclublogo.jpg"
                   alt="Karen Country Club"
-                  className="max-h-full max-w-full object-contain mix-blend-multiply"
+                  className="max-h-full max-w-full object-contain"
                 />
               </div>
               <div className="flex items-center justify-center h-20 w-40">
                 <img
                   src="/images/parklandssportsclublogo.jpg"
                   alt="Parklands Sports Club"
-                  className="max-h-full max-w-full object-contain mix-blend-multiply"
+                  className="max-h-full max-w-full object-contain"
                 />
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* WHAT SETS US APART */}
-      <section className="py-20 bg-green text-white">
-        <div className="container-custom">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-3">
-            What Sets Us Apart?
-          </h2>
-          <p className="text-center mb-16 opacity-90">
-            Our commitment to excellence is reflected in every aspect of our
-            care.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="w-20 h-20 mx-auto mb-6 text-white">
-                <svg
-                  viewBox="0 0 64 64"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M32 56s-20-12-20-28a12 12 0 0 1 20-8 12 12 0 0 1 20 8c0 16-20 28-20 28z" />
-                  <path d="M10 30h8l4-8 6 16 4-8h14" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-3">Comprehensive Care</h3>
-              <p className="text-sm opacity-90">
-                From physiotherapy to wellness services, we offer a holistic
-                approach to health.
-              </p>
-            </div>
-
-            <div>
-              <div className="w-20 h-20 mx-auto mb-6 text-white">
-                <svg
-                  viewBox="0 0 64 64"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="32" cy="20" r="8" />
-                  <circle cx="14" cy="26" r="6" />
-                  <circle cx="50" cy="26" r="6" />
-                  <path d="M18 56v-8a14 14 0 0 1 28 0v8" />
-                  <path d="M4 50v-4a10 10 0 0 1 12-10" />
-                  <path d="M60 50v-4a10 10 0 0 0-12-10" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-3">Expert Team</h3>
-              <p className="text-sm opacity-90">
-                Our certified specialists are dedicated to providing premium
-                care.
-              </p>
-            </div>
-
-            <div>
-              <div className="w-20 h-20 mx-auto mb-6 text-white">
-                <svg
-                  viewBox="0 0 64 64"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M16 24 32 8l16 16-16 32z" />
-                  <path d="M16 24h32" />
-                  <path d="M24 24 32 8l8 16" />
-                  <path d="M24 24 32 56l8-32" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-3">
-                State-of-the-Art Facilities
-              </h3>
-              <p className="text-sm opacity-90">
-                Equipped to deliver top-tier medical services across multiple
-                locations.
-              </p>
-            </div>
-
-            <div>
-              <div className="w-20 h-20 mx-auto mb-6 text-white">
-                <svg
-                  viewBox="0 0 64 64"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M32 24a8 8 0 1 0 0-16 8 8 0 0 0 0 16z" />
-                  <path d="M20 32v6a8 8 0 0 0 8 8h8a8 8 0 0 0 8-8v-6" />
-                  <path d="M24 46v6a8 8 0 0 0 8 8 8 8 0 0 0 8-8v-6" />
-                  <path d="M8 40l8 4M56 40l-8 4" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-3">
-                Client-Centered Approach
-              </h3>
-              <p className="text-sm opacity-90">
-                Personalised treatments designed around your unique needs and
-                goals.
-              </p>
             </div>
           </div>
         </div>

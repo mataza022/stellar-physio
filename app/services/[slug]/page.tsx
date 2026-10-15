@@ -49,7 +49,7 @@ export default async function ServicePage({
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="container-custom relative z-10 text-white">
           <p className="text-sm mb-2 opacity-80 uppercase tracking-wider font-semibold">
-            Clinical Services / {service.title}
+            Specialized Services / {service.title}
           </p>
           <h1 className="text-4xl md:text-6xl font-bold">{service.title}</h1>
         </div>
@@ -251,6 +251,10 @@ export default async function ServicePage({
                 </li>
                 <li className="flex justify-between">
                   <span>Saturday</span>
+                  <span className="font-semibold text-gray-800">8am - 4pm</span>
+                </li>
+                <li className="flex justify-between">
+                  <span>Public Holidays</span>
                   <span className="font-semibold text-gray-800">8am - 4pm</span>
                 </li>
                 <li className="flex justify-between">

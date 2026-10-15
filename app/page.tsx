@@ -267,7 +267,7 @@ export default async function HomePage() {
               href="/services"
               className="bg-green text-white px-6 py-2 rounded font-semibold hover:bg-green-dark transition"
             >
-              View Clinical Services
+              View Specialized Services
             </Link>
           </div>
         </div>

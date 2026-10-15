@@ -110,7 +110,7 @@ export default function ServicesPage() {
       <div className="container-custom">
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-purple mb-4">
-            Clinical Services
+            Specialized Services
           </h1>
           <p className="text-gray-600 max-w-2xl text-lg">
             Specialist care across Physiotherapy, Counselling, Sports Massage, Laboratory Services, Pharmacy Services, Reflexology, Occupational Therapy.
@@ -150,7 +150,7 @@ export default function ServicesPage() {
                   href={`/services/${service.slug}`}
                   className="text-purple font-semibold text-sm flex items-center hover:text-purple-dark transition-colors self-start"
                 >
-                  Read More
+                  {service.slug === "physio-shop" ? "Check out our Catalogue" : "Read More"}
                   <svg
                     className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"
                     fill="none"

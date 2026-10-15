@@ -173,6 +173,25 @@ function BookAppointmentInner() {
         createdAt: serverTimestamp(),
       });
 
+      fetch("/api/zoho-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.firstName + " " + formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          message: [
+            "Service: " + (finalServiceName || ""),
+            "Location: " + (effectiveLocation || ""),
+            "Date: " + (selectedDate ? selectedDate.toDateString() : ""),
+            "Time: " + formatTime12(selectedTime),
+            formData.details ? "Details: " + formData.details : "",
+          ].filter(Boolean).join("\n"),
+          source: "Website Booking Calendar",
+        }),
+        keepalive: true,
+      }).catch((err) => console.error("Zoho sync failed:", err));
+
       setSubmitted(true);
     } catch (error) {
       console.error("Booking submission failed:", error);
@@ -358,7 +377,7 @@ function BookAppointmentInner() {
                 d="M15 19l-7-7 7-7"
               />
             </svg>
-            Back to Clinical Services
+            Back to Specialized Services
           </Link>
           <a
             href="tel:+254719881291"

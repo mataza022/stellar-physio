@@ -47,6 +47,19 @@ export default function KenitalPlazaPage() {
         createdAt: serverTimestamp(),
       });
 
+      fetch("/api/zoho-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          source: "Website Contact Form: Kenital Plaza",
+        }),
+        keepalive: true,
+      }).catch((err) => console.error("Zoho sync failed:", err));
+
       setSubmitted(true);
     } catch (error) {
       console.error("Branch message submission failed:", error);

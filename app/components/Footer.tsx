@@ -72,6 +72,7 @@ const quickLinkServices = [
   { title: "Counselling Services", href: "/services/counselling-services" },
   { title: "Sports Massage", href: "/services/sports-massage" },
   { title: "Reflexology", href: "/services/reflexology" },
+  { title: "Cupping Therapy", href: "/services/cupping-therapy" },
   { title: "Occupational Therapy", href: "/services/occupational-therapy" },
   { title: "Stretch & Exercise Therapy", href: "/services/stretch-exercise-therapy" },
 ];
