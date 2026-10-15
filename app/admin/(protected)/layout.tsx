@@ -17,6 +17,8 @@ const nav: NavItem[] = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/posts", label: "Blog Posts" },
   { href: "/admin/videos", label: "Videos" },
+  { href: "/admin/shop", label: "Shop Items" },
+  { href: "/admin/shop-orders", label: "Shop Orders", badge: "shopOrders" },
   { href: "/admin/jobs", label: "Jobs" },
   { href: "/admin/comments", label: "Comments", badge: "comments" },
   { href: "/admin/services", label: "Services" },

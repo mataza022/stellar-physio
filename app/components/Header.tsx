@@ -10,10 +10,11 @@ const servicesDropdown = [
   { label: "Physiotherapy", href: "/services/physiotherapy" },
   { label: "Home-Based Care", href: "/services/home-based-care" },
   { label: "Laboratory Services", href: "/services/stellar-laboratory-services" },
-  { label: "Pharmacy", href: "/services/pharmacy" },
+  { label: "Physio Shop", href: "/services/physio-shop" },
   { label: "Counselling Services", href: "/services/counselling-services" },
   { label: "Sports Massage", href: "/services/sports-massage" },
   { label: "Reflexology", href: "/services/reflexology" },
+  { label: "Cupping Therapy", href: "/services/cupping-therapy" },
   { label: "Occupational Therapy", href: "/services/occupational-therapy" },
   { label: "Stretch & Exercise Therapy", href: "/services/stretch-exercise-therapy" },
 ];
@@ -46,7 +47,7 @@ const searchIndex: SearchItem[] = [
   { type: "Service", title: "Physiotherapy", href: "/services/physiotherapy" },
   { type: "Service", title: "Home-Based Care", href: "/services/home-based-care" },
   { type: "Service", title: "Laboratory Services", href: "/services/stellar-laboratory-services" },
-  { type: "Service", title: "Pharmacy", href: "/services/pharmacy" },
+  { type: "Service", title: "Physio Shop", href: "/services/physio-shop" },
   { type: "Service", title: "Counselling Services", href: "/services/counselling-services" },
   { type: "Service", title: "Sports Massage", href: "/services/sports-massage" },
   { type: "Service", title: "Reflexology", href: "/services/reflexology" },
@@ -129,7 +130,8 @@ export default function Header() {
         <div className="container-custom flex justify-between items-center gap-4">
           <div className="leading-relaxed hidden md:block">
             Kenital Plaza, Ngong Road: +254 706 101999 || Parklands: +254 755
-            901942 || Karen Country Club: +254 739 110110
+            901942 || Karen Country Club: +254 739 110110 || Dial A Physio: +254
+            719 881 291
           </div>
           <a
             href="tel:+254719881291"
@@ -229,7 +231,7 @@ export default function Header() {
             <img
               src="/images/Stellarphysio_NEW_logo.png"
               alt="Stellar Physio"
-              className="h-28 md:h-44 w-auto"
+              className="h-36 md:h-52 w-auto -my-4"
             />
           </Link>
 

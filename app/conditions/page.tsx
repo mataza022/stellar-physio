@@ -8,8 +8,6 @@ type ListingCondition = {
   href?: string;
 };
 
-// Conditions shown on this listing page.
-// Order + wording matches the old site's conditions section.
 const listingConditions: ListingCondition[] = [
   {
     slug: "lower-back-pain-spine-health",
@@ -79,8 +77,8 @@ export default function ConditionsPage() {
             Conditions We Treat
           </h1>
           <p className="text-gray-600 max-w-2xl text-lg">
-            Expert physiotherapy care for a wide range of musculoskeletal and
-            neurological conditions.
+            Expert physiotherapy care for a wide range of musculoskeletal,
+            neurological, sport and paediatric conditions.
           </p>
         </div>
 
@@ -90,8 +88,7 @@ export default function ConditionsPage() {
               key={condition.slug}
               className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group flex flex-col"
             >
-              {/* Hero image — fills the frame */}
-              <div className="w-full h-64 overflow-hidden">
+              <div className="w-full h-56 overflow-hidden">
                 <img
                   src={condition.heroImage}
                   alt={condition.title}
@@ -99,47 +96,46 @@ export default function ConditionsPage() {
                 />
               </div>
 
-              {/* Content */}
               <div className="p-6 flex flex-col flex-1">
                 <h2 className="text-lg font-bold text-purple mb-3 group-hover:text-purple-dark transition-colors leading-snug">
                   {condition.title}
                 </h2>
 
-                <p className="text-gray-600 text-sm leading-relaxed mb-6 flex-1">
+                <p className="text-gray-600 text-sm leading-relaxed mb-4 flex-1">
                   {condition.description}
                 </p>
 
-                {/* Action buttons */}
-                <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
-                  <Link
-                    href={`/book-appointment?service=${encodeURIComponent(condition.title)}`}
-                    className="bg-green text-white px-4 py-2 rounded text-sm font-semibold hover:bg-green-dark transition"
+                <Link
+                  href={condition.href || `/conditions/${condition.slug}`}
+                  className="text-purple font-semibold text-sm flex items-center hover:text-purple-dark transition-colors self-start"
+                >
+                  Read More
+                  <svg
+                    className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                   >
-                    Book Now
-                  </Link>
-                  <Link
-                    href={condition.href || `/conditions/${condition.slug}`}
-                    className="text-purple font-semibold text-sm flex items-center hover:text-purple-dark transition-colors"
-                  >
-                    Read More
-                    <svg
-                      className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </Link>
-                </div>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Link>
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="text-center mt-12">
+          <Link
+            href="/book-appointment"
+            className="inline-block bg-green text-white px-8 py-3 rounded font-semibold hover:bg-green-dark transition"
+          >
+            Book Appointment
+          </Link>
         </div>
       </div>
     </section>

@@ -10,7 +10,7 @@ export default function KarenCountryClubPage() {
     fullName: "",
     email: "",
     phone: "",
-    service: "Consultation & Clinic",
+    service: "General Consultations",
     message: "",
   });
 
@@ -80,7 +80,7 @@ export default function KarenCountryClubPage() {
           <div>
             <div className="bg-purple-light rounded-lg overflow-hidden h-[480px] relative">
               <iframe
-                src="https://www.google.com/maps?q=-1.3405045,36.7150441&z=17&output=embed"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127639.24450678873!2d36.57084854335938!3d-1.3405044999999904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1b504a282bbd%3A0x9ee8655764aebb56!2sStellar%20Physio!5e0!3m2!1sen!2ske!4v1792056326289!5m2!1sen!2ske"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -135,7 +135,7 @@ export default function KarenCountryClubPage() {
                       fullName: "",
                       email: "",
                       phone: "",
-                      service: "Consultation & Clinic",
+                      service: "General Consultations",
                       message: "",
                     });
                   }}
@@ -195,17 +195,36 @@ export default function KarenCountryClubPage() {
                       }
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-purple bg-white text-gray-700 disabled:bg-gray-50"
                     >
-                      <option>Consultation &amp; Clinic</option>
-                      <option>Physiotherapy Session</option>
-                      <option>Laboratory Services</option>
-                      <option>Pharmacy</option>
-                      <option>Other Enquiry</option>
+                      <optgroup label="Consultations">
+                        <option>General Consultations</option>
+                      </optgroup>
+                      <optgroup label="Therapy">
+                        <option>Physiotherapy</option>
+                        <option>Chiropractor Services</option>
+                        <option>Sports Massage</option>
+                        <option>Reflexology</option>
+                        <option>Stretch &amp; Exercise Therapy</option>
+                      </optgroup>
+                      <optgroup label="Rehab &amp; Care">
+                        <option>Home-Based Care</option>
+                        <option>Occupational Therapy</option>
+                      </optgroup>
+                      <optgroup label="Diagnostics">
+                        <option>Laboratory Services</option>
+                      </optgroup>
+                      <optgroup label="Wellness">
+                        <option>Counselling Services</option>
+                        <option>Pharmacy</option>
+                      </optgroup>
+                      <optgroup label="Other">
+                        <option>Other Enquiry</option>
+                      </optgroup>
                     </select>
                   </div>
                   <textarea
                     required
                     disabled={submitting}
-                    placeholder="Message *"
+                    placeholder="How can we help you today? *"
                     rows={6}
                     value={formData.message}
                     onChange={(e) =>

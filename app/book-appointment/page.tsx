@@ -382,6 +382,17 @@ function BookAppointmentInner() {
         </div>
       </div>
 
+      <div className="bg-purple-light/30 border-b border-purple-light">
+        <div className="container-custom py-2 text-center">
+          <Link
+            href="/patient-journey"
+            className="text-purple text-xs font-semibold hover:underline"
+          >
+            What happens next? See our patient journey &#8594;
+          </Link>
+        </div>
+      </div>
+
       <div className="bg-white border-b border-gray-200">
         <div className="container-custom max-w-3xl py-6">
           <div className="flex justify-between items-start relative">

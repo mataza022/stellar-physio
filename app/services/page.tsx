@@ -48,8 +48,8 @@ const listingServices: ListingService[] = [
     heroImage: "/images/lab.webp",
   },
   {
-    slug: "pharmacy",
-    title: "Pharmacy Services in Ngong Road, Nairobi",
+    slug: "physio-shop",
+    title: "Physio Shop in Ngong Road, Nairobi",
     description:
       "Whether you need prescription medications or over-the-counter products, we stock all essential medicines to meet your needs. Our pharmacy is dedicated to ensuring that you receive the right medications and professional guidance to support your recovery and well-being.",
     heroImage: "/images/pharmacy.jpeg",
@@ -87,6 +87,14 @@ const listingServices: ListingService[] = [
     heroImage: "/images/reflex1.webp",
   },
   {
+    slug: "cupping-therapy",
+    title: "Cupping Therapy in Ngong Road, Nairobi",
+    description:
+      "Traditional suction therapy to relieve muscle tension, boost circulation and speed recovery. Sessions are 30 to 45 minutes and complement physiotherapy, sports massage and stretch therapy.",
+    recommendation: "Recommended as part of a treatment plan",
+    heroImage: "/images/cupping.jpg",
+  },
+  {
     slug: "occupational-therapy",
     title: "Occupational Therapy Services in Ngong Road, Nairobi",
     description:
@@ -105,7 +113,7 @@ export default function ServicesPage() {
             Clinical Services
           </h1>
           <p className="text-gray-600 max-w-2xl text-lg">
-            Specialist care across all major medical disciplines.
+            Specialist care across Physiotherapy, Counselling, Sports Massage, Laboratory Services, Pharmacy Services, Reflexology, Occupational Therapy.
           </p>
         </div>
 
@@ -115,7 +123,6 @@ export default function ServicesPage() {
               key={service.slug}
               className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group flex flex-col"
             >
-              {/* Hero image */}
               <div className="w-full h-52 overflow-hidden bg-gray-50">
                 <img
                   src={service.heroImage}
@@ -124,7 +131,6 @@ export default function ServicesPage() {
                 />
               </div>
 
-              {/* Content */}
               <div className="p-6 flex flex-col flex-1">
                 <h2 className="text-lg font-bold text-purple mb-3 group-hover:text-purple-dark transition-colors leading-snug">
                   {service.title}
@@ -135,43 +141,52 @@ export default function ServicesPage() {
                 </p>
 
                 {service.recommendation && (
-                  <p className="text-purple font-semibold text-xs mb-5">
+                  <p className="text-purple font-semibold text-xs mb-4">
                     {service.recommendation}
                   </p>
                 )}
 
-                {/* Action buttons */}
-                <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
-                  <Link
-                    href={`/book-appointment?service=${encodeURIComponent(service.title)}`}
-                    className="bg-green text-white px-4 py-2 rounded text-sm font-semibold hover:bg-green-dark transition"
+                <Link
+                  href={`/services/${service.slug}`}
+                  className="text-purple font-semibold text-sm flex items-center hover:text-purple-dark transition-colors self-start"
+                >
+                  Read More
+                  <svg
+                    className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                   >
-                    Book Now
-                  </Link>
-                  <Link
-                    href={`/services/${service.slug}`}
-                    className="text-purple font-semibold text-sm flex items-center hover:text-purple-dark transition-colors"
-                  >
-                    Read More
-                    <svg
-                      className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </Link>
-                </div>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Link>
               </div>
             </div>
           ))}
         </div>
+
+        <div className="text-center mt-12">
+          <Link
+            href="/book-appointment"
+            className="inline-block bg-green text-white px-8 py-3 rounded font-semibold hover:bg-green-dark transition"
+          >
+            Book Appointment
+          </Link>
+        </div>
+        <p className="text-center text-gray-500 text-sm mt-6">
+          Not sure what happens after you book?{" "}
+          <Link
+            href="/patient-journey"
+            className="text-purple font-semibold hover:underline"
+          >
+            See our patient journey &#8594;
+          </Link>
+        </p>
       </div>
     </section>
   );

@@ -38,7 +38,8 @@ export type AdminCounts = {
   messages: number;      // contact + branch_messages with status "new"
   comments: number;      // total (no read/unread state yet)
   leads: number;         // status "new"
-  subscribers: number;   // total
+  subscribers: number;
+  shopOrders: number;   // total
 };
 
 export async function getAdminCounts(): Promise<AdminCounts> {

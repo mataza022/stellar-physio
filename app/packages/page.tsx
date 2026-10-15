@@ -139,7 +139,7 @@ const offers: Offer[] = [
   {
     slug: "arthritis",
     title: "MANAGE ARTHRITIS",
-    subtitle: "PAIN IN 5 WEEKS",
+    subtitle: "PAIN IN 4 WEEKS",
     items: [
       "Specialized orthopedic consultation & assessment.",
       "Personalized treatment plan for 4 weeks.",

@@ -146,7 +146,7 @@ const faqs: FAQ[] = [
     category: "Clinic Hours & Locations",
     question: "What are your clinic hours?",
     answer:
-      "Our clinics are open Monday–Friday from 8:00am to 6:00pm, and Saturdays from 8:00am to 4:00pm. We are closed on Sundays and public holidays.",
+      "Our clinics are open Monday–Friday from 8:00am to 6:00pm, and Saturdays and public holidays from 8:00am to 4:00pm. We are closed on Sundays.",
   },
   {
     category: "Clinic Hours & Locations",
@@ -271,6 +271,33 @@ export default function FAQsPage() {
                 </div>
               );
             })}
+
+            {activeCategory === "Appointments & Visits" && (
+              <div className="bg-purple-light/40 border border-purple-light rounded-lg p-5 text-center">
+                <p className="text-gray-700 text-sm mb-2">
+                  Not sure what to expect at your first appointment?
+                </p>
+                <Link
+                  href="/patient-journey"
+                  className="text-purple font-semibold text-sm hover:underline inline-flex items-center"
+                >
+                  See our patient journey
+                  <svg
+                    className="w-4 h-4 ml-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* CTA at bottom */}

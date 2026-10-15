@@ -68,7 +68,7 @@ const quickLinkServices = [
   { title: "Physiotherapy", href: "/services/physiotherapy" },
   { title: "Home-Based Care", href: "/services/home-based-care" },
   { title: "Laboratory Services", href: "/services/stellar-laboratory-services" },
-  { title: "Pharmacy", href: "/services/pharmacy" },
+  { title: "Physio Shop", href: "/services/physio-shop" },
   { title: "Counselling Services", href: "/services/counselling-services" },
   { title: "Sports Massage", href: "/services/sports-massage" },
   { title: "Reflexology", href: "/services/reflexology" },

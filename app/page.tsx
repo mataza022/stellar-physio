@@ -61,7 +61,7 @@ export default async function HomePage() {
             Conditions We Treat
           </h2>
           <p className="text-center text-gray-600 mb-12">
-            Expert care for a wide range of musculoskeletal and neurological
+            Expert care for a wide range of musculoskeletal, neurological, sport and paediatric
             conditions.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -239,8 +239,12 @@ export default async function HomePage() {
                 <p className="text-gray-600 text-sm mb-4 flex-1">
                   We provide evidence-based psychotherapy for individuals,
                   couples, families, and adolescents. We offer structured,
-                  goal-oriented support—virtually and in-person—for relational,
-                  and behavioral challenges across all stages of life.
+                  goal-oriented support—virtually and in-person—to address
+                  emotional, relational, and behavioral challenges across all
+                  life stages.
+                </p>
+                <p className="text-purple font-semibold text-xs mb-3">
+                  Recommended once a week
                 </p>
                 <Link
                   href="/services/counselling-services"
@@ -288,16 +292,19 @@ export default async function HomePage() {
               {[
                 {
                   name: "Kenital Plaza",
+                  detail: "Ngong Road",
                   img: "/images/kenitalplaza.jpeg",
                   href: "/branches/kenital-plaza",
                 },
                 {
                   name: "Karen Country Club",
+                  detail: "Fitness Centre, inside Karen Country Club",
                   img: "/images/karenbranch.webp",
                   href: "/branches/karen-country-club",
                 },
                 {
                   name: "Parklands Sports Club",
+                  detail: "Squash Court 4, inside Parklands Sports Club",
                   img: "/images/parklandsbranch.jpg",
                   href: "/branches/parklands-sports-club",
                 },
@@ -315,6 +322,9 @@ export default async function HomePage() {
                     <h4 className="font-semibold text-purple text-sm">
                       {b.name}
                     </h4>
+                    <p className="text-gray-500 text-[11px] leading-snug mt-1 mb-2 flex-1">
+                      {b.detail}
+                    </p>
                     <Link
                       href={b.href}
                       className="text-green text-xs font-semibold"
