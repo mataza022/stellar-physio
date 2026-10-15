@@ -18,6 +18,7 @@ type Item = {
   category: string;
   image: string;
   inStock: boolean;
+  active?: boolean;
 };
 
 type CartLine = {
@@ -65,22 +66,7 @@ export default function PhysioShopPage() {
       try {
         const db = getDb();
         const snap = await getDocs(collection(db, "shop_items"));
-        const list: Item[] = snap.docs
-          .map((d) => {
-            const data = d.data();
-            return {
-              slug: d.id,
-              name: data.name ?? "",
-              description: data.description ?? "",
-              price: Number(data.price) || 0,
-              category: data.category ?? "",
-              image: data.image ?? "",
-              inStock: data.inStock ?? true,
-            };
-          })
-          .filter((i) => i.active !== false && (i as any).active !== false);
-        // Only show active items
-        const activeOnly = snap.docs
+        const activeOnly: Item[] = snap.docs
           .filter((d) => d.data().active !== false)
           .map((d) => {
             const data = d.data();
@@ -92,6 +78,7 @@ export default function PhysioShopPage() {
               category: data.category ?? "",
               image: data.image ?? "",
               inStock: data.inStock ?? true,
+              active: data.active ?? true,
             };
           });
         activeOnly.sort((a, b) => a.name.localeCompare(b.name));

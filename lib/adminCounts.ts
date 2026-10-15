@@ -65,5 +65,6 @@ export async function getAdminCounts(): Promise<AdminCounts> {
     comments,
     leads,
     subscribers,
+    shopOrders: await countWhere("shop_orders", "status", "new"),
   };
 }

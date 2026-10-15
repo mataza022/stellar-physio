@@ -43,6 +43,7 @@ export default function AdminLayout({
     comments: 0,
     leads: 0,
     subscribers: 0,
+    shopOrders: 0,
   });
 
   useEffect(() => {
