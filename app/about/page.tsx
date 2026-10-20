@@ -161,7 +161,7 @@ export default function AboutPage() {
                 Largest Physio Clinic in Nairobi
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                4 branches serving patients across the city.
+                13,424+ happy clients treated.
               </p>
             </div>
           </div>

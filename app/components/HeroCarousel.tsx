@@ -50,6 +50,17 @@ const slides: Slide[] = [
     secondaryLabel: "Book Appointment",
     secondaryHref: "/book-appointment",
   },
+  {
+    image: "/images/pharmacy.jpeg",
+    tag: "Expert Care",
+    title: "Your Lifestyle Clinic.",
+    description:
+      "A leading physiotherapy clinic in Nairobi with over 12 years of experience. We identify the root cause of your pain — not just the symptoms.",
+    primaryLabel: "View Our Offers",
+    primaryHref: "/packages",
+    secondaryLabel: "Book Appointment",
+    secondaryHref: "/book-appointment",
+  },
 ];
 
 const stats = [

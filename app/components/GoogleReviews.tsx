@@ -5,13 +5,20 @@ import Script from "next/script";
 export default function GoogleReviews() {
   return (
     <>
+      <div className="blootrue-widget-UEoQui54YpA-">
+        <noscript>
+          <a
+            href="https://www.blootrue.com/widgets/google?utm_source=widget&utm_medium=embed&utm_campaign=powered_by"
+            rel="nofollow noopener"
+            target="_blank"
+          >
+            BlooTrue
+          </a>
+        </noscript>
+      </div>
       <Script
-        src="https://elfsightcdn.com/platform.js"
-        strategy="lazyOnload"
-      />
-      <div
-        className="elfsight-app-d8060bbd-9bae-40a8-b9de-fb2fb440559b"
-        data-elfsight-app-lazy
+        src="https://api.blootrue.com/api/widgets/platform.js"
+        strategy="afterInteractive"
       />
     </>
   );

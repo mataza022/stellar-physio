@@ -260,7 +260,7 @@ export default async function HomePage() {
             <div>
               <h3 className="font-bold text-lg">Explore All Services</h3>
               <p className="text-purple-light text-sm">
-                Discover our complete range of clinical services.
+                Discover our complete range of specialized services.
               </p>
             </div>
             <Link

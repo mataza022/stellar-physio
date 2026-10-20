@@ -14,7 +14,7 @@ const listingConditions: ListingCondition[] = [
     title: "Lower Back Pain & Spine Health",
     description:
       "We understand back pains can be frustrating. We are dedicated to helping you maintain a healthy spine and live pain-free.",
-    heroImage: "/images/lowerpain.webp",
+    heroImage: "/images/lower-back-anatomy.png",
   },
   {
     slug: "arthritis-joint-pains",
@@ -35,7 +35,7 @@ const listingConditions: ListingCondition[] = [
     title: "Sports Injuries",
     description:
       "Our tailored treatment plans are aimed at getting you back to your preferred sport fast and without pain.",
-    heroImage: "/images/injury.webp",
+    heroImage: "/images/athlete-injured-knee.png",
   },
   {
     slug: "counselling-services",

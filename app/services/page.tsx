@@ -110,7 +110,7 @@ export default function ServicesPage() {
       <div className="container-custom">
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-purple mb-4">
-            Specialized Services
+            Our Specialized Services
           </h1>
           <p className="text-gray-600 max-w-2xl text-lg">
             Specialist care across Physiotherapy, Counselling, Sports Massage, Laboratory Services, Pharmacy Services, Reflexology, Occupational Therapy.
