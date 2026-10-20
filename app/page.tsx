@@ -342,8 +342,8 @@ export default async function HomePage() {
       {/* ============================================
           TESTIMONIALS — Live Google Reviews
           ============================================ */}
-      <section className="py-20 bg-purple-light">
-        <div className="container-custom max-w-6xl">
+      <section className="py-20 bg-purple-light overflow-hidden">
+        <div className="container-custom max-w-6xl px-2 md:px-6">
           <GoogleReviews />
         </div>
       </section>
