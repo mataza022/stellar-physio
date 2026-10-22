@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getPosts, getRecentPosts, formatDate } from "@/lib/posts";
 import { getActiveVideos } from "@/lib/videos";
 import VideoEmbed from "../components/VideoEmbed";
@@ -59,11 +60,7 @@ export default async function BlogPage() {
             <Link href={`/blog/${featured.slug}`} aria-label={`Read featured article: ${featured.title}`} className="group block">
               <article className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300">
                 <div className="w-full h-[340px] overflow-hidden">
-                  <img
-                    src={featured.image}
-                    alt={featured.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                  <Image src={featured.image} alt={featured.title} width={800} height={600} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="p-6">
                   <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
@@ -94,11 +91,7 @@ export default async function BlogPage() {
                 >
                   <article className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 h-full flex flex-col">
                     <div className="w-full h-44 overflow-hidden">
-                      <img
-                        src={post.image}
-                        alt={post.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
+                      <Image src={post.image} alt={post.title} width={800} height={600} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     </div>
                     <div className="p-5 flex-1 flex flex-col">
                       <span className="inline-block bg-purple text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide mb-3 self-start">
@@ -212,11 +205,7 @@ export default async function BlogPage() {
                 <ul className="space-y-3">
                   {popularPosts.map((p) => (
                     <li key={p.slug} className="flex gap-3">
-                      <img
-                        src={p.image}
-                        alt={p.title}
-                        className="w-14 h-14 object-cover rounded flex-shrink-0"
-                      />
+                      <Image src={p.image} alt={p.title} width={800} height={600} className="w-14 h-14 object-cover rounded flex-shrink-0" />
                       <div>
                         <Link
                           href={`/blog/${p.slug}`}

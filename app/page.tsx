@@ -319,9 +319,9 @@ export default async function HomePage() {
                     className="w-full h-32 object-cover"
                   />
                   <div className="p-3">
-                    <h4 className="font-semibold text-purple text-sm">
+                    <h3 className="font-semibold text-purple text-sm">
                       {b.name}
-                    </h4>
+                    </h3>
                     <p className="text-gray-500 text-[11px] leading-snug mt-1 mb-2 flex-1">
                       {b.detail}
                     </p>
@@ -429,9 +429,9 @@ export default async function HomePage() {
                     <span className="inline-block bg-purple text-white text-xs font-bold px-2 py-1 rounded mb-2 uppercase">
                       {post.category}
                     </span>
-                    <h4 className="font-bold text-purple text-sm mb-1">
+                    <h3 className="font-bold text-purple text-sm mb-1">
                       {post.title}
-                    </h4>
+                    </h3>
                     <Link
                       href={`/blog/${post.slug}`}
                       className="text-green font-semibold text-xs"

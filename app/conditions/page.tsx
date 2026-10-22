@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 type ListingCondition = {
   slug: string;
@@ -89,11 +90,7 @@ export default function ConditionsPage() {
               className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group flex flex-col"
             >
               <div className="w-full h-56 overflow-hidden">
-                <img
-                  src={condition.heroImage}
-                  alt={condition.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
+                <Image src={condition.heroImage} alt={condition.title} width={800} height={600} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
 
               <div className="p-6 flex flex-col flex-1">
@@ -108,6 +105,7 @@ export default function ConditionsPage() {
                 <Link
                   href={condition.href || `/conditions/${condition.slug}`}
                   className="text-purple font-semibold text-sm flex items-center hover:text-purple-dark transition-colors self-start"
+                  aria-label={`Read more about ${condition.title}`}
                 >
                   Read More
                   <svg

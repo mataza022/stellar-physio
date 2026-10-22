@@ -177,7 +177,7 @@ export default function FAQsPage() {
           )}
 
           <div className="mt-12 text-center bg-purple-light rounded-lg p-8">
-            <h3 className="text-2xl font-bold text-purple mb-3">Still have questions?</h3>
+            <h2 className="text-2xl font-bold text-purple mb-3">Still have questions?</h2>
             <p className="text-gray-600 mb-6 text-sm">
               Our team is happy to help. Reach out and we&apos;ll get back to you shortly.
             </p>

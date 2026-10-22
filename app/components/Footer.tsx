@@ -142,9 +142,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
           {/* Newsletter + Socials */}
           <div>
-            <h4 className="text-lg font-bold text-white mb-5">
+            <h2 className="text-lg font-bold text-white mb-5">
               Subscribe to our Newsletter
-            </h4>
+            </h2>
             <p className="text-sm text-white/70 mb-4">
               Get the latest health tips and Stellar Physio updates delivered to
               your inbox.
@@ -253,7 +253,7 @@ export default function Footer() {
 
           {/* Contact Us */}
           <div>
-            <h4 className="text-lg font-bold text-white mb-5">Contact Us</h4>
+            <h2 className="text-lg font-bold text-white mb-5">Contact Us</h2>
 
             <div className="mb-4">
               <a
@@ -304,7 +304,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-bold text-white mb-5">Our Services</h4>
+            <h2 className="text-lg font-bold text-white mb-5">Our Services</h2>
             <ul className="space-y-2 text-sm text-white/70">
               {quickLinkServices.map((service) => (
                 <li key={service.href}>
