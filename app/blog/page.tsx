@@ -56,7 +56,7 @@ export default async function BlogPage() {
       <section className="pb-16 bg-white">
         <div className="container-custom grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-10">
           <div className="space-y-8">
-            <Link href={`/blog/${featured.slug}`} className="group block">
+            <Link href={`/blog/${featured.slug}`} aria-label={`Read featured article: ${featured.title}`} className="group block">
               <article className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300">
                 <div className="w-full h-[340px] overflow-hidden">
                   <img
@@ -90,10 +90,7 @@ export default async function BlogPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {remainingPosts.map((post) => (
-                <Link
-                  key={post.slug}
-                  href={`/blog/${post.slug}`}
-                  className="group block"
+                <Link key={post.slug} href={`/blog/${post.slug}`} aria-label={`Read full article: ${post.title}`} className="group block"
                 >
                   <article className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 h-full flex flex-col">
                     <div className="w-full h-44 overflow-hidden">

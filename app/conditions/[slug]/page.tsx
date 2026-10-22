@@ -1,4 +1,6 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+import JsonLd from "@/components/JsonLd";
 import { notFound } from "next/navigation";
 import { getConditionBySlug, getConditions } from "@/lib/conditions";
 import VideoEmbed from "../../components/VideoEmbed";
@@ -8,6 +10,24 @@ export const revalidate = 60;
 export async function generateStaticParams() {
   const conditions = await getConditions();
   return conditions.map((condition) => ({ slug: condition.slug }));
+}
+
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const condition = await getConditionBySlug(slug);
+  if (!condition) return { title: "Condition Not Found" };
+  return {
+    title: `${condition.title} Treatment in Nairobi`,
+    description: condition.shortDescription,
+    alternates: { canonical: `https://stellarphysio.com/conditions/${condition.slug}` },
+    openGraph: {
+      title: condition.title,
+      description: condition.shortDescription,
+      url: `https://stellarphysio.com/conditions/${condition.slug}`,
+      images: [{ url: condition.heroImage, width: 1200, height: 630, alt: condition.title }],
+    },
+  };
 }
 
 export default async function ConditionPage({
@@ -24,8 +44,44 @@ export default async function ConditionPage({
 
   const bookHref = `/book-appointment?service=${encodeURIComponent(condition.title)}`;
 
+  // MedicalCondition Schema for SEO & AI
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "name": condition.title,
+    "description": condition.shortDescription || "",
+    "about": {
+      "@type": "MedicalCondition",
+      "name": condition.title,
+      "signOrSymptom": (condition.symptomsList || []).map((s: string) => ({
+        "@type": "MedicalSymptom",
+        "name": s
+      }))
+    },
+    "reviewedBy": {
+      "@type": "Person",
+      "name": "Stella Mwende",
+      "jobTitle": "Founder & Chief Executive Officer"
+    }
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://stellarphysio.com" },
+      { "@type": "ListItem", "position": 2, "name": "Conditions", "item": "https://stellarphysio.com/conditions" },
+      { "@type": "ListItem", "position": 3, "name": condition.title, "item": `https://stellarphysio.com/conditions/${condition.slug}` }
+    ]
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen">
+      <JsonLd data={breadcrumbSchema} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section className="relative h-[400px] flex items-center overflow-hidden">
         <img
           src={condition.heroImage}
@@ -43,6 +99,14 @@ export default async function ConditionPage({
 
       <section className="py-16">
         <div className="container-custom space-y-12">
+          {/* AEO Quick Answer Block */}
+          <div className="bg-purple-50 border-l-4 border-purple p-6 rounded-r-xl shadow-sm">
+            <h2 className="text-xl font-bold text-purple mb-2">Quick Summary: {condition.title}</h2>
+            <p className="text-gray-700 text-sm md:text-base leading-relaxed">
+              {condition.shortDescription} Our physiotherapy team in Nairobi uses evidence-based protocols to relieve pain and restore mobility. Book an assessment today.
+            </p>
+          </div>
+
           <div className="bg-white p-8 rounded-lg shadow-sm">
             <div className="flex flex-col md:flex-row gap-8 items-start mt-2">
               <img

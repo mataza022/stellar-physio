@@ -9,14 +9,14 @@ const branches = [
   {
     name: "Kenital Plaza, Ngong Road",
     mapEmbed:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127641.14965827158!2d36.72061804079833!3d-1.3034460813663575!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f179ab1e884db%3A0x8c62f761e5c8e092!2sStellar%20Physio%20Parklands!5e0!3m2!1sen!2ske!4v1792056184247!5m2!1sen!2ske",
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.17259712673!2d36.78112550439832!3d-1.2988785326511683!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f119d21dfee77%3A0x6bd7473516e03361!2sStellar%20Physio%20-%20Ngong%20Road!5e0!3m2!1sen!2ske!4v1792056408651!5m2!1sen!2ske",
     mapLink:
       "https://www.google.com/maps/dir/?api=1&destination=-1.298749885724835,36.79962250991531",
   },
   {
     name: "Karen Country Club",
     mapEmbed:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127641.14965827158!2d36.72061804079833!3d-1.3034460813663575!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f179ab1e884db%3A0x8c62f761e5c8e092!2sStellar%20Physio%20Parklands!5e0!3m2!1sen!2ske!4v1792056184247!5m2!1sen!2ske",
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127639.24450678873!2d36.57084854335938!3d-1.3405044999999904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1b504a282bbd%3A0x9ee8655764aebb56!2sStellar%20Physio!5e0!3m2!1sen!2ske!4v1792056326289!5m2!1sen!2ske",
     mapLink: "https://maps.app.goo.gl/awTP1u9pHbDZnSuz6",
   },
   {

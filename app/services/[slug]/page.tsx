@@ -1,4 +1,6 @@
 import Link from "next/link";
+import JsonLd from "@/components/JsonLd";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getServiceBySlug, getServices } from "@/lib/services";
 import VideoEmbed from "../../components/VideoEmbed";
@@ -8,6 +10,24 @@ export const revalidate = 60;
 export async function generateStaticParams() {
   const services = await getServices();
   return services.map((service) => ({ slug: service.slug }));
+}
+
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const service = await getServiceBySlug(slug);
+  if (!service) return { title: "Service Not Found" };
+  return {
+    title: service.title,
+    description: service.shortDescription,
+    alternates: { canonical: `https://stellarphysio.com/services/${service.slug}` },
+    openGraph: {
+      title: service.title,
+      description: service.shortDescription,
+      url: `https://stellarphysio.com/services/${service.slug}`,
+      images: [{ url: service.heroImage, width: 1200, height: 630, alt: service.title }],
+    },
+  };
 }
 
 export default async function ServicePage({
@@ -27,10 +47,26 @@ export default async function ServicePage({
     .filter((s) => s.slug !== service.slug)
     .slice(0, 5);
 
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": service.title,
+    "description": service.shortDescription,
+    "provider": {
+      "@type": "MedicalClinic",
+      "name": "Stellar Physio",
+      "telephone": "+254719881291",
+      "url": "https://stellarphysio.com"
+    },
+    "areaServed": "Nairobi",
+    "serviceType": "Physiotherapy"
+  };
+
   const bookHref = `/book-appointment?service=${encodeURIComponent(service.title)}`;
 
   return (
     <div className="bg-gray-50 min-h-screen">
+      <JsonLd data={serviceSchema} />
       <section className="relative h-[400px] flex items-center overflow-hidden">
         <img
           src={service.heroImageMobile || service.heroImage}

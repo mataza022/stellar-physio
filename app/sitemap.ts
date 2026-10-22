@@ -31,6 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date().toISOString(),
     changeFrequency: "monthly" as const,
     priority: 0.7,
+    images: [`${BASE_URL}${service.heroImage}`],
   }));
 
   const conditionRoutes = conditions.map((condition) => ({
@@ -38,6 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date().toISOString(),
     changeFrequency: "monthly" as const,
     priority: 0.7,
+    images: [`${BASE_URL}${condition.heroImage}`],
   }));
 
   return [...staticRoutes, ...postRoutes, ...serviceRoutes, ...conditionRoutes];

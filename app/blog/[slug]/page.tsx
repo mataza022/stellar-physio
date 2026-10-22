@@ -1,4 +1,6 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+import JsonLd from "@/components/JsonLd";
 import { notFound } from "next/navigation";
 import {
   getPostBySlug,
@@ -60,6 +62,26 @@ const renderBody = (body: string) => {
   });
 };
 
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
+  if (!post) return { title: "Post Not Found" };
+  return {
+    title: post.title,
+    description: post.excerpt,
+    alternates: { canonical: `https://stellarphysio.com/blog/${post.slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: `https://stellarphysio.com/blog/${post.slug}`,
+      type: "article",
+      publishedTime: post.date,
+      images: [{ url: post.image, width: 1200, height: 630, alt: post.title }],
+    },
+  };
+}
+
 export default async function BlogPostPage({
   params,
 }: {
@@ -77,8 +99,29 @@ export default async function BlogPostPage({
   const all = await getPosts();
   const relatedPosts = all.filter((p) => p.slug !== post.slug).slice(0, 3);
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.title.substring(0, 110),
+    "image": `https://stellarphysio.com${post.image}`,
+    "datePublished": post.date,
+    "dateModified": post.date,
+    "author": {
+      "@type": "Person",
+      "name": "Stella Mwende",
+      "jobTitle": "Founder & CEO"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Stellar Physio",
+      "logo": { "@type": "ImageObject", "url": "https://stellarphysio.com/images/Stellarphysio_NEW_logo.png" }
+    },
+    "mainEntityOfPage": `https://stellarphysio.com/blog/${post.slug}`
+  };
+
   return (
     <>
+      <JsonLd data={articleSchema} />
       {/* CLEAN PAGE HEADER */}
       <section className="pt-20 pb-8 bg-white">
         <div className="container-custom text-center">

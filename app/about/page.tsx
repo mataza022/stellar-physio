@@ -73,7 +73,7 @@ export default function AboutPage() {
                 Thank you for being part of our journey.
               </p>
               <div className="pt-4">
-                <p className="font-bold text-purple text-lg">Stellar Mwende</p>
+                <p className="font-bold text-purple text-lg">Stella Mwende</p>
                 <p className="text-gray-700">Founder &amp; Chief Executive Officer</p>
                 <p className="text-gray-600">Stellar Physio Health &amp; Wellness Centre.</p>
               </div>

@@ -43,25 +43,75 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = {
-  "@context": "https://schema.org", "@type": "MedicalClinic",
-  name: "Stellar Physio Health & Wellness", url: BASE_URL,
-  logo: `${BASE_URL}/images/Stellarphysio_NEW_logo.png`,
-  image: `${BASE_URL}/images/Stellarphysio_NEW_logo.png`,
-  description: "Leading physiotherapy clinic in Nairobi with over 12 years of experience in pain relief, injury rehabilitation, and movement recovery.",
-  telephone: "+254719881291", email: "info@stellarphysio.com",
-  address: { "@type": "PostalAddress", streetAddress: "Kenital Plaza, Ngong Road", addressLocality: "Nairobi", addressCountry: "KE" },
-  geo: { "@type": "GeoCoordinates", latitude: -1.298749885724835, longitude: 36.79962250991531 },
-  openingHoursSpecification: [
-    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "08:00", closes: "18:00" },
-    { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "08:00", closes: "16:00" },
-  ],
-  sameAs: [
-    "https://www.facebook.com/share/1J7ZdUji5t/", "https://www.instagram.com/stellarphysioclinic",
-    "https://x.com/physiostellar", "https://www.tiktok.com/@stellar_physio",
-    "https://www.linkedin.com/in/stellar-physio-8b802a346", "https://www.youtube.com/@stellarphysiokenya"
-  ],
-};
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalClinic",
+    name: "Stellar Physio - Ngong Road",
+    url: BASE_URL,
+    logo: `${BASE_URL}/images/Stellarphysio_NEW_logo.png`,
+    description: "Leading physiotherapy clinic in Nairobi with over 12 years of experience.",
+    telephone: "+254719881291",
+    email: "info@stellarphysio.com",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Kenital Plaza, Ngong Road",
+      addressLocality: "Nairobi",
+      addressCountry: "KE",
+    },
+    geo: { "@type": "GeoCoordinates", latitude: -1.298749885724835, longitude: 36.79962250991531 },
+    openingHoursSpecification: [
+      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "08:00", closes: "18:00" },
+      { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "08:00", closes: "16:00" }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalClinic",
+    name: "Stellar Physio - Karen Country Club",
+    url: BASE_URL,
+    telephone: "+254739110110",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Karen Country Club, Fitness Centre",
+      addressLocality: "Nairobi",
+      addressCountry: "KE"
+    },
+    openingHoursSpecification: [
+      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "08:00", closes: "18:00" },
+      { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "08:00", closes: "16:00" }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalClinic",
+    name: "Stellar Physio - Parklands Sports Club",
+    url: BASE_URL,
+    telephone: "+254755901942",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Parklands Sports Club, Squash Court 4",
+      addressLocality: "Nairobi",
+      addressCountry: "KE"
+    },
+    openingHoursSpecification: [
+      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "08:00", closes: "18:00" },
+      { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "08:00", closes: "16:00" }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Physician",
+    "name": "Stella Mwende",
+    "jobTitle": "Founder & Chief Executive Officer",
+    "medicalSpecialty": "Physiotherapy",
+    "worksFor": {
+      "@type": "MedicalClinic",
+      "name": "Stellar Physio",
+      "url": BASE_URL
+    }
+  }
+];
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

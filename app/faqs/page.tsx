@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import JsonLd from "@/components/JsonLd";
 import { getFAQs, type FAQ } from "@/lib/faqs";
 
 const DEFAULT_CATEGORIES = [
@@ -36,8 +37,22 @@ export default function FAQsPage() {
   const filteredFaqs = faqs.filter((f) => f.category === activeCategory);
   const toggle = (index: number) => setOpenIndex(openIndex === index ? null : index);
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
   return (
     <>
+      <JsonLd data={faqSchema} />
       <section className="pt-20 pb-8 bg-white">
         <div className="container-custom text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-purple mb-4">
@@ -90,7 +105,20 @@ export default function FAQsPage() {
               ) : (
                 filteredFaqs.map((faq, index) => {
                   const isOpen = openIndex === index;
-                  return (
+                  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
+  return (
                     <div key={faq.id} className="border border-gray-200 rounded-lg overflow-hidden transition-shadow hover:shadow-sm">
                       <button
                         onClick={() => toggle(index)}
@@ -112,7 +140,20 @@ export default function FAQsPage() {
                         <div className="px-5 pb-5 text-gray-600 bg-white text-sm leading-relaxed whitespace-pre-wrap">
                           {faq.answer.split(/(\s+)/).map((word, i) => {
                             if (word.startsWith("http://") || word.startsWith("https://")) {
-                              return (
+                              const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
+  return (
                                 <a
                                   key={i}
                                   href={word}
