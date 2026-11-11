@@ -11,11 +11,25 @@ type Slide = {
   description: string;
   primaryLabel: string;
   primaryHref: string;
-  secondaryLabel: string;
-  secondaryHref: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+  activeFrom?: string; // Format: YYYY-MM-DD
+  activeTo?: string;   // Format: YYYY-MM-DD
 };
 
 const slides: Slide[] = [
+  // 👇 NEW TEMPORARY CAMP SLIDE 👇
+  {
+    image: "/images/free-checkup-camp.jpg",
+    tag: "Free Checkup Camp",
+    title: "Free Neck & Back Checkup",
+    description: "Join us 12th–14th Nov at our Ngong Road branch (opp Nairobi Baptist Church) for a free physiotherapy assessment. Insurance accepted.",
+    primaryLabel: "Book on WhatsApp",
+    primaryHref: "https://wa.me/254706101999?text=Hi%20Stellar%20Physio%2C%20I%20would%20like%20to%20book%20a%20free%20checkup%20for%20the%20Ngong%20Road%20camp.",
+    activeFrom: "2026-11-11",
+    activeTo: "2026-11-14",
+  },
+  // 👇 YOUR EXISTING SLIDES (UNTOUCHED) 👇
   {
     image: "/images/physiotherapyweek.jpeg",
     tag: "Expert Care",
@@ -73,13 +87,26 @@ export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
+  // Date filtering logic
+  const activeSlides = slides.filter((slide) => {
+    if (!slide.activeFrom || !slide.activeTo) return true; 
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const startDate = new Date(slide.activeFrom + "T00:00:00");
+    const endDate = new Date(slide.activeTo + "T23:59:59");
+
+    return today >= startDate && today <= endDate;
+  });
+
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || activeSlides.length <= 1) return;
     const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
+      setCurrent((prev) => (prev + 1) % activeSlides.length);
     }, 6000);
     return () => clearInterval(timer);
-  }, [isPaused]);
+  }, [isPaused, activeSlides.length]);
 
   return (
     <section
@@ -88,7 +115,7 @@ export default function HeroCarousel() {
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Background images — cross-fade */}
-      {slides.map((slide, i) => (
+      {activeSlides.map((slide, i) => (
         <div
           key={i}
           className={`absolute inset-0 transition-opacity duration-1000 ${
@@ -112,7 +139,7 @@ export default function HeroCarousel() {
       {/* Content */}
       <div className="container-custom relative z-10 text-white py-8 md:py-16 w-full">
         <div className="max-w-2xl">
-          {slides.map((slide, i) => (
+          {activeSlides.map((slide, i) => (
             <div
               key={i}
               className={`transition-opacity duration-700 ${
@@ -131,12 +158,12 @@ export default function HeroCarousel() {
               </div>
 
               {/* Title */}
-              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.15] mb-3 md:mb-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.15] mb-3 md:mb-4">
                 {slide.title}
               </h1>
 
               {/* Description */}
-              <p className="text-xs sm:text-base md:text-lg text-white/80 leading-relaxed max-w-xl">
+              <p className="text-sm sm:text-base md:text-lg text-white/80 leading-relaxed max-w-xl">
                 {slide.description}
               </p>
 
@@ -148,12 +175,15 @@ export default function HeroCarousel() {
                 >
                   {slide.primaryLabel}
                 </Link>
-                <Link
-                  href={slide.secondaryHref}
-                  className="bg-white text-purple px-6 py-3 rounded font-semibold hover:bg-gray-100 transition text-sm text-center w-full sm:w-auto"
-                >
-                  {slide.secondaryLabel}
-                </Link>
+                {/* 👇 Only show the secondary button if it exists */}
+                {slide.secondaryLabel && slide.secondaryHref && (
+                  <Link
+                    href={slide.secondaryHref}
+                    className="bg-white text-purple px-6 py-3 rounded font-semibold hover:bg-gray-100 transition text-sm text-center w-full sm:w-auto"
+                  >
+                    {slide.secondaryLabel}
+                  </Link>
+                )}
               </div>
             </div>
           ))}
@@ -181,7 +211,7 @@ export default function HeroCarousel() {
 
       {/* Slide indicator dots */}
       <div className="absolute bottom-4 right-6 md:bottom-6 md:right-8 z-20 flex gap-2">
-        {slides.map((_, i) => (
+        {activeSlides.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrent(i)}
