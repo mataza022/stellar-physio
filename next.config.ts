@@ -24,6 +24,21 @@ const nextConfig: NextConfig = {
       { source: "/lower-back-pain-spine-health", destination: "/conditions/lower-back-pain-spine-health", permanent: true },
       { source: "/lower-back-pain-spine-treatment-stellar-physio-nairobi", destination: "/conditions/lower-back-pain-spine-health", permanent: true },
       { source: "/developmental-milestones-for-autism-cerebral-palsy", destination: "/conditions/developmental-milestones", permanent: true },
+
+      // 👇 NEW FIXES FOR THE GSC 404 ERRORS 👇
+      { source: "/sports-massage", destination: "/services/sports-massage", permanent: true },
+      { source: "/sports-massage/", destination: "/services/sports-massage", permanent: true },
+      
+      { source: "/home-based-care", destination: "/services/home-based-care", permanent: true },
+      { source: "/home-based-care/", destination: "/services/home-based-care", permanent: true },
+      
+      // Old blog categories -> new blog page
+      { source: "/category/health", destination: "/blog", permanent: true },
+      { source: "/category/health/", destination: "/blog", permanent: true },
+      
+      // Old blog post URL -> new blog post URL
+      { source: "/the-vital-connection-between-physiotherapy-nutrition", destination: "/blog/the-vital-connection-between-physiotherapy-nutrition", permanent: true },
+      { source: "/the-vital-connection-between-physiotherapy-nutrition/", destination: "/blog/the-vital-connection-between-physiotherapy-nutrition", permanent: true },
     ];
   },
 };
