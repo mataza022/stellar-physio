@@ -53,7 +53,7 @@ export default async function ServicePage({
 
   const serviceSchema = {
     "@context": "https://schema.org",
-    "@type": "Service",
+    "@type": "MedicalProcedure", // 👈 Changed to MedicalProcedure for better E-E-A-T
     "name": service.title,
     "description": service.shortDescription,
     "provider": {
@@ -62,8 +62,12 @@ export default async function ServicePage({
       "telephone": "+254719881291",
       "url": "https://stellarphysio.com"
     },
-    "areaServed": "Nairobi",
-    "serviceType": "Physiotherapy"
+    "areaServed": {
+      "@type": "City",
+      "name": "Nairobi"
+    },
+    "procedureType": "https://schema.org/NoninvasiveProcedure",
+    "bodyLocation": "Musculoskeletal System"
   };
 
   const bookHref = `/book-appointment?service=${encodeURIComponent(service.title)}`;
