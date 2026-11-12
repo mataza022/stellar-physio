@@ -183,10 +183,7 @@ export default async function HomePage() {
                   General Consultations
                 </h3>
                 <p className="text-gray-600 text-sm mb-4 flex-1">
-                  This is the initial stage where the doctor assesses and refers
-                  to specialists. Our consultations ensure that we identify the
-                  root cause of your symptoms, rather than just treating the
-                  surface problem.
+                  Expert medical assessments in Nairobi. Our doctors pinpoint the root cause of your pain and refer you to the right specialist, ensuring you get targeted treatment fast.
                 </p>
                 <Link
                   href="/services/general-consultations"
@@ -209,9 +206,7 @@ export default async function HomePage() {
                   Physiotherapy
                 </h3>
                 <p className="text-gray-600 text-sm mb-4 flex-1">
-                  This is a branch of medicine that specializes in movement,
-                  function and disability. Our physiotherapists treat conditions
-                  relating to bones, muscles and nerves.
+                  Targeted physiotherapy for back pain, sports injuries, and post-surgery recovery in Nairobi. Get personalized treatment plans to restore your movement and live pain-free.
                 </p>
                 <p className="text-purple font-semibold text-xs mb-3">
                   Recommended 2-3 times weekly.
@@ -443,8 +438,35 @@ export default async function HomePage() {
               ))}
             </div>
           </div>
+        {/* 👇 LOCAL SEO FAQ SECTION 👇 */}
+      <section className="py-16 bg-white">
+        <div className="container-custom max-w-4xl">
+          <h2 className="text-3xl font-bold text-center text-purple mb-8">Looking for a Physio Near Me in Nairobi?</h2>
+          <div className="space-y-4">
+            
+            <div className="border border-gray-200 rounded-lg p-6 bg-gray-50">
+              <h3 className="font-bold text-lg text-gray-900 mb-2">Where can I find physiotherapy near me in Nairobi?</h3>
+              <p className="text-gray-700">Stellar Physio has 3 convenient locations to serve you: Kenital Plaza (Ngong Road), Karen Country Club, and Parklands Sports Club. We are open Mon-Fri 8am-6pm, and Saturdays & Public Holidays 8am-4pm.</p>
+            </div>
+
+            <div className="border border-gray-200 rounded-lg p-6 bg-gray-50">
+              <h3 className="font-bold text-lg text-gray-900 mb-2">Do you offer home-based physio near me?</h3>
+              <p className="text-gray-700">Yes! Our "Dial A Physio" service brings expert physiotherapy directly to your home or office anywhere in Nairobi. Call +254 719 881 291 to book a home visit.</p>
+            </div>
+
+            <div className="border border-gray-200 rounded-lg p-6 bg-gray-50">
+              <h3 className="font-bold text-lg text-gray-900 mb-2">How do I book a physiotherapist in Nairobi?</h3>
+              <p className="text-gray-700">You can book online via our website, call any of our branches, or send us a WhatsApp message. We accept both walk-ins and scheduled appointments.</p>
+            </div>
+
+          </div>
         </div>
+      </section>
+    </div>
       </section>
     </>
   );
 }
+
+      
+    

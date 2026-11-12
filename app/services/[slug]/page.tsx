@@ -17,15 +17,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const service = await getServiceBySlug(slug);
   if (!service) return { title: "Service Not Found" };
+  // 👇 Applying the Digitabytes SEO Formula 👇
+  const seoTitle = `${service.title} in Nairobi | Stellar Physio`;
+  const seoDescription = `${service.shortDescription} 12+ years, 152,000+ sessions. Book at Ngong Road, Karen or Parklands.`.slice(0, 155);
+
   return {
-    title: service.title,
-    description: service.shortDescription,
+    title: seoTitle,
+    description: seoDescription,
     alternates: { canonical: `https://stellarphysio.com/services/${service.slug}` },
     openGraph: {
-      title: service.title,
-      description: service.shortDescription,
+      title: seoTitle,
+      description: seoDescription,
       url: `https://stellarphysio.com/services/${service.slug}`,
-      images: [{ url: service.heroImage, width: 1200, height: 630, alt: service.title }],
+      images: [{ url: service.heroImage, width: 1200, height: 630, alt: seoTitle }],
     },
   };
 }

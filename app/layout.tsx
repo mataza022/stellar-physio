@@ -107,7 +107,8 @@ const jsonLd = [
     "medicalSpecialty": "Physiotherapy",
     "worksFor": {
       "@type": "MedicalClinic",
-      "name": "Stellar Physio",
+      "name": "Stellar Physio - Physiotherapy in Nairobi",
+          "description": "Expert physiotherapy near me and physio in Nairobi. 3 convenient branches.",
       "url": BASE_URL
     }
   }

@@ -1,6 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Conditions We Treat in Nairobi | Stellar Physio",
+  description: "Expert physiotherapy care for a wide range of musculoskeletal, neurological, sport and paediatric conditions in Nairobi. Find the root cause of your pain.",
+};
+
+
+
 type ListingCondition = {
   slug: string;
   title: string;

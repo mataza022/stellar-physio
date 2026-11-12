@@ -1,29 +1,16 @@
-# Stellar Physio Health & Wellness
+# Stellar Physio
 
-> Leading physiotherapy clinic in Nairobi with over 12 years of experience. We offer expert care for back pain, sports injuries, joint pain, and rehabilitation across our Ngong Road, Karen, and Parklands branches.
+> Stellar Physio is a leading physiotherapy and wellness clinic in Nairobi, Kenya, with over 12 years of experience and 152,000+ sessions completed. We treat back pain, sports injuries, stroke rehabilitation, and more.
 
-## Main Pages
+## Important Pages
+- [Home Page](https://stellarphysio.com): Main information and booking.
+- [Services](https://stellarphysio.com/services): List of all specialized services (Physiotherapy, Chiropractic, etc.).
+- [Conditions](https://stellarphysio.com/conditions): List of conditions we treat (Back Pain, Stroke Rehab, etc.).
+- [Insurance & SHA](https://stellarphysio.com/insurance-and-sha): Information on accepted medical insurance providers.
+- [Book Appointment](https://stellarphysio.com/book-appointment): Direct booking page.
+- [Contact Us](https://stellarphysio.com/contact): Contact details for our 3 branches.
 
-- [Home](https://stellarphysio.com/): Overview of our clinic, conditions, and services.
-- [About Us](https://stellarphysio.com/about): Our history, CEO message, and partnerships.
-- [Contact](https://stellarphysio.com/contact): Branch locations, phone numbers, and contact form.
-- [Book Appointment](https://stellarphysio.com/book-appointment): Online booking for all services.
-- [Packages & Pricing](https://stellarphysio.com/packages): Wellness packages and special offers.
-- [FAQs](https://stellarphysio.com/faqs): Answers about pricing, insurance, and visits.
-
-## Services
-
-- [Specialized Services](https://stellarphysio.com/services): Physiotherapy, Chiropractic, Cupping, Reflexology, and more.
-- [Physio Shop](https://stellarphysio.com/services/physio-shop): Health and wellness products.
-
-## Conditions We Treat
-
-- [Conditions](https://stellarphysio.com/conditions): Lower back pain, sports injuries, stroke rehab, and arthritis.
-
-## Blog
-
-- [Articles & News](https://stellarphysio.com/blog): Latest health tips and clinic updates.
-
-## Optional
-
-- [Patient Journey](https://stellarphysio.com/patient-journey): What to expect during your first visit.
+## About the Clinic
+- **Locations:** Kenital Plaza (Ngong Road), Karen Country Club, Parklands Sports Club.
+- **Hours:** Mon-Fri 8am-6pm, Sat & Public Holidays 8am-4pm.
+- **Emergency Home Visit:** Dial A Physio (+254 719 881 291).

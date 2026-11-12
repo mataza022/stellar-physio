@@ -13,29 +13,26 @@ type Slide = {
   primaryHref: string;
   secondaryLabel?: string;
   secondaryHref?: string;
-  activeFrom?: string; // Format: YYYY-MM-DD
-  activeTo?: string;   // Format: YYYY-MM-DD
+  activeFrom?: string;
+  activeTo?: string;
 };
 
 const slides: Slide[] = [
-  // 👇 NEW TEMPORARY CAMP SLIDE 👇
   {
     image: "/images/free-checkup-camp.jpg",
-    tag: "Free Checkup Camp",
-    title: "Free Neck & Back Checkup",
-    description: "Join us 12th–14th Nov at our Ngong Road branch (opp Nairobi Baptist Church) for a free physiotherapy assessment. Insurance accepted.",
+    tag: "FREE NECK & BACK CHECKUP",
+    title: "Your Lifestyle Clinic.",
+    description: "Join us 12th–14th Nov at our Ngong Road branch for a free physiotherapy assessment. Insurance accepted.",
     primaryLabel: "Book on WhatsApp",
     primaryHref: "https://wa.me/254706101999?text=Hi%20Stellar%20Physio%2C%20I%20would%20like%20to%20book%20a%20free%20checkup%20for%20the%20Ngong%20Road%20camp.",
     activeFrom: "2026-11-11",
     activeTo: "2026-11-14",
   },
-  // 👇 YOUR EXISTING SLIDES (UNTOUCHED) 👇
   {
     image: "/images/physiotherapyweek.jpeg",
-    tag: "Expert Care",
+    tag: "BACK PAIN & SPORTS INJURY",
     title: "Your Lifestyle Clinic.",
-    description:
-      "A leading physiotherapy clinic in Nairobi with over 12 years of experience. We identify the root cause of your pain — not just the symptoms.",
+    description: "A leading physiotherapy clinic in Nairobi. We identify the root cause of your pain — not just the symptoms.",
     primaryLabel: "View Our Offers",
     primaryHref: "/packages",
     secondaryLabel: "Book Appointment",
@@ -44,10 +41,9 @@ const slides: Slide[] = [
   {
     image: "/images/hero2.JPG",
     mobileImage: "/images/hero2mobile.png",
-    tag: "Expert Care",
+    tag: "STROKE REHAB & JOINT PAIN",
     title: "Your Lifestyle Clinic.",
-    description:
-      "Expert treatment for back pain, sports injuries, joint pain, and musculoskeletal conditions. Personalized plans for lasting recovery.",
+    description: "Expert treatment for joint pain and musculoskeletal conditions. Personalized plans for lasting recovery.",
     primaryLabel: "View Our Offers",
     primaryHref: "/services",
     secondaryLabel: "Book Appointment",
@@ -55,10 +51,9 @@ const slides: Slide[] = [
   },
   {
     image: "/images/hero3.jpg",
-    tag: "Expert Care",
+    tag: "152,000+ SESSIONS COMPLETED",
     title: "Your Lifestyle Clinic.",
-    description:
-      "Over 152,000 sessions completed. Committed to helping you recover fully and live an active, pain-free life.",
+    description: "Committed to helping you recover fully and live an active, pain-free life.",
     primaryLabel: "View Our Offers",
     primaryHref: "/services",
     secondaryLabel: "Book Appointment",
@@ -66,10 +61,9 @@ const slides: Slide[] = [
   },
   {
     image: "/images/pharmacy.jpeg",
-    tag: "Expert Care",
+    tag: "TRUSTED PHYSIOTHERAPY IN NAIROBI",
     title: "Your Lifestyle Clinic.",
-    description:
-      "A leading physiotherapy clinic in Nairobi with over 12 years of experience. We identify the root cause of your pain — not just the symptoms.",
+    description: "A leading physiotherapy clinic with over 12 years of experience. We treat the root cause of your pain.",
     primaryLabel: "View Our Offers",
     primaryHref: "/packages",
     secondaryLabel: "Book Appointment",
@@ -87,16 +81,12 @@ export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Date filtering logic
   const activeSlides = slides.filter((slide) => {
     if (!slide.activeFrom || !slide.activeTo) return true; 
-    
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
     const startDate = new Date(slide.activeFrom + "T00:00:00");
     const endDate = new Date(slide.activeTo + "T23:59:59");
-
     return today >= startDate && today <= endDate;
   });
 
@@ -114,7 +104,9 @@ export default function HeroCarousel() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Background images — cross-fade */}
+      {/* 👇 The invisible SEO H1 (Google reads this first) 👇 */}
+      <h1 className="sr-only">Looking for Physiotherapy Near Me or a Physio in Nairobi? Stellar Physio Clinic</h1>
+
       {activeSlides.map((slide, i) => (
         <div
           key={i}
@@ -124,19 +116,18 @@ export default function HeroCarousel() {
         >
           <img
             src={slide.mobileImage || slide.image}
-            alt={slide.title}
+            alt={slide.tag}
             className="w-full h-full object-cover md:hidden"
           />
           <img
             src={slide.image}
-            alt={slide.title}
+            alt={slide.tag}
             className="w-full h-full object-cover hidden md:block"
           />
           <div className="absolute inset-0 bg-black/60"></div>
         </div>
       ))}
 
-      {/* Content */}
       <div className="container-custom relative z-10 text-white py-8 md:py-16 w-full">
         <div className="max-w-2xl">
           {activeSlides.map((slide, i) => (
@@ -149,7 +140,7 @@ export default function HeroCarousel() {
               }`}
               aria-hidden={i !== current}
             >
-              {/* Tag with horizontal line */}
+              {/* Tag line (Now holds the SEO keywords) */}
               <div className="flex items-center gap-3 mb-2 md:mb-3">
                 <span className="w-6 md:w-8 h-px bg-white/60"></span>
                 <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium text-white/90">
@@ -157,17 +148,15 @@ export default function HeroCarousel() {
                 </p>
               </div>
 
-              {/* Title */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.15] mb-3 md:mb-4">
+              {/* Clean Tagline H2 */}
+              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-3 md:mb-4">
                 {slide.title}
-              </h1>
+              </h2>
 
-              {/* Description */}
-              <p className="text-sm sm:text-base md:text-lg text-white/80 leading-relaxed max-w-xl">
+              <p className="text-sm sm:text-base md:text-lg text-white/80 leading-relaxed max-w-lg">
                 {slide.description}
               </p>
 
-              {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 mt-6 md:mt-8">
                 <Link
                   href={slide.primaryHref}
@@ -175,7 +164,6 @@ export default function HeroCarousel() {
                 >
                   {slide.primaryLabel}
                 </Link>
-                {/* 👇 Only show the secondary button if it exists */}
                 {slide.secondaryLabel && slide.secondaryHref && (
                   <Link
                     href={slide.secondaryHref}
@@ -188,7 +176,6 @@ export default function HeroCarousel() {
             </div>
           ))}
 
-          {/* Stats Strip */}
           <div className="flex justify-between md:justify-start md:items-center gap-2 md:gap-10 mt-8 pt-5 md:mt-12 md:pt-8 border-t border-white/20 max-w-2xl">
             {stats.map((stat, idx) => (
               <div key={idx} className="flex items-center gap-4 md:gap-10">
@@ -209,7 +196,6 @@ export default function HeroCarousel() {
         </div>
       </div>
 
-      {/* Slide indicator dots */}
       <div className="absolute bottom-4 right-6 md:bottom-6 md:right-8 z-20 flex gap-2">
         {activeSlides.map((_, i) => (
           <button

@@ -1,5 +1,14 @@
 import Link from "next/link";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Physiotherapy Services in Nairobi | Stellar Physio",
+  description: "Explore our full range of specialized services including physiotherapy, chiropractic, sports massage, and home-based care in Nairobi. 12+ years experience.",
+};
+
+
+
 type ListingService = {
   slug: string;
   title: string;

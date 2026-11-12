@@ -17,15 +17,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const condition = await getConditionBySlug(slug);
   if (!condition) return { title: "Condition Not Found" };
+  // 👇 Applying the Digitabytes SEO Formula 👇
+  const seoTitle = `${condition.title} Treatment in Nairobi | Stellar Physio`.slice(0, 60);
+  const seoDescription = `Find the root cause of your ${condition.title.toLowerCase()}. Personalised physiotherapy plans from experienced Nairobi physios. Book an appointment today.`.slice(0, 155);
+
   return {
-    title: `${condition.title} Treatment in Nairobi`,
-    description: condition.shortDescription,
+    title: seoTitle,
+    description: seoDescription,
     alternates: { canonical: `https://stellarphysio.com/conditions/${condition.slug}` },
     openGraph: {
-      title: condition.title,
-      description: condition.shortDescription,
+      title: seoTitle,
+      description: seoDescription,
       url: `https://stellarphysio.com/conditions/${condition.slug}`,
-      images: [{ url: condition.heroImage, width: 1200, height: 630, alt: condition.title }],
+      images: [{ url: condition.heroImage, width: 1200, height: 630, alt: seoTitle }],
     },
   };
 }

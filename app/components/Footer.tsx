@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { LOCATIONS, DIAL_A_PHYSIO } from "@/lib/constants";
 
 const socials = [
   {
@@ -77,23 +78,7 @@ const quickLinkServices = [
   { title: "Stretch & Exercise Therapy", href: "/services/stretch-exercise-therapy" },
 ];
 
-const branchContacts = [
-  {
-    name: "Kenital Plaza, Ngong Road",
-    phone: "+254 706 101 999",
-    tel: "+254706101999",
-  },
-  {
-    name: "Karen Country Club",
-    phone: "+254 739 110 110",
-    tel: "+254739110110",
-  },
-  {
-    name: "Parklands Sports Club",
-    phone: "+254 755 901 942",
-    tel: "+254755901942",
-  },
-];
+
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -277,7 +262,7 @@ export default function Footer() {
             </div>
 
             <ul className="space-y-3 text-sm">
-              {branchContacts.map((branch) => (
+              {LOCATIONS.map((branch) => (
                 <li key={branch.tel}>
                   <p className="text-white/50 text-xs mb-1">{branch.name}</p>
                   <a
@@ -325,13 +310,13 @@ export default function Footer() {
               Call us directly to book a session or for urgent enquiries.
             </p>
             <a
-              href="tel:+254719881291"
+              href={`tel:${DIAL_A_PHYSIO.tel}`}
               className="inline-block hover:opacity-90 transition"
-              aria-label="Dial A Physio — Call 0719 881 291"
+              aria-label={`Dial A Physio — Call ${DIAL_A_PHYSIO.phone}`}
             >
               <img
                 src="/images/dialaphysio.png"
-                alt="Dial A Physio — Call 0719 881 291"
+                alt={`Dial A Physio — Call ${DIAL_A_PHYSIO.phone}`}
                 className="h-50 w-auto"
               />
             </a>
